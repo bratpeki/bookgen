@@ -31,6 +31,7 @@ int main() {
 			BG_H(2, "Why ANSI C?");
 			BG_TAG("p");
 				BG_TXT("Honestly, simplicity!");
+				BG_BR(2);
 				BG_TXT(
 					"I like knowing my software can be compiled on as many architectures as possible, "
 					"so ANSI C <i>felt</i> like a natural pick."
@@ -59,7 +60,6 @@ int main() {
 						BG_TXT(
 							"Naturally, since <code>BG_TXT</code> is just text, <u><b>you can inject HTML</b></u>! "
 							"That means you can link stuff like <a href=\"https://www.google.com\">this</a>!"
-							"<br>"
 						);
 
 					BG_H(4, "Specific Case B");
@@ -67,7 +67,7 @@ int main() {
 						BG_TXT("Of course, though, there's <code>BG_LINK</code>.");
 						BG_LINK("https://www.google.com", "Here it is in action.");
 
-		BG_H(2, "Third chapter on code blocks");
+		BG_H(2, "Code blocks");
 
 			BG_TAG("p");
 				BG_TXT(
@@ -87,6 +87,38 @@ int main() {
 					"}"
 				);
 			BG_END("pre");
+
+		BG_H(2, "A simple table");
+
+			BG_TAG("table");
+
+				BG_CAPTION("Supported ANSI C compilers");
+
+				BG_TAG("tr");
+					BG_TH("Compiler");
+					BG_TH("Standard");
+					BG_TH("Notes");
+				BG_END("tr");
+
+				BG_TAG("tr");
+					BG_TD("GCC");
+					BG_TD("C89–C23");
+					BG_TD("Most commonly used");
+				BG_END("tr");
+
+				BG_TAG("tr");
+					BG_TD("Clang");
+					BG_TD("C89–C23");
+					BG_TD("Excellent diagnostics");
+				BG_END("tr");
+
+				BG_TAG("tr");
+					BG_TD("MSVC");
+					BG_TD("C89 (partial)");
+					BG_TD("Non-standard extensions");
+				BG_END("tr");
+
+			BG_END("table");
 
 		BG_PAGEBREAK();
 

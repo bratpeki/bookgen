@@ -98,6 +98,24 @@ static void BG_END(const char* inside)
 	printf("</%s>\n", inside);
 }
 
+/*
+ * Print a void element (img, br, hr, etc).
+ */
+static void BG_VOID(const char* tag)
+{
+	U_BG_INDENT();
+	printf("<%s>\n", tag);
+}
+
+/*
+ * Print a void element (img, br, hr, etc) and provide attributes.
+ */
+static void BG_VOID_A(const char* tag, const char* attrs)
+{
+	U_BG_INDENT();
+	printf("<%s %s>\n", tag, attrs);
+}
+
 /* ==================================================
  * Plaintext
  * ================================================== */
@@ -167,6 +185,15 @@ static void BG_DEFSTYLE()
 	BG_TXT("li.toc-L2 { padding-left: 20px; font-weight: normal; font-size: 0.95em; }");
 	BG_TXT("li.toc-L3 { padding-left: 40px; font-size: 0.9em; color: #666; }");
 
+	BG_TXT("li.toc-L4 { padding-left: 40px; font-size: 0.9em; color: #666; }");
+	BG_TXT("li.toc-L5 { padding-left: 50px; font-size: 0.9em; color: #666; }");
+	BG_TXT("li.toc-L6 { padding-left: 60px; font-size: 0.9em; color: #666; }");
+
+	BG_TXT("table { border-collapse: collapse; width: 100%; margin: 20px 0; }");
+	BG_TXT("th, td { border: 1px solid #ddd; padding: 8px 10px; }");
+	BG_TXT("th { background: #f7f7f7; font-weight: bold; text-align: left; }");
+	BG_TXT("caption { caption-side: bottom; font-size: 0.9em; color: #666; margin-top: 8px; }");
+
 	BG_TXT("@media print { body { max-width: 100%; margin: 0; } .toc { border: none; } }");
 
 	BG_END("style");
@@ -229,14 +256,18 @@ static void BG_H(size_t level, const char* title)
 	v_bg_toc_count++;
 }
 
+/*
+ * Print the Table of Contents.
+ */
 static void BG_TOC()
 {
 	size_t i;
 	BG_TAG_A("div", "class=\"toc\"");
-	BG_H(1, "Table of Contents"); /* Header for the TOC itself */
+	BG_H(1, "Table of Contents");
 	BG_TAG("ul");
 
-	for (i = 0; i < v_bg_toc_count; i++) {
+	/* The "-1" omits the TOC header from the TOC */
+	for (i = 0; i < v_bg_toc_count - 1; i++) {
 		U_BG_INDENT();
 		/* The class name is added for styling (toc-L1, toc-L2, etc) */
 		printf(
@@ -252,13 +283,68 @@ static void BG_TOC()
 }
 
 /* ==================================================
+ * Tables.
+ * ================================================== */
+
+/*
+ * Print one table header cell.
+ */
+static void BG_TH(const char* txt)
+{
+	BG_TAG("th");
+	BG_TXT(txt);
+	BG_END("th");
+}
+
+/*
+ * Print one table data cell.
+ */
+static void BG_TD(const char* txt)
+{
+	BG_TAG("td");
+	BG_TXT(txt);
+	BG_END("td");
+}
+
+/*
+ * Print the table's caption.
+ */
+static void BG_CAPTION(const char* txt)
+{
+	BG_TAG("caption");
+	BG_TXT(txt);
+	BG_END("caption");
+}
+
+/*
+ * Print one table header cell, with attributes (colspan, align, etc).
+ */
+static void BG_TH_A(const char* attrs, const char* txt)
+{
+	BG_TAG_A("th", attrs);
+	BG_TXT(txt);
+	BG_END("th");
+}
+
+/*
+ * Print one table data cell, with attributes (colspan, align, etc).
+ */
+static void BG_TD_A(const char* attrs, const char* txt)
+{
+	BG_TAG_A("td", attrs);
+	BG_TXT(txt);
+	BG_END("td");
+}
+
+/* ==================================================
  * Common items.
  * ================================================== */
 
 /*
  * Forces a page break when printing.
  */
-static void BG_PAGEBREAK() {
+static void BG_PAGEBREAK()
+{
 	U_BG_INDENT();
 	printf("<div style=\"break-after: page;\"></div>\n");
 }
@@ -266,9 +352,21 @@ static void BG_PAGEBREAK() {
 /*
  * Make a hyperlink.
  */
-static void BG_LINK(const char* url, const char* label) {
+static void BG_LINK(const char* url, const char* label)
+{
 	U_BG_INDENT();
 	printf("<a href=\"%s\">%s</a>\n", url, label);
+}
+
+/*
+ * Make a variable number of line breaks.
+ */
+static void BG_BR(size_t howmany)
+{
+	size_t i;
+	for (i = 0; i < howmany; i++) {
+		BG_VOID("br");
+	}
 }
 
 #endif
