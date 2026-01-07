@@ -1,12 +1,6 @@
 
 /* bg.h */
 
-/* TODO:
- * - Make colors consistent
- * - Fix the right margin/padding on blockquotes
- * - Fix blockquote margins being the same at the top and bottom (Investigate the default style)
- */
-
 #ifndef BOOKGEN_H
 #define BOOKGEN_H
 
@@ -165,6 +159,11 @@ static void BG_STYLE(const char* path)
  */
 static void BG_DEFSTYLE()
 {
+	#define BG_DEFSTYLE_LIGHTER "#f7f7f7"
+	#define BG_DEFSTYLE_LIGHT "#ccc"
+	#define BG_DEFSTYLE_DIM "#666"
+	#define BG_DEFSTYLE_DARK "#333"
+
 	BG_TAG("style");
 
 	BG_TXT("body {");
@@ -172,43 +171,43 @@ static void BG_DEFSTYLE()
 		BG_TXT("max-width: 800px;"); /* Keeps the book centered and readable */
 		BG_TXT("margin: 40px auto;"); /* Centers the content on the screen */
 		BG_TXT("padding: 0 20px;"); /* Prevents text touching mobile edges */
-		BG_TXT("color: #333;"); /* Soften the black for less eye strain */
+		BG_TXT("color: " BG_DEFSTYLE_DARK ";"); /* Soften the black for less eye strain */
 		BG_TXT("font-family: serif;");
 	v_bg_depth--;
 	BG_TXT("}");
 
-	BG_TXT("h1, h2, h3 { color: #111; }");
-	BG_TXT("h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; }");
+	BG_TXT("h1 { border-bottom: 2px solid " BG_DEFSTYLE_LIGHT "; padding-bottom: 10px; }");
 
-	BG_TXT("code { background: #f4f4f4; padding: 2px; font-family: monospace; }");
-	BG_TXT("pre { background: #f4f4f4; padding: 15px; overflow-x: auto; border-left: 4px solid #ccc; }");
+	BG_TXT("code { background: " BG_DEFSTYLE_LIGHTER "; padding: 2px; font-family: monospace; }");
+	BG_TXT("pre { background: " BG_DEFSTYLE_LIGHTER "; padding: 15px; overflow-x: auto; border-left: 4px solid " BG_DEFSTYLE_LIGHT "; }");
+
+	BG_TXT("a { text-decoration: underline; color: inherit; }");
 
 	BG_TXT(".toc ul { list-style: none; padding-left: 0; }");
-	BG_TXT(".toc a { text-decoration: none; color: #007acc; }");
-	BG_TXT(".toc a:hover { text-decoration: underline; }");
+	BG_TXT(".toc a { text-decoration: none; }");
 
-	BG_TXT("li.toc-L1 { font-weight: bold; margin-top: 10px; }");
-	BG_TXT("li.toc-L2 { padding-left: 20px; font-weight: normal; font-size: 0.95em; }");
-	BG_TXT("li.toc-L3 { padding-left: 40px; font-size: 0.9em; color: #666; }");
+	BG_TXT("li.toc-L1 { font-weight: bold; margin-top: 10px; color: " BG_DEFSTYLE_DARK "; }");
+	BG_TXT("li.toc-L2 { padding-left: 20px; font-weight: normal; font-size: 0.95em; color: " BG_DEFSTYLE_DARK " }");
+	BG_TXT("li.toc-L3 { padding-left: 40px; font-size: 0.9em; color: " BG_DEFSTYLE_DIM "; }");
 
-	BG_TXT("li.toc-L4 { padding-left: 40px; font-size: 0.9em; color: #666; }");
-	BG_TXT("li.toc-L5 { padding-left: 50px; font-size: 0.9em; color: #666; }");
-	BG_TXT("li.toc-L6 { padding-left: 60px; font-size: 0.9em; color: #666; }");
+	BG_TXT("li.toc-L4 { padding-left: 40px; font-size: 0.9em; color: " BG_DEFSTYLE_DIM "; }");
+	BG_TXT("li.toc-L5 { padding-left: 50px; font-size: 0.9em; color: " BG_DEFSTYLE_DIM "; }");
+	BG_TXT("li.toc-L6 { padding-left: 60px; font-size: 0.9em; color: " BG_DEFSTYLE_DIM "; }");
 
 	BG_TXT("table { border-collapse: collapse; width: 100%; margin: 20px 0; }");
-	BG_TXT("th, td { border: 1px solid #ddd; padding: 8px 10px; }");
-	BG_TXT("th { background: #f7f7f7; font-weight: bold; text-align: left; }");
-	BG_TXT("caption { caption-side: bottom; font-size: 0.9em; color: #666; margin-top: 8px; }");
+	BG_TXT("th, td { border: 1px solid " BG_DEFSTYLE_LIGHT "; padding: 8px 10px; }");
+	BG_TXT("th { background: " BG_DEFSTYLE_LIGHTER "; font-weight: bold; text-align: left; }");
+	BG_TXT("caption { caption-side: bottom; font-size: 0.9em; color: " BG_DEFSTYLE_DIM "; margin-top: 8px; }");
 
 	BG_TXT("@media print { body { max-width: 100%; margin: 0; } .toc { border: none; } }");
 
 	BG_TXT("blockquote {");
 	v_bg_depth++;
-		BG_TXT("margin-top: 1em; margin-bottom: 0;");
-		BG_TXT("margin-left: 0;");
+		BG_TXT("margin: 1.5em 0;");
 		BG_TXT("padding: 0.75em 1.5em;");
-		BG_TXT("border-left: 4px solid #ccc;");
-		BG_TXT("background: #fafafa;");
+		BG_TXT("border-left: 4px solid " BG_DEFSTYLE_LIGHT ";");
+		BG_TXT("background: " BG_DEFSTYLE_LIGHTER ";");
+		BG_TXT("color: " BG_DEFSTYLE_DIM ";");
 	v_bg_depth--;
 	BG_TXT("}");
 
@@ -216,7 +215,6 @@ static void BG_DEFSTYLE()
 	v_bg_depth++;
 		BG_TXT("margin: 0;");
 		BG_TXT("font-style: italic;");
-		BG_TXT("v_bg_depth--;");
 	v_bg_depth--;
 	BG_TXT("}");
 
@@ -224,7 +222,6 @@ static void BG_DEFSTYLE()
 	v_bg_depth++;
 		BG_TXT("margin-top: 0.5em;");
 		BG_TXT("font-size: 0.9em;");
-		BG_TXT("color: #666;");
 	v_bg_depth--;
 	BG_TXT("}");
 

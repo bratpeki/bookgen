@@ -58,7 +58,7 @@ int main() {
 					BG_H(4, "Specific Case A");
 
 						BG_TXT(
-							"Naturally, since <code>BG_TXT</code> is just text, <u><b>you can inject HTML</b></u>! "
+							"Naturally, since <code>BG_TXT</code> is just text, <i><b>you can inject HTML</b></i>! "
 							"That means you can link stuff like <a href=\"https://www.google.com\">this</a>!"
 						);
 
