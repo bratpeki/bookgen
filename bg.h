@@ -38,10 +38,10 @@ static size_t v_bg_chapter[6] = { 0, 0, 0, 0, 0, 0 };
 /*
  * These are used to generate the TOC.
  */
-static const char* v_bg_toc_titles[V_BG_MAX_TOC]; /* Stores the pointers to const chapter titles */
+static const char* v_bg_toc_titles[V_BG_MAX_TOC]; /* Stores the pointers to chapter titles */
 static size_t v_bg_toc_levels[V_BG_MAX_TOC]; /* Stores the depth, for the class name */
 static char v_bg_toc_numbers[V_BG_MAX_TOC][32]; /* Stores the chapter numbers, like "2.2.10." */
-static size_t v_bg_toc_count = 0;
+static size_t v_bg_toc_count = 0; /* Used for tracking ToC entires. Mustn't exceed V_BG_MAX_TOC. */
 
 /* ==================================================
  * NOT FOR THE END USER.
@@ -104,11 +104,21 @@ static void BG_END(const char* inside)
 
 /*
  * Print text.
+ * Indents the text and adds a newline.
  */
 static void BG_TXT(const char* txt)
 {
 	U_BG_INDENT();
 	printf("%s\n", txt);
+}
+
+/*
+ * Print raw text.
+ * Nothing is added.
+ */
+static void BG_RAW(const char* txt)
+{
+	printf("%s", txt);
 }
 
 /* ==================================================
@@ -135,10 +145,10 @@ static void BG_DEFSTYLE()
 
 	BG_TXT("body {");
 	v_bg_depth++;
-	BG_TXT("max-width: 800px;");       /* Keeps the book centered and readable */
-	BG_TXT("margin: 40px auto;");      /* Centers the content on the screen */
-	BG_TXT("padding: 0 20px;");        /* Prevents text touching mobile edges */
-	BG_TXT("color: #333;");            /* Soften the black for less eye strain */
+	BG_TXT("max-width: 800px;"); /* Keeps the book centered and readable */
+	BG_TXT("margin: 40px auto;"); /* Centers the content on the screen */
+	BG_TXT("padding: 0 20px;"); /* Prevents text touching mobile edges */
+	BG_TXT("color: #333;"); /* Soften the black for less eye strain */
 	BG_TXT("font-family: serif;");
 	v_bg_depth--;
 	BG_TXT("}");
@@ -223,8 +233,7 @@ static void BG_TOC()
 {
 	size_t i;
 	BG_TAG_A("div", "class=\"toc\"");
-	/* Header for the TOC itself */
-	BG_H(1, "Table of Contents");
+	BG_H(1, "Table of Contents"); /* Header for the TOC itself */
 	BG_TAG("ul");
 
 	for (i = 0; i < v_bg_toc_count; i++) {
@@ -255,7 +264,7 @@ static void BG_PAGEBREAK() {
 }
 
 /*
- * Hyperlink.
+ * Make a hyperlink.
  */
 static void BG_LINK(const char* url, const char* label) {
 	U_BG_INDENT();

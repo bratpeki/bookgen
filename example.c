@@ -67,6 +67,27 @@ int main() {
 						BG_TXT("Of course, though, there's <code>BG_LINK</code>.");
 						BG_LINK("https://www.google.com", "Here it is in action.");
 
+		BG_H(2, "Third chapter on code blocks");
+
+			BG_TAG("p");
+				BG_TXT(
+					"For longer examples, use a <code>&lt;pre&gt;&lt;code&gt;</code> block. "
+					"Whitespace and newlines are preserved exactly as written."
+				);
+			BG_END("p");
+
+			BG_TAG("pre");
+				BG_RAW("#include &lt;stdio.h&gt;\n"
+					"#include &lt;stdlib.h&gt;\n"
+					"\n"
+					"int main(void)\n"
+					"{\n"
+					"  printf(\"Hello from ANSI C!\\n\");\n"
+					"  return EXIT_SUCCESS;\n"
+					"}"
+				);
+			BG_END("pre");
+
 		BG_PAGEBREAK();
 
 		BG_TOC();
