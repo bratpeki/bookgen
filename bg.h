@@ -169,11 +169,11 @@ static void BG_DEFSTYLE()
 
 	BG_TXT("body {");
 	v_bg_depth++;
-	BG_TXT("max-width: 800px;"); /* Keeps the book centered and readable */
-	BG_TXT("margin: 40px auto;"); /* Centers the content on the screen */
-	BG_TXT("padding: 0 20px;"); /* Prevents text touching mobile edges */
-	BG_TXT("color: #333;"); /* Soften the black for less eye strain */
-	BG_TXT("font-family: serif;");
+		BG_TXT("max-width: 800px;"); /* Keeps the book centered and readable */
+		BG_TXT("margin: 40px auto;"); /* Centers the content on the screen */
+		BG_TXT("padding: 0 20px;"); /* Prevents text touching mobile edges */
+		BG_TXT("color: #333;"); /* Soften the black for less eye strain */
+		BG_TXT("font-family: serif;");
 	v_bg_depth--;
 	BG_TXT("}");
 
@@ -204,32 +204,27 @@ static void BG_DEFSTYLE()
 
 	BG_TXT("blockquote {");
 	v_bg_depth++;
-
-	BG_TXT("margin-top: 1em; margin-bottom: 0;");
-	BG_TXT("margin-left: 0;");
-
-	BG_TXT("padding: 0.75em 1.5em;");
-
-	BG_TXT("border-left: 4px solid #ccc;");
-	BG_TXT("background: #fafafa;");
-
+		BG_TXT("margin-top: 1em; margin-bottom: 0;");
+		BG_TXT("margin-left: 0;");
+		BG_TXT("padding: 0.75em 1.5em;");
+		BG_TXT("border-left: 4px solid #ccc;");
+		BG_TXT("background: #fafafa;");
 	v_bg_depth--;
 	BG_TXT("}");
 
 	BG_TXT("blockquote p {");
 	v_bg_depth++;
-	BG_TXT("margin: 0;");
-	BG_TXT("font-style: italic;");
-	BG_TXT("v_bg_depth--;");
+		BG_TXT("margin: 0;");
+		BG_TXT("font-style: italic;");
+		BG_TXT("v_bg_depth--;");
 	v_bg_depth--;
 	BG_TXT("}");
 
 	BG_TXT("blockquote footer {");
 	v_bg_depth++;
-	BG_TXT("margin-top: 0.5em;");
-	/* BG_TXT("text-align: right;"); */
-	BG_TXT("font-size: 0.9em;");
-	BG_TXT("color: #666;");
+		BG_TXT("margin-top: 0.5em;");
+		BG_TXT("font-size: 0.9em;");
+		BG_TXT("color: #666;");
 	v_bg_depth--;
 	BG_TXT("}");
 
@@ -278,7 +273,12 @@ static void BG_H(size_t level, const char* title)
 	/* Printing */
 
 	U_BG_INDENT();
-	printf("<h%lu>%s %s </h%lu>\n", level, chapterNumBuf, title, level);
+	printf(
+		"<h%lu id=\"%s\">%s %s</h%lu>\n",
+		level, chapterNumBuf,
+		chapterNumBuf, title,
+		level
+	);
 
 	/* Record for TOC */
 
@@ -308,10 +308,10 @@ static void BG_TOC()
 		U_BG_INDENT();
 		/* The class name is added for styling (toc-L1, toc-L2, etc) */
 		printf(
-			"<li class=\"toc-L%lu\">%s %s</li>\n",
+			"<li class=\"toc-L%lu\"><a href=\"#%s\">%s %s</a></li>\n",
 			v_bg_toc_levels[i],
 			v_bg_toc_numbers[i],
-			v_bg_toc_titles[i]
+			v_bg_toc_numbers[i], v_bg_toc_titles[i]
 		);
 	}
 
