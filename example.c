@@ -67,16 +67,19 @@ int main() {
 						BG_TXT("Of course, though, there's <code>BG_LINK</code>.");
 						BG_LINK("https://www.google.com", "Here it is in action.");
 
+						BG_QUOTE("I am quoting myself.", "Peki");
+
 		BG_H(2, "Code blocks");
 
 			BG_TAG("p");
 				BG_TXT(
-					"For longer examples, use a <code>&lt;pre&gt;&lt;code&gt;</code> block. "
+					"For longer examples, use a <code>&lt;pre&gt;</code> block. "
 					"Whitespace and newlines are preserved exactly as written."
 				);
 			BG_END("p");
 
-			BG_TAG("pre");
+			U_BG_INDENT();
+			BG_RAW("<pre>");
 				BG_RAW("#include &lt;stdio.h&gt;\n"
 					"#include &lt;stdlib.h&gt;\n"
 					"\n"
@@ -86,7 +89,7 @@ int main() {
 					"  return EXIT_SUCCESS;\n"
 					"}"
 				);
-			BG_END("pre");
+			BG_RAW("</pre>\n");
 
 		BG_H(2, "A simple table");
 

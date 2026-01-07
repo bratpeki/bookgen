@@ -1,6 +1,12 @@
 
 /* bg.h */
 
+/* TODO:
+ * - Make colors consistent
+ * - Fix the right margin/padding on blockquotes
+ * - Fix blockquote margins being the same at the top and bottom (Investigate the default style)
+ */
+
 #ifndef BOOKGEN_H
 #define BOOKGEN_H
 
@@ -174,7 +180,7 @@ static void BG_DEFSTYLE()
 	BG_TXT("h1, h2, h3 { color: #111; }");
 	BG_TXT("h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; }");
 
-	BG_TXT("code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-family: monospace; }");
+	BG_TXT("code { background: #f4f4f4; padding: 2px; font-family: monospace; }");
 	BG_TXT("pre { background: #f4f4f4; padding: 15px; overflow-x: auto; border-left: 4px solid #ccc; }");
 
 	BG_TXT(".toc ul { list-style: none; padding-left: 0; }");
@@ -195,6 +201,37 @@ static void BG_DEFSTYLE()
 	BG_TXT("caption { caption-side: bottom; font-size: 0.9em; color: #666; margin-top: 8px; }");
 
 	BG_TXT("@media print { body { max-width: 100%; margin: 0; } .toc { border: none; } }");
+
+	BG_TXT("blockquote {");
+	v_bg_depth++;
+
+	BG_TXT("margin-top: 1em; margin-bottom: 0;");
+	BG_TXT("margin-left: 0;");
+
+	BG_TXT("padding: 0.75em 1.5em;");
+
+	BG_TXT("border-left: 4px solid #ccc;");
+	BG_TXT("background: #fafafa;");
+
+	v_bg_depth--;
+	BG_TXT("}");
+
+	BG_TXT("blockquote p {");
+	v_bg_depth++;
+	BG_TXT("margin: 0;");
+	BG_TXT("font-style: italic;");
+	BG_TXT("v_bg_depth--;");
+	v_bg_depth--;
+	BG_TXT("}");
+
+	BG_TXT("blockquote footer {");
+	v_bg_depth++;
+	BG_TXT("margin-top: 0.5em;");
+	/* BG_TXT("text-align: right;"); */
+	BG_TXT("font-size: 0.9em;");
+	BG_TXT("color: #666;");
+	v_bg_depth--;
+	BG_TXT("}");
 
 	BG_END("style");
 }
@@ -283,7 +320,21 @@ static void BG_TOC()
 }
 
 /* ==================================================
- * Tables.
+ * Lists
+ * ================================================== */
+
+/*
+ * List item.
+ */
+static void BG_LI(const char* txt)
+{
+	BG_TAG("li");
+	BG_TXT(txt);
+	BG_END("li");
+}
+
+/* ==================================================
+ * Tables
  * ================================================== */
 
 /*
@@ -368,6 +419,29 @@ static void BG_BR(size_t howmany)
 		BG_VOID("br");
 	}
 }
+
+/*
+ * Quote.
+ */
+static void BG_QUOTE(const char* quote, const char* author)
+{
+	BG_TAG("blockquote");
+
+		BG_TAG("p");
+			BG_TXT(quote);
+		BG_END("p");
+
+		if (author && *author)
+		{
+			BG_TAG("footer");
+				U_BG_INDENT();
+				printf("— %s\n", author);
+			BG_END("footer");
+		}
+
+	BG_END("blockquote");
+}
+
 
 #endif
 
