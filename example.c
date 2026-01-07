@@ -15,7 +15,7 @@ int main() {
 		BG_DEFSTYLE();
 	BG_END("head");
 
-	BG_TAG_A("body", "style=\"font-family: serif; line-height: 1.6;\"");
+	BG_TAG("body");
 
 		BG_H(1, "The first chapter header");
 
@@ -32,8 +32,8 @@ int main() {
 			BG_TAG("p");
 				BG_TXT("Honestly, simplicity!");
 				BG_TXT(
-					"I like knowing my software can be compiled on as many architectures as possible,"
-					"so ANSI C felt like a natural pick."
+					"I like knowing my software can be compiled on as many architectures as possible, "
+					"so ANSI C <i>felt</i> like a natural pick."
 				);
 			BG_END("p");
 
@@ -55,7 +55,17 @@ int main() {
 					BG_END("p");
 
 					BG_H(4, "Specific Case A");
+
+						BG_TXT(
+							"Naturally, since <code>BG_TXT</code> is just text, <u><b>you can inject HTML</b></u>! "
+							"That means you can link stuff like <a href=\"https://www.google.com\">this</a>!"
+							"<br>"
+						);
+
 					BG_H(4, "Specific Case B");
+
+						BG_TXT("Of course, though, there's <code>BG_LINK</code>.");
+						BG_LINK("https://www.google.com", "Here it is in action.");
 
 		BG_PAGEBREAK();
 

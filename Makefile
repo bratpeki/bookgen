@@ -1,5 +1,11 @@
 
+# TODO: Currently only working with example.c
+#       Introduce more examples down the line.
+
+CC     := gcc
+CFLAGS := -ansi -Wall -Wextra
+
 all:
-	gcc example.c -o example.out
+	$(CC) $(CFLAGS) example.c -o example.out
 	./example.out > output.html
 
