@@ -40,7 +40,7 @@ static size_t v_bg_chapter[6] = { 0, 0, 0, 0, 0, 0 };
  */
 static const char* v_bg_toc_titles[V_BG_MAX_TOC]; /* Stores the pointers to const chapter titles */
 static size_t v_bg_toc_levels[V_BG_MAX_TOC]; /* Stores the depth, for the class name */
-static char v_bg_toc_numbers[V_BG_MAX_TOC][13]; /* Stores the chapter numbers, like "1.2.3.4.5." */
+static char v_bg_toc_numbers[V_BG_MAX_TOC][32]; /* Stores the chapter numbers, like "2.2.10." */
 static size_t v_bg_toc_count = 0;
 
 /* ==================================================
@@ -51,7 +51,7 @@ static size_t v_bg_toc_count = 0;
  * SMALL_SNAKE_CASE, like all the functions used by the user.
  * ================================================== */
 
-void U_BG_INDENT()
+static void U_BG_INDENT()
 {
 	size_t i;
 	for (
@@ -71,7 +71,7 @@ void U_BG_INDENT()
  * This also handles attributes, ex. BG_TAG("h1 color=\"red\""),
  * but it'd be better to use BG_TAG_A for that.
  */
-void BG_TAG(const char* inside)
+static void BG_TAG(const char* inside)
 {
 	U_BG_INDENT();
 	printf("<%s>\n", inside);
@@ -81,7 +81,7 @@ void BG_TAG(const char* inside)
 /*
  * Open a tag and provide attributes.
  */
-void BG_TAG_A(const char* inside, const char* attrs)
+static void BG_TAG_A(const char* inside, const char* attrs)
 {
 	U_BG_INDENT();
 	printf("<%s %s>\n", inside, attrs);
@@ -91,7 +91,7 @@ void BG_TAG_A(const char* inside, const char* attrs)
 /*
  * Close a tag.
  */
-void BG_END(const char* inside)
+static void BG_END(const char* inside)
 {
 	v_bg_depth--;
 	U_BG_INDENT();
@@ -105,7 +105,7 @@ void BG_END(const char* inside)
 /*
  * Print text.
  */
-void BG_TXT(const char* txt)
+static void BG_TXT(const char* txt)
 {
 	U_BG_INDENT();
 	printf("%s\n", txt);
@@ -119,7 +119,7 @@ void BG_TXT(const char* txt)
  * Link a stylesheet.
  * Use this inside the HEAD tag.
  */
-void BG_STYLE(const char* path)
+static void BG_STYLE(const char* path)
 {
 	U_BG_INDENT();
 	printf("<link rel=\"stylesheet\" href=\"%s\">\n", path);
@@ -129,21 +129,35 @@ void BG_STYLE(const char* path)
  * Use the default styling.
  * Use this inside the HEAD tag.
  */
-void BG_DEFSTYLE()
+static void BG_DEFSTYLE()
 {
 	BG_TAG("style");
 
-	/* Fonts */
-	BG_TXT("* { font-family: serif; }");
-	BG_TXT("code { font-family: monospace; }");
+	BG_TXT("body {");
+	v_bg_depth++;
+	BG_TXT("max-width: 800px;");       /* Keeps the book centered and readable */
+	BG_TXT("margin: 40px auto;");      /* Centers the content on the screen */
+	BG_TXT("padding: 0 20px;");        /* Prevents text touching mobile edges */
+	BG_TXT("color: #333;");            /* Soften the black for less eye strain */
+	BG_TXT("font-family: serif;");
+	v_bg_depth--;
+	BG_TXT("}");
 
-	/* TOC */
-	BG_TXT("li.toc-L1 { padding-left: 10px; }");
-	BG_TXT("li.toc-L2 { padding-left: 20px; }");
-	BG_TXT("li.toc-L3 { padding-left: 30px; }");
-	BG_TXT("li.toc-L4 { padding-left: 40px; }");
-	BG_TXT("li.toc-L5 { padding-left: 50px; }");
-	BG_TXT("li.toc-L6 { padding-left: 60px; }");
+	BG_TXT("h1, h2, h3 { color: #111; }");
+	BG_TXT("h1 { border-bottom: 2px solid #eee; padding-bottom: 10px; }");
+
+	BG_TXT("code { background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-family: monospace; }");
+	BG_TXT("pre { background: #f4f4f4; padding: 15px; overflow-x: auto; border-left: 4px solid #ccc; }");
+
+	BG_TXT(".toc ul { list-style: none; padding-left: 0; }");
+	BG_TXT(".toc a { text-decoration: none; color: #007acc; }");
+	BG_TXT(".toc a:hover { text-decoration: underline; }");
+
+	BG_TXT("li.toc-L1 { font-weight: bold; margin-top: 10px; }");
+	BG_TXT("li.toc-L2 { padding-left: 20px; font-weight: normal; font-size: 0.95em; }");
+	BG_TXT("li.toc-L3 { padding-left: 40px; font-size: 0.9em; color: #666; }");
+
+	BG_TXT("@media print { body { max-width: 100%; margin: 0; } .toc { border: none; } }");
 
 	BG_END("style");
 }
@@ -155,11 +169,11 @@ void BG_DEFSTYLE()
 /*
  * Write the chapter title, along with the chapter numbering.
  */
-void BG_H(size_t level, const char* title)
+static void BG_H(size_t level, const char* title)
 {
 	size_t i;
-	char chapterNumBuf[13]; /* 6 digits, 6 dots, null terminator */
-	char chapterTmpBuf[3]; /* 1 digit, 1 dot, null terminator */
+	char chapterNumBuf[32];
+	char chapterTmpBuf[8];
 
 	/* We allow h1 through h6 */
 
@@ -205,10 +219,10 @@ void BG_H(size_t level, const char* title)
 	v_bg_toc_count++;
 }
 
-void BG_TOC()
+static void BG_TOC()
 {
 	size_t i;
-	BG_TAG("div class=\"toc\"");
+	BG_TAG_A("div", "class=\"toc\"");
 	/* Header for the TOC itself */
 	BG_H(1, "Table of Contents");
 	BG_TAG("ul");
@@ -235,7 +249,7 @@ void BG_TOC()
 /*
  * Forces a page break when printing.
  */
-void BG_PAGEBREAK() {
+static void BG_PAGEBREAK() {
 	U_BG_INDENT();
 	printf("<div style=\"break-after: page;\"></div>\n");
 }
@@ -243,7 +257,7 @@ void BG_PAGEBREAK() {
 /*
  * Hyperlink.
  */
-void BG_LINK(const char* url, const char* label) {
+static void BG_LINK(const char* url, const char* label) {
 	U_BG_INDENT();
 	printf("<a href=\"%s\">%s</a>\n", url, label);
 }
