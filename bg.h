@@ -5,9 +5,41 @@
 #define BOOKGEN_H
 
 /* ==================================================
- * The ANSI C single-header library for generating HTML.
- * I envisioned using printf and then piping the output to a file.
- * However, the library is intended to be modular and extensible.
+ * BookGen
+ * ==================================================
+ * A minimal, single-header ANSI C library for generating
+ * semantic, well-indented HTML documents programmatically.
+ *
+ * BookGen is very simple. When opened and looked at,
+ * it's a collection of functions emitting HTML immediately on call.
+ * It is designed around printf-style output: the user
+ * calls BG_* functions, and the resulting HTML is written
+ * directly to stdout. However, the library is intended to be so simple that
+ * you can easily send the resulting HTML code to a file or elsewhere.
+ *
+ * BookGen relies on being passed strings that outlive
+ * the HTML generation process in memory,
+ * the focus being set on string constants.
+ *
+ * The library relies on the user having a fundamental understanding of HTML.
+ * That includes:
+ * - Understanding the common tags like HEAD, BODY, IMG, BR, TABLE, etc.
+ * - Understanding the role of CSS stylesheets in an HTML document.
+ * - Understanding the commont attributes like WIDTH, MARGIN, PADDING, etc.
+ *
+ * Enjoy!
+ * ==================================================
+ * Sections:
+ * - Not public API
+ *   - INTERNAL STATE AND CONSTANTS
+ *   - INTERNAL HELPER FUNCTIONS
+ * - Public API
+ *   - PRIMITIVE FUNCTIONS
+ * ==================================================
+ * Author (feel free to reach out):
+ *   Petar Katić
+ *   pkatic2003 (at) gmail.com
+ *   https://bratpeki.github.io
  * ================================================== */
 
 /* TODO:
@@ -22,60 +54,87 @@
 #include <assert.h>
 
 /* ==================================================
- * NOT FOR THE END USER.
+ * INTERNAL STATE AND CONSTANTS
  * ==================================================
- * Variables and macros.
- * Denoted with a "V".
- * small_snake_case for variables and SCREAMING_SNAKE_CASE for macros.
+ * Not part of the public API.
+ *
+ * Naming conventions:
+ * - v_bg_* : internal state variables
+ * - V_BG_* : internal configuration constants
  * ================================================== */
 
+/*
+ * Maximum number of headers in the document.
+ * Used for tracking headers, which is necessary for ToC generation.
+ */
 #define V_BG_MAX_TOC 100
 
 /*
- * Tracks the depth for a nice, formatted output.
+ * Tracks the current indentation depth for formatted HTML output.
  */
 static size_t v_bg_depth;
 
 /*
- * These count the chapter number at each heading level.
+ * Chapter counters for heading levels h1–h6.
  */
 static size_t v_bg_chapter[6] = { 0, 0, 0, 0, 0, 0 };
 
 /*
- * These are used to generate the TOC.
+ * Table of Contents generation state.
+ *
+ * Includes:
+ * - v_bg_toc_titles  : pointers to section titles
+ * - v_bg_toc_levels  : heading levels (1–6)
+ * - v_bg_toc_numbers : formatted chapter numbers (e.g. "2.2.10.")
+ * - v_bg_toc_count   : number of stored TOC entries
+ *
+ * Invariant:
+ * - v_bg_toc_count < V_BG_MAX_TOC
  */
-static const char* v_bg_toc_titles[V_BG_MAX_TOC]; /* Stores the pointers to chapter titles */
-static size_t v_bg_toc_levels[V_BG_MAX_TOC]; /* Stores the depth, for the class name */
-static char v_bg_toc_numbers[V_BG_MAX_TOC][32]; /* Stores the chapter numbers, like "2.2.10." */
-static size_t v_bg_toc_count = 0; /* Used for tracking ToC entires. Mustn't exceed V_BG_MAX_TOC. */
+static const char* v_bg_toc_titles[V_BG_MAX_TOC];
+static size_t v_bg_toc_levels[V_BG_MAX_TOC];
+static char v_bg_toc_numbers[V_BG_MAX_TOC][32];
+static size_t v_bg_toc_count = 0;
 
 /* ==================================================
- * NOT FOR THE END USER.
+ * INTERNAL HELPER FUNCTIONS
  * ==================================================
- * Util functions.
- * Denoted with a "U".
- * SMALL_SNAKE_CASE, like all the functions used by the user.
- * ================================================== */
-
-static void U_BG_INDENT()
-{
-	size_t i;
-	for (
-		i = 0;
-		i < v_bg_depth;
-		i++
-	) printf("  ");
-}
-
-/* ==================================================
- * Fundamental functions.
+ * Not part of the public API.
+ *
+ * Naming conventions:
+ * - U_BG_* : Helper functions ("U" implying "utility")
  * ================================================== */
 
 /*
- * Open a tag.
+ * Emits indentation spaces based on the current output depth.
+ */
+static void U_BG_INDENT()
+{
+	size_t i;
+	for (i = 0; i < v_bg_depth; i++)
+		printf("  ");
+}
+
+/* ==================================================
+ * PRIMITIVE FUNCTIONS
+ * ==================================================
+ * Functions that emit HTML:
+ * - Opening and closing tags
+ * - Void tags
  *
- * This also handles attributes, ex. BG_TAG("h1 color=\"red\""),
- * but it'd be better to use BG_TAG_A for that.
+ * Includes:
+ * - BG_TAG   (inside)        : Emit an opening tag
+ * - BG_TAG_A (inside, attrs) : Emit an opening tag with attributes
+ * - BG_END   (inside)        : Emit a closing tag
+ * - BG_VOID  (inside)        : Emit a void tag
+ * - BG_VOID_A(inside, attrs) : Emit a void tag with attributes
+ * ================================================== */
+
+/*
+ * Emit an opening tag.
+ *
+ * This function also allows attributes to be embedded in the tag string
+ * (e.g. BG_TAG("h1 color=\"red\"")), but BG_TAG_A is preferred.
  */
 static void BG_TAG(const char* inside)
 {
@@ -85,7 +144,7 @@ static void BG_TAG(const char* inside)
 }
 
 /*
- * Open a tag and provide attributes.
+ * Emit an opening tag with attributes.
  */
 static void BG_TAG_A(const char* inside, const char* attrs)
 {
@@ -95,7 +154,7 @@ static void BG_TAG_A(const char* inside, const char* attrs)
 }
 
 /*
- * Close a tag.
+ * Emit a closing tag.
  */
 static void BG_END(const char* inside)
 {
@@ -105,22 +164,24 @@ static void BG_END(const char* inside)
 }
 
 /*
- * Print a void element (img, br, hr, etc).
+ * Emit a void tag (e.g. img, br, hr, etc).
  */
-static void BG_VOID(const char* tag)
+static void BG_VOID(const char* inside)
 {
 	U_BG_INDENT();
-	printf("<%s>\n", tag);
+	printf("<%s>\n", inside);
 }
 
 /*
- * Print a void element (img, br, hr, etc) and provide attributes.
+ * Emit a void tag with attributes.
  */
-static void BG_VOID_A(const char* tag, const char* attrs)
+static void BG_VOID_A(const char* inside, const char* attrs)
 {
 	U_BG_INDENT();
-	printf("<%s %s>\n", tag, attrs);
+	printf("<%s %s>\n", inside, attrs);
 }
+
+/* === TODO: BELOW === */
 
 /* ==================================================
  * Plaintext
@@ -256,11 +317,26 @@ static void BG_DEFSTYLE()
 	BG_TXT("}");
 
 	BG_END("style");
+
+	#undef BG_DEFSTYLE_LIGHTER
+	#undef BG_DEFSTYLE_LIGHT
+	#undef BG_DEFSTYLE_DIM
+	#undef BG_DEFSTYLE_DARK
 }
 
 /* ==================================================
- * Headings and TOC
+ * Headings, titles and TOC
  * ================================================== */
+
+/*
+ * <title> ... </title>
+ */
+static void BG_DOCTITLE(const char* txt)
+{
+	BG_TAG("title");
+	BG_TXT(txt);
+	BG_END("title");
+}
 
 /*
  * Write the chapter title, along with the chapter numbering.
@@ -286,7 +362,7 @@ static void BG_H(size_t level, const char* title)
 	}
 
 	/*
-	 * Constructing the chapter number, ex. 1.2.3.4.
+	 * Constructing the chapter number, e.g. 1.2.3.4.
 	 * The number is stored in chapterBuf
 	 */
 
