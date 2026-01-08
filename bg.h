@@ -10,6 +10,12 @@
  * However, the library is intended to be modular and extensible.
  * ================================================== */
 
+/* TODO:
+ * - Uniform the documentation style (comments).
+ * - Document all functions with a similar style (Same starting words, etc).
+ * - Document undocumented functions.
+ */
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
