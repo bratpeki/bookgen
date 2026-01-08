@@ -189,7 +189,6 @@ static void BG_DEFSTYLE()
 	BG_TXT("li.toc-L1 { font-weight: bold; margin-top: 10px; color: " BG_DEFSTYLE_DARK "; }");
 	BG_TXT("li.toc-L2 { padding-left: 20px; font-weight: normal; font-size: 0.95em; color: " BG_DEFSTYLE_DARK " }");
 	BG_TXT("li.toc-L3 { padding-left: 40px; font-size: 0.9em; color: " BG_DEFSTYLE_DIM "; }");
-
 	BG_TXT("li.toc-L4 { padding-left: 40px; font-size: 0.9em; color: " BG_DEFSTYLE_DIM "; }");
 	BG_TXT("li.toc-L5 { padding-left: 50px; font-size: 0.9em; color: " BG_DEFSTYLE_DIM "; }");
 	BG_TXT("li.toc-L6 { padding-left: 60px; font-size: 0.9em; color: " BG_DEFSTYLE_DIM "; }");
@@ -199,6 +198,7 @@ static void BG_DEFSTYLE()
 	BG_TXT("th { background: " BG_DEFSTYLE_LIGHTER "; font-weight: bold; text-align: left; }");
 	BG_TXT("caption { caption-side: bottom; font-size: 0.9em; color: " BG_DEFSTYLE_DIM "; margin-top: 8px; }");
 
+	/* TODO: What's this? */
 	BG_TXT("@media print { body { max-width: 100%; margin: 0; } .toc { border: none; } }");
 
 	BG_TXT("blockquote {");
@@ -222,6 +222,30 @@ static void BG_DEFSTYLE()
 	v_bg_depth++;
 		BG_TXT("margin-top: 0.5em;");
 		BG_TXT("font-size: 0.9em;");
+	v_bg_depth--;
+	BG_TXT("}");
+
+	BG_TXT("figcaption {");
+	v_bg_depth++;
+		BG_TXT("margin-top: 0.5em;");
+		BG_TXT("font-size: 0.9em;");
+		BG_TXT("color: " BG_DEFSTYLE_DIM ";");
+		BG_TXT("text-align: center;");
+	v_bg_depth--;
+	BG_TXT("}");
+
+	BG_TXT("figure {");
+	v_bg_depth++;
+		BG_TXT("margin: 1.5em auto;");
+		BG_TXT("text-align: center;");
+		BG_TXT("width: fit-content;");
+	v_bg_depth--;
+	BG_TXT("}");
+
+	BG_TXT("figure img {");
+	v_bg_depth++;
+		BG_TXT("display: block;");
+		BG_TXT("margin: 0 auto;");
 	v_bg_depth--;
 	BG_TXT("}");
 
@@ -385,7 +409,7 @@ static void BG_TD_A(const char* attrs, const char* txt)
 }
 
 /* ==================================================
- * Common items.
+ * Common items
  * ================================================== */
 
 /*
@@ -439,6 +463,31 @@ static void BG_QUOTE(const char* quote, const char* author)
 	BG_END("blockquote");
 }
 
+/* ==================================================
+ * Images
+ * ================================================== */
+
+static void BG_IMG(const char* path)
+{
+	U_BG_INDENT();
+	printf("<img src=\"%s\">\n", path);
+}
+
+static void BG_IMG_A(const char* path, const char* attrs)
+{
+	U_BG_INDENT();
+	printf("<img src=\"%s\" %s>\n", path, attrs);
+}
+
+/*
+ * Figure caption.
+ */
+static void BG_FIGCAP(const char* txt)
+{
+	BG_TAG("figcaption");
+	BG_TXT(txt);
+	BG_END("figcaption");
+}
 
 #endif
 

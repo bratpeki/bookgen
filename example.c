@@ -3,6 +3,8 @@
 
 #include "bg.h"
 
+#define IMGLINK "https://raw.githubusercontent.com/bratpeki/bratpeki.github.io/refs/heads/main/img/xrtd.svg"
+
 int main() {
 
 	BG_TAG_A("html", "lang=\"en\"");
@@ -90,6 +92,33 @@ int main() {
 					"}"
 				);
 			BG_RAW("</pre>\n");
+
+		BG_H(2, "Working with lists");
+
+			BG_TAG("ul");
+
+				BG_LI("Item 1");
+				BG_LI("Item 2");
+				BG_LI("Item 3");
+
+				BG_TAG("ol");
+
+					BG_LI("Subitem 1");
+					BG_LI("Subitem 2");
+					BG_LI("Subitem 3");
+
+				BG_END("ol");
+
+				BG_LI("Item 4");
+
+			BG_END("ul");
+
+		BG_H(2, "Images!");
+
+			BG_TAG("figure");
+				BG_IMG_A(IMGLINK, "width=\"250px\"");
+				BG_FIGCAP("My music logo (read about my music <a href=\"https://bratpeki.github.io/markup/music.html\">here</a>)!");
+			BG_END("figure");
 
 		BG_H(2, "A simple table");
 
