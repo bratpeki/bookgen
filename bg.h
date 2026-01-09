@@ -34,18 +34,19 @@
  *   - INTERNAL STATE AND CONSTANTS
  *   - INTERNAL HELPER FUNCTIONS
  * - Public API
+ *   - FUNCTION DECLARATIONS
  *   - PRIMITIVE FUNCTIONS
- *   - PLAIN TEXT
  *   - DOCUMENT STRUCTURE
  *   - METADATA
  *   - STYLING
  *   - HEADINGS
  *   - TABLE OF CONTENTS
+ *   - PLAIN TEXT
+ *   - CODE
  *   - LISTS
  *   - TABLES
  *   - IMAGES
  *   - BREAKING
- *   - CODE
  *   - MISC
  * ==================================================
  * Author (feel free to reach out):
@@ -126,6 +127,51 @@ static void U_BG_INDENT()
 }
 
 /* ==================================================
+ * FUNCTION DECLARATIONS
+ * ==================================================
+ * All public API function declarations,
+ * generated with the listfunc rule in the Makefile.
+ * ================================================== */
+
+static void BG_TAG(const char* inside);
+static void BG_TAG_A(const char* inside, const char* attrs);
+static void BG_END(const char* inside);
+static void BG_VOID(const char* inside);
+static void BG_VOID_A(const char* inside, const char* attrs);
+static void BG_ROOT(const char* attrs);
+static void BG_END_ROOT();
+static void BG_METADATA();
+static void BG_END_METADATA();
+static void BG_BODY(const char* attrs);
+static void BG_END_BODY();
+static void BG_DOCTITLE(const char* txt);
+static void BG_STYLE(const char* path);
+static void BG_DEFSTYLE();
+static void BG_H(size_t level, const char* title);
+static void BG_TOC();
+static void BG_TXT(const char* txt);
+static void BG_RAW(const char* txt);
+static void BG_CODE_BLOCK(const char* txt);
+static void BG_CODE_INLINE(const char* txt);
+static void BG_LI(const char* txt);
+static void BG_TABLE( const char* attrs );
+static void BG_END_TABLE();
+static void BG_TABLEROW( const char* attrs );
+static void BG_END_TABLEROW();
+static void BG_TH(const char* txt);
+static void BG_TH_A(const char* txt, const char* attrs);
+static void BG_TD(const char* txt);
+static void BG_TD_A(const char* txt, const char* attrs);
+static void BG_CAPTION(const char* txt);
+static void BG_IMG(const char* path);
+static void BG_IMG_A(const char* path, const char* attrs);
+static void BG_FIGCAP(const char* txt);
+static void BG_LINEBREAK(size_t howmany);
+static void BG_PAGEBREAK();
+static void BG_LINK(const char* url, const char* label);
+static void BG_QUOTE(const char* quote, const char* author);
+
+/* ==================================================
  * PRIMITIVE FUNCTIONS
  * ==================================================
  * Functions that emit HTML:
@@ -185,31 +231,6 @@ static void BG_VOID_A(const char* inside, const char* attrs)
 }
 
 /* ==================================================
- * PLAIN TEXT
- * ==================================================
- * Functions that emit plain text content.
- * ================================================== */
-
-/*
- * Emit formatted plain text.
- * Indents the text and adds a newline.
- */
-static void BG_TXT(const char* txt)
-{
-	U_BG_INDENT();
-	printf("%s\n", txt);
-}
-
-/*
- * Emit raw plain text.
- * Nothing is added.
- */
-static void BG_RAW(const char* txt)
-{
-	printf("%s", txt);
-}
-
-/* ==================================================
  * DOCUMENT STRUCTURE
  * ==================================================
  * Functions that emit elements that define the document structure.
@@ -220,7 +241,7 @@ static void BG_RAW(const char* txt)
  * Emit the html (document root) opening tag.
  * Attributes are optional, to avoid using them, pass NULL or "".
  */
-static void BG_ROOT( const char* attrs )
+static void BG_ROOT(const char* attrs)
 {
 	if ( attrs == NULL || strlen(attrs) == 0 )
 		BG_TAG("html");
@@ -256,7 +277,7 @@ static void BG_END_METADATA()
  * Emit the body opening tag.
  * Attributes are optional, to avoid using them, pass NULL or "".
  */
-static void BG_BODY( const char* attrs )
+static void BG_BODY(const char* attrs)
 {
 	if ( attrs == NULL || strlen(attrs) == 0 )
 		BG_TAG("body");
@@ -508,6 +529,60 @@ static void BG_TOC()
 }
 
 /* ==================================================
+ * PLAIN TEXT
+ * ==================================================
+ * Functions that emit plain text content.
+ * ================================================== */
+
+/*
+ * Emit formatted plain text.
+ * Indents the text and adds a newline.
+ */
+static void BG_TXT(const char* txt)
+{
+	U_BG_INDENT();
+	printf("%s\n", txt);
+}
+
+/*
+ * Emit raw plain text.
+ * Nothing is added.
+ */
+static void BG_RAW(const char* txt)
+{
+	printf("%s", txt);
+}
+
+/* ==================================================
+ * CODE
+ * ==================================================
+ * Function that emit code-realted items.
+ * ================================================== */
+
+/*
+ * Emit a multiline code block.
+ * Remember to use HTML escape codes for symbols like <, >, etc.
+ */
+static void BG_CODE_BLOCK(const char* txt)
+{
+	U_BG_INDENT();
+	BG_RAW("<pre>");
+	BG_RAW(txt);
+	BG_RAW("</pre>\n");
+}
+
+/*
+ * Emit an inline code block.
+ * Remember to use HTML escape codes for symbols like <, >, etc.
+ */
+static void BG_CODE_INLINE(const char* txt)
+{
+	BG_TAG("code");
+	BG_TXT(txt);
+	BG_END("code");
+}
+
+/* ==================================================
  * LISTS
  * ==================================================
  * Functions that handle lists.
@@ -678,35 +753,6 @@ static void BG_PAGEBREAK()
 {
 	U_BG_INDENT();
 	printf("<div style=\"break-after: page;\"></div>\n");
-}
-
-/* ==================================================
- * CODE
- * ==================================================
- * Function that emit code-realted items.
- * ================================================== */
-
-/*
- * Emit a multiline code block.
- * Remember to use HTML escape codes for symbols like <, >, etc.
- */
-static void BG_CODE_BLOCK(const char* txt)
-{
-	U_BG_INDENT();
-	BG_RAW("<pre>");
-	BG_RAW(txt);
-	BG_RAW("</pre>\n");
-}
-
-/*
- * Emit an inline code block.
- * Remember to use HTML escape codes for symbols like <, >, etc.
- */
-static void BG_CODE_INLINE(const char* txt)
-{
-	BG_TAG("code");
-	BG_TXT(txt);
-	BG_END("code");
 }
 
 /* ==================================================
