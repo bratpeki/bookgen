@@ -53,9 +53,6 @@
  * ================================================== */
 
 /* TODO:
- * - Uniform the documentation style (comments).
- * - Document all functions with a similar style (Same starting words, etc).
- * - Document undocumented functions.
  * - "Emit" sentences should avoid mentioning HTML, maybe?
  */
 
@@ -132,13 +129,6 @@ static void U_BG_INDENT()
  * Functions that emit HTML:
  * - Opening and closing tags
  * - Void tags
- *
- * Includes:
- * - BG_TAG    (inside)        : Emit an opening tag.
- * - BG_TAG_A  (inside, attrs) : Emit an opening tag with attributes.
- * - BG_END    (inside)        : Emit a closing tag.
- * - BG_VOID   (inside)        : Emit a void tag.
- * - BG_VOID_A (inside, attrs) : Emit a void tag with attributes.
  * ================================================== */
 
 /*
@@ -196,10 +186,6 @@ static void BG_VOID_A(const char* inside, const char* attrs)
  * PLAIN TEXT
  * ==================================================
  * Functions that emit plain text content.
- *
- * Includes:
- * - BG_TXT (txt) : Emit formatted plain text.
- * - BG_RAW (txt) : Emit raw plain text.
  * ================================================== */
 
 /*
@@ -225,9 +211,6 @@ static void BG_RAW(const char* txt)
  * METADATA
  * ==================================================
  * Functions that emit elements intended for the head tag.
- *
- * Includes:
- * - BG_DOCTITLE (txt) : Emit the HTML document title.
  * ================================================== */
 
 /*
@@ -244,10 +227,6 @@ static void BG_DOCTITLE(const char* txt)
  * STYLING
  * ==================================================
  * Functions that emit CSS styling information.
- *
- * Includes:
- * - BG_STYLE    (path) : Emit a stylesheet link element.
- * - BG_DEFSTYLE ()     : Emit an inline stylesheet with the default theme.
  * ================================================== */
 
 /*
@@ -305,8 +284,7 @@ static void BG_DEFSTYLE()
 	BG_TXT("th { background: " BG_DEFSTYLE_LIGHTER "; font-weight: bold; text-align: left; }");
 	BG_TXT("caption { caption-side: bottom; font-size: 0.9em; color: " BG_DEFSTYLE_DIM "; margin-top: 8px; }");
 
-	/* TODO: What's this? */
-	BG_TXT("@media print { body { max-width: 100%; margin: 0; } .toc { border: none; } }");
+	BG_TXT("@media print { body { max-width: 100%; margin: 0; } }");
 
 	BG_TXT("blockquote {");
 	v_bg_depth++;
@@ -368,9 +346,6 @@ static void BG_DEFSTYLE()
  * HEADINGS
  * ==================================================
  * Functions that emit chapter headings.
- *
- * Includes:
- * - BG_H (level, title) : Emit a header at the given level with the given title.
  * ================================================== */
 
 /*
@@ -438,9 +413,6 @@ static void BG_H(size_t level, const char* title)
  * TABLE OF CONTENTS
  * ==================================================
  * Functions that handle the ToC.
- *
- * Includes:
- * - BG_TOC () : Emit the ToC.
  * ================================================== */
 
 /*
@@ -474,9 +446,6 @@ static void BG_TOC()
  * LISTS
  * ==================================================
  * Functions that handle lists.
- *
- * Includes:
- * - BG_LI (txt) : Emit a list item.
  * ================================================== */
 
 /*
@@ -493,13 +462,6 @@ static void BG_LI(const char* txt)
  * TABLES
  * ==================================================
  * Functions that handle tables.
- *
- * Includes:
- * - BG_TH      (txt)        : Emit a table header cell.
- * - BG_TH_A    (txt, attrs) : Emit a table header cell with attributes.
- * - BG_TD      (txt)        : Emit a table data cell.
- * - BG_TD_A    (txt, attrs) : Emit a table data cell with attributes.
- * - BG_CAPTION (txt)        : Emit the table caption.
  * ================================================== */
 
 /*
@@ -559,11 +521,6 @@ static void BG_CAPTION(const char* txt)
  * That includes:
  * - Images
  * - Figures and figure captions
- *
- * Includes:
- * BG_IMG    (path)        : Emit an HTML image tag.
- * BG_IMG_A  (path, attrs) : Emit an HTML image tag with attributes.
- * BG_FIGCAP (txt)         : Emit a figure caption.
  * ================================================== */
 
 /*
@@ -598,10 +555,6 @@ static void BG_FIGCAP(const char* txt)
  * BREAKING
  * ==================================================
  * Function that emit breaking items.
- *
- * Includes:
- * - BG_LINEBREAK (howmany) : Emits a variable number of line breaks.
- * - BG_PAGEBREAK ()        : Emits a page break.
  * ================================================== */
 
 /*
@@ -628,10 +581,6 @@ static void BG_PAGEBREAK()
  * MISC
  * ==================================================
  * Function that emit various common items.
- *
- * Includes:
- * - BG_LINK (url, label)     : Emit a hyperlink.
- * - BG_QUOTE (quote, author) : Emit a quote.
  * ================================================== */
 
 /*
