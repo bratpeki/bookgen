@@ -23,9 +23,9 @@
  *
  * The library relies on the user having a fundamental understanding of HTML.
  * That includes:
- * - Understanding the common tags like HEAD, BODY, IMG, BR, TABLE, etc.
+ * - Understanding the common tags like head, body, img, br, table, etc.
  * - Understanding the role of CSS stylesheets in an HTML document.
- * - Understanding the commont attributes like WIDTH, MARGIN, PADDING, etc.
+ * - Understanding the common attributes like width, margin, padding, etc.
  *
  * Enjoy!
  * ==================================================
@@ -35,6 +35,16 @@
  *   - INTERNAL HELPER FUNCTIONS
  * - Public API
  *   - PRIMITIVE FUNCTIONS
+ *   - PLAIN TEXT
+ *   - METADATA
+ *   - STYLING
+ *   - HEADINGS
+ *   - TABLE OF CONTENTS
+ *   - LISTS
+ *   - TABLES
+ *   - IMAGES
+ *   - BREAKING
+ *   - MISC
  * ==================================================
  * Author (feel free to reach out):
  *   Petar Katić
@@ -46,6 +56,7 @@
  * - Uniform the documentation style (comments).
  * - Document all functions with a similar style (Same starting words, etc).
  * - Document undocumented functions.
+ * - "Emit" sentences should avoid mentioning HTML, maybe?
  */
 
 #include <string.h>
@@ -123,11 +134,11 @@ static void U_BG_INDENT()
  * - Void tags
  *
  * Includes:
- * - BG_TAG   (inside)        : Emit an opening tag
- * - BG_TAG_A (inside, attrs) : Emit an opening tag with attributes
- * - BG_END   (inside)        : Emit a closing tag
- * - BG_VOID  (inside)        : Emit a void tag
- * - BG_VOID_A(inside, attrs) : Emit a void tag with attributes
+ * - BG_TAG    (inside)        : Emit an opening tag.
+ * - BG_TAG_A  (inside, attrs) : Emit an opening tag with attributes.
+ * - BG_END    (inside)        : Emit a closing tag.
+ * - BG_VOID   (inside)        : Emit a void tag.
+ * - BG_VOID_A (inside, attrs) : Emit a void tag with attributes.
  * ================================================== */
 
 /*
@@ -181,14 +192,18 @@ static void BG_VOID_A(const char* inside, const char* attrs)
 	printf("<%s %s>\n", inside, attrs);
 }
 
-/* === TODO: BELOW === */
-
 /* ==================================================
- * Plaintext
+ * PLAIN TEXT
+ * ==================================================
+ * Functions that emit plain text content.
+ *
+ * Includes:
+ * - BG_TXT (txt) : Emit formatted plain text.
+ * - BG_RAW (txt) : Emit raw plain text.
  * ================================================== */
 
 /*
- * Print text.
+ * Emit formatted plain text.
  * Indents the text and adds a newline.
  */
 static void BG_TXT(const char* txt)
@@ -198,7 +213,7 @@ static void BG_TXT(const char* txt)
 }
 
 /*
- * Print raw text.
+ * Emit raw plain text.
  * Nothing is added.
  */
 static void BG_RAW(const char* txt)
@@ -207,11 +222,36 @@ static void BG_RAW(const char* txt)
 }
 
 /* ==================================================
- * Linking external files and styling.
+ * METADATA
+ * ==================================================
+ * Functions that emit elements intended for the head tag.
+ *
+ * Includes:
+ * - BG_DOCTITLE (txt) : Emit the HTML document title.
  * ================================================== */
 
 /*
- * Link a stylesheet.
+ * Emit the HTML document title.
+ */
+static void BG_DOCTITLE(const char* txt)
+{
+	BG_TAG("title");
+	BG_TXT(txt);
+	BG_END("title");
+}
+
+/* ==================================================
+ * STYLING
+ * ==================================================
+ * Functions that emit CSS styling information.
+ *
+ * Includes:
+ * - BG_STYLE    (path) : Emit a stylesheet link element.
+ * - BG_DEFSTYLE ()     : Emit an inline stylesheet with the default theme.
+ * ================================================== */
+
+/*
+ * Emit a stylesheet link element.
  * Use this inside the HEAD tag.
  */
 static void BG_STYLE(const char* path)
@@ -221,7 +261,7 @@ static void BG_STYLE(const char* path)
 }
 
 /*
- * Use the default styling.
+ * Emit an inline stylesheet with the default theme.
  * Use this inside the HEAD tag.
  */
 static void BG_DEFSTYLE()
@@ -325,21 +365,19 @@ static void BG_DEFSTYLE()
 }
 
 /* ==================================================
- * Headings, titles and TOC
+ * HEADINGS
+ * ==================================================
+ * Functions that emit chapter headings.
+ *
+ * Includes:
+ * - BG_H (level, title) : Emit a header at the given level with the given title.
  * ================================================== */
 
 /*
- * <title> ... </title>
- */
-static void BG_DOCTITLE(const char* txt)
-{
-	BG_TAG("title");
-	BG_TXT(txt);
-	BG_END("title");
-}
-
-/*
- * Write the chapter title, along with the chapter numbering.
+ * Emit a header at the given level with the given title.
+ *
+ * Invariant:
+ * 1 <= level <= 6
  */
 static void BG_H(size_t level, const char* title)
 {
@@ -396,8 +434,18 @@ static void BG_H(size_t level, const char* title)
 	v_bg_toc_count++;
 }
 
+/* ==================================================
+ * TABLE OF CONTENTS
+ * ==================================================
+ * Functions that handle the ToC.
+ *
+ * Includes:
+ * - BG_TOC () : Emit the ToC.
+ * ================================================== */
+
 /*
- * Print the Table of Contents.
+ * Emit the ToC.
+ * Use at the end of the document.
  */
 static void BG_TOC()
 {
@@ -423,11 +471,16 @@ static void BG_TOC()
 }
 
 /* ==================================================
- * Lists
+ * LISTS
+ * ==================================================
+ * Functions that handle lists.
+ *
+ * Includes:
+ * - BG_LI (txt) : Emit a list item.
  * ================================================== */
 
 /*
- * List item.
+ * Emit a list item.
  */
 static void BG_LI(const char* txt)
 {
@@ -437,11 +490,20 @@ static void BG_LI(const char* txt)
 }
 
 /* ==================================================
- * Tables
+ * TABLES
+ * ==================================================
+ * Functions that handle tables.
+ *
+ * Includes:
+ * - BG_TH      (txt)        : Emit a table header cell.
+ * - BG_TH_A    (txt, attrs) : Emit a table header cell with attributes.
+ * - BG_TD      (txt)        : Emit a table data cell.
+ * - BG_TD_A    (txt, attrs) : Emit a table data cell with attributes.
+ * - BG_CAPTION (txt)        : Emit the table caption.
  * ================================================== */
 
 /*
- * Print one table header cell.
+ * Emit a table header cell.
  */
 static void BG_TH(const char* txt)
 {
@@ -451,7 +513,17 @@ static void BG_TH(const char* txt)
 }
 
 /*
- * Print one table data cell.
+ * Emit a table header cell with attributes (colspan, align, etc).
+ */
+static void BG_TH_A(const char* txt, const char* attrs)
+{
+	BG_TAG_A("th", attrs);
+	BG_TXT(txt);
+	BG_END("th");
+}
+
+/*
+ * Emit a table data cell.
  */
 static void BG_TD(const char* txt)
 {
@@ -461,7 +533,17 @@ static void BG_TD(const char* txt)
 }
 
 /*
- * Print the table's caption.
+ * Emit a table data cell with attributes (colspan, align, etc).
+ */
+static void BG_TD_A(const char* txt, const char* attrs)
+{
+	BG_TAG_A("td", attrs);
+	BG_TXT(txt);
+	BG_END("td");
+}
+
+/*
+ * Emit the table caption.
  */
 static void BG_CAPTION(const char* txt)
 {
@@ -470,50 +552,60 @@ static void BG_CAPTION(const char* txt)
 	BG_END("caption");
 }
 
-/*
- * Print one table header cell, with attributes (colspan, align, etc).
- */
-static void BG_TH_A(const char* attrs, const char* txt)
-{
-	BG_TAG_A("th", attrs);
-	BG_TXT(txt);
-	BG_END("th");
-}
-
-/*
- * Print one table data cell, with attributes (colspan, align, etc).
- */
-static void BG_TD_A(const char* attrs, const char* txt)
-{
-	BG_TAG_A("td", attrs);
-	BG_TXT(txt);
-	BG_END("td");
-}
-
 /* ==================================================
- * Common items
+ * IMAGES
+ * ==================================================
+ * Functions for emitting image-related items.
+ * That includes:
+ * - Images
+ * - Figures and figure captions
+ *
+ * Includes:
+ * BG_IMG    (path)        : Emit an HTML image tag.
+ * BG_IMG_A  (path, attrs) : Emit an HTML image tag with attributes.
+ * BG_FIGCAP (txt)         : Emit a figure caption.
  * ================================================== */
 
 /*
- * Forces a page break when printing.
+ * Emit an HTML image tag.
  */
-static void BG_PAGEBREAK()
+static void BG_IMG(const char* path)
 {
 	U_BG_INDENT();
-	printf("<div style=\"break-after: page;\"></div>\n");
+	printf("<img src=\"%s\">\n", path);
 }
 
 /*
- * Make a hyperlink.
+ * Emit an HTML image tag with attributes.
  */
-static void BG_LINK(const char* url, const char* label)
+static void BG_IMG_A(const char* path, const char* attrs)
 {
 	U_BG_INDENT();
-	printf("<a href=\"%s\">%s</a>\n", url, label);
+	printf("<img src=\"%s\" %s>\n", path, attrs);
 }
 
 /*
- * Make a variable number of line breaks.
+ * Emit a figure caption.
+ */
+static void BG_FIGCAP(const char* txt)
+{
+	BG_TAG("figcaption");
+	BG_TXT(txt);
+	BG_END("figcaption");
+}
+
+/* ==================================================
+ * BREAKING
+ * ==================================================
+ * Function that emit breaking items.
+ *
+ * Includes:
+ * - BG_LINEBREAK (howmany) : Emits a variable number of line breaks.
+ * - BG_PAGEBREAK ()        : Emits a page break.
+ * ================================================== */
+
+/*
+ * Emits a variable number of line breaks.
  */
 static void BG_BR(size_t howmany)
 {
@@ -524,7 +616,35 @@ static void BG_BR(size_t howmany)
 }
 
 /*
- * Quote.
+ * Emits a page break.
+ */
+static void BG_PAGEBREAK()
+{
+	U_BG_INDENT();
+	printf("<div style=\"break-after: page;\"></div>\n");
+}
+
+/* ==================================================
+ * MISC
+ * ==================================================
+ * Function that emit various common items.
+ *
+ * Includes:
+ * - BG_LINK (url, label)     : Emit a hyperlink.
+ * - BG_QUOTE (quote, author) : Emit a quote.
+ * ================================================== */
+
+/*
+ * Emit a hyperlink.
+ */
+static void BG_LINK(const char* url, const char* label)
+{
+	U_BG_INDENT();
+	printf("<a href=\"%s\">%s</a>\n", url, label);
+}
+
+/*
+ * Emit a quote.
  */
 static void BG_QUOTE(const char* quote, const char* author)
 {
@@ -543,32 +663,6 @@ static void BG_QUOTE(const char* quote, const char* author)
 		}
 
 	BG_END("blockquote");
-}
-
-/* ==================================================
- * Images
- * ================================================== */
-
-static void BG_IMG(const char* path)
-{
-	U_BG_INDENT();
-	printf("<img src=\"%s\">\n", path);
-}
-
-static void BG_IMG_A(const char* path, const char* attrs)
-{
-	U_BG_INDENT();
-	printf("<img src=\"%s\" %s>\n", path, attrs);
-}
-
-/*
- * Figure caption.
- */
-static void BG_FIGCAP(const char* txt)
-{
-	BG_TAG("figcaption");
-	BG_TXT(txt);
-	BG_END("figcaption");
 }
 
 #endif
