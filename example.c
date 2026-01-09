@@ -7,49 +7,44 @@
 
 int main() {
 
-	BG_TAG_A("html", "lang=\"en\"");
+	BG_ROOT("lang=\"en\"");
 
-	BG_TAG("head");
+	BG_METADATA();
 		BG_DOCTITLE("BookGen Example Document");
 		BG_STYLE("style.css");
 		BG_DEFSTYLE();
-	BG_END("head");
+	BG_END_METADATA();
 
-	BG_TAG("body");
+	BG_BODY(NULL);
 
 		BG_H(1, "The first chapter header");
 
-			BG_TAG_A("div", "class=\"preface\"");
-				BG_H(2, "Author's Note");
+			BG_H(2, "Author's Note");
+
 				BG_TXT("This book was generated entirely using ANSI C functions.");
-			BG_END("div");
 
 		BG_H(1, "The second chapter header");
 
 			BG_H(2, "Why ANSI C?");
-			BG_TAG("p");
+
 				BG_TXT("Honestly, simplicity!");
 				BG_LINEBREAK(2);
 				BG_TXT(
 					"I like knowing my software can be compiled on as many architectures as possible, "
 					"so ANSI C <i>felt</i> like a natural pick."
 				);
-			BG_END("p");
 
 			BG_H(2, "The indentation engine");
 
 				BG_H(3, "The <code>v_bg_depth</code> variable");
-				BG_TAG("p");
+
 					BG_TXT("By tracking");
 					BG_CODE_INLINE("v_bg_depth");
 					BG_TXT("we ensure the HTML source is neatly indented.");
-				BG_END("p");
 
 				BG_H(3, "The heading logic");
 
-					BG_TAG("p");
-						BG_TXT("Notice how the numbers below are generated automatically.");
-					BG_END("p");
+					BG_TXT("Notice how the numbers below are generated automatically.");
 
 					BG_H(4, "Specific Case A");
 
@@ -69,12 +64,10 @@ int main() {
 
 		BG_H(2, "Code blocks");
 
-			BG_TAG("p");
-				BG_TXT(
-					"For longer examples, use <code>BG_CODE_BLOCK</code>. "
-					"Whitespace and newlines are preserved exactly as written."
-				);
-			BG_END("p");
+			BG_TXT(
+				"For longer examples, use <code>BG_CODE_BLOCK</code>. "
+				"Whitespace and newlines are preserved exactly as written."
+			);
 
 			BG_CODE_BLOCK(
 				"#include &lt;stdio.h&gt;\n"
@@ -89,23 +82,23 @@ int main() {
 
 		BG_H(2, "Working with lists");
 
-			BG_TAG("ul");
+			BG_UL(NULL);
 
 				BG_LI("Item 1");
 				BG_LI("Item 2");
 				BG_LI("Item 3");
 
-				BG_TAG("ol");
+				BG_OL(NULL);
 
 					BG_LI("Subitem 1");
 					BG_LI("Subitem 2");
 					BG_LI("Subitem 3");
 
-				BG_END("ol");
+				BG_END_OL();
 
 				BG_LI("Item 4");
 
-			BG_END("ul");
+			BG_END_UL();
 
 		BG_PAGEBREAK();
 
@@ -118,42 +111,43 @@ int main() {
 
 		BG_H(2, "A simple table");
 
-			BG_TAG("table");
+			BG_TABLE(NULL);
 
 				BG_CAPTION("Supported ANSI C compilers");
 
-				BG_TAG("tr");
+				BG_TABLEROW(NULL);
 					BG_TH("Compiler");
 					BG_TH("Standard");
 					BG_TH("Notes");
-				BG_END("tr");
+				BG_END_TABLEROW();
 
-				BG_TAG("tr");
+				BG_TABLEROW(NULL);
 					BG_TD("GCC");
 					BG_TD("C89–C23");
 					BG_TD("Most commonly used");
-				BG_END("tr");
+				BG_END_TABLEROW();
 
-				BG_TAG("tr");
+				BG_TABLEROW(NULL);
 					BG_TD("Clang");
 					BG_TD("C89–C23");
 					BG_TD("Excellent diagnostics");
-				BG_END("tr");
+				BG_END_TABLEROW();
 
-				BG_TAG("tr");
+				BG_TABLEROW(NULL);
 					BG_TD("MSVC");
 					BG_TD("C89 (partial)");
 					BG_TD("Non-standard extensions");
-				BG_END("tr");
+				BG_END_TABLEROW();
 
-			BG_END("table");
+			BG_END_TABLE();
 
 		BG_PAGEBREAK();
 
 		BG_TOC();
 
-	BG_END("body");
-	BG_END("html");
+	BG_END_BODY();
+
+	BG_END_ROOT();
 
 	return EXIT_SUCCESS;
 

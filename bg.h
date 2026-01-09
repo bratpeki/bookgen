@@ -55,10 +55,6 @@
  *   https://bratpeki.github.io
  * ================================================== */
 
-/* TODO:
- * - "Emit" sentences should avoid mentioning HTML, maybe?
- */
-
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -239,11 +235,11 @@ static void BG_VOID_A(const char* inside, const char* attrs)
 
 /*
  * Emit the html (document root) opening tag.
- * Attributes are optional, to avoid using them, pass NULL or "".
+ * Attributes are optional; pass NULL or "" if none.
  */
 static void BG_ROOT(const char* attrs)
 {
-	if ( attrs == NULL || strlen(attrs) == 0 )
+	if (attrs == NULL || strlen(attrs) == 0)
 		BG_TAG("html");
 	else
 		BG_TAG_A("html", attrs);
@@ -275,11 +271,11 @@ static void BG_END_METADATA()
 
 /*
  * Emit the body opening tag.
- * Attributes are optional, to avoid using them, pass NULL or "".
+ * Attributes are optional; pass NULL or "" if none.
  */
 static void BG_BODY(const char* attrs)
 {
-	if ( attrs == NULL || strlen(attrs) == 0 )
+	if (attrs == NULL || strlen(attrs) == 0)
 		BG_TAG("body");
 	else
 		BG_TAG_A("body", attrs);
@@ -598,6 +594,46 @@ static void BG_LI(const char* txt)
 	BG_END("li");
 }
 
+/*
+ * Emit an opening unordered list tag (<ul>).
+ * Attributes are optional; pass NULL or "" if none.
+ */
+static void BG_UL(const char* attrs)
+{
+	if (attrs == NULL || strlen(attrs) == 0)
+		BG_TAG("ul");
+	else
+		BG_TAG_A("ul", attrs);
+}
+
+/*
+ * Emit a closing unordered list tag (</ul>).
+ */
+static void BG_END_UL()
+{
+	BG_END("ul");
+}
+
+/*
+ * Emit an opening ordered list tag (<ol>).
+ * Attributes are optional; pass NULL or "" if none.
+ */
+static void BG_OL(const char* attrs)
+{
+	if (attrs == NULL || strlen(attrs) == 0)
+		BG_TAG("ol");
+	else
+		BG_TAG_A("ol", attrs);
+}
+
+/*
+ * Emit a closing ordered list tag (</ol>).
+ */
+static void BG_END_OL()
+{
+	BG_END("ol");
+}
+
 /* ==================================================
  * TABLES
  * ==================================================
@@ -606,10 +642,11 @@ static void BG_LI(const char* txt)
 
 /*
  * Emit a table opening tag.
+ * Attributes are optional; pass NULL or "" if none.
  */
-static void BG_TABLE( const char* attrs )
+static void BG_TABLE(const char* attrs)
 {
-	if ( attrs == NULL || strlen(attrs) == 0 )
+	if (attrs == NULL || strlen(attrs) == 0)
 		BG_TAG("table");
 	else
 		BG_TAG_A("table", attrs);
@@ -625,10 +662,11 @@ static void BG_END_TABLE()
 
 /*
  * Emit a table row opening tag.
+ * Attributes are optional; pass NULL or "" if none.
  */
-static void BG_TABLEROW( const char* attrs )
+static void BG_TABLEROW(const char* attrs)
 {
-	if ( attrs == NULL || strlen(attrs) == 0 )
+	if (attrs == NULL || strlen(attrs) == 0)
 		BG_TAG("tr");
 	else
 		BG_TAG_A("tr", attrs);
