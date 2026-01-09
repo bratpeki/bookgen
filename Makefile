@@ -5,7 +5,10 @@
 CC     := gcc
 CFLAGS := -ansi -Wall -Wextra
 
-all:
-	$(CC) $(CFLAGS) example.c -o example.out
-	./example.out > output.html
+compile:
+	@$(CC) $(CFLAGS) example.c -o example.out
+	@./example.out > output.html
+
+listfunc:
+	@cat bg.h | grep "static void BG_"
 

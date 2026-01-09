@@ -10,9 +10,7 @@ int main() {
 	BG_TAG_A("html", "lang=\"en\"");
 
 	BG_TAG("head");
-		BG_TAG("title");
-			BG_TXT("BookGen Example Document");
-		BG_END("title");
+		BG_DOCTITLE("BookGen Example Document");
 		BG_STYLE("style.css");
 		BG_DEFSTYLE();
 	BG_END("head");
@@ -43,9 +41,7 @@ int main() {
 				BG_H(3, "The <code>v_bg_depth</code> variable");
 				BG_TAG("p");
 					BG_TXT("By tracking");
-					BG_TAG("code");
-						BG_TXT("v_bg_depth");
-					BG_END("code");
+					BG_CODE_INLINE("v_bg_depth");
 					BG_TXT("we ensure the HTML source is neatly indented.");
 				BG_END("p");
 
@@ -75,23 +71,21 @@ int main() {
 
 			BG_TAG("p");
 				BG_TXT(
-					"For longer examples, use a <code>&lt;pre&gt;</code> block. "
+					"For longer examples, use <code>BG_CODE_BLOCK</code>. "
 					"Whitespace and newlines are preserved exactly as written."
 				);
 			BG_END("p");
 
-			U_BG_INDENT();
-			BG_RAW("<pre>");
-				BG_RAW("#include &lt;stdio.h&gt;\n"
-					"#include &lt;stdlib.h&gt;\n"
-					"\n"
-					"int main(void)\n"
-					"{\n"
-					"  printf(\"Hello from ANSI C!\\n\");\n"
-					"  return EXIT_SUCCESS;\n"
-					"}"
-				);
-			BG_RAW("</pre>\n");
+			BG_CODEBLOCK(
+				"#include &lt;stdio.h&gt;\n"
+				"#include &lt;stdlib.h&gt;\n"
+				"\n"
+				"int main(void)\n"
+				"{\n"
+				"  printf(\"Hello from ANSI C!\\n\");\n"
+				"  return EXIT_SUCCESS;\n"
+				"}"
+			);
 
 		BG_H(2, "Working with lists");
 

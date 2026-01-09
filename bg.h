@@ -10,11 +10,11 @@
  * A minimal, single-header ANSI C library for generating
  * semantic, well-indented HTML documents programmatically.
  *
- * BookGen is very simple. When opened and looked at,
- * it's a collection of functions emitting HTML immediately on call.
- * It is designed around printf-style output: the user
- * calls BG_* functions, and the resulting HTML is written
- * directly to stdout. However, the library is intended to be so simple that
+ * BookGen is very simple.
+ * When opened and looked at, it's a collection of functions emitting HTML immediately on call.
+ * It is designed around printf-style output:
+ * the user calls BG_* functions, and the resulting HTML is written directly to stdout.
+ * However, the library is intended to be so simple that
  * you can easily send the resulting HTML code to a file or elsewhere.
  *
  * BookGen relies on being passed strings that outlive
@@ -23,9 +23,9 @@
  *
  * The library relies on the user having a fundamental understanding of HTML.
  * That includes:
- * - Understanding the common tags like head, body, img, br, table, etc.
- * - Understanding the role of CSS stylesheets in an HTML document.
+ * - Understanding the common tags like html, head, body, img, br, table, etc.
  * - Understanding the common attributes like width, margin, padding, etc.
+ * - Understanding the role of CSS stylesheets in an HTML document.
  *
  * Enjoy!
  * ==================================================
@@ -45,6 +45,7 @@
  *   - IMAGES
  *   - BREAKING
  *   - MISC
+ *   - SHORTHANDS
  * ==================================================
  * Author (feel free to reach out):
  *   Petar Katić
@@ -612,6 +613,66 @@ static void BG_QUOTE(const char* quote, const char* author)
 		}
 
 	BG_END("blockquote");
+}
+
+/* ==================================================
+ * SHORTHANDS
+ * ==================================================
+ * Functions that emit multiple BG_* function calls
+ * or otherwise make the writing process more pleasant.
+ * ================================================== */
+
+static void BG_HTML()
+{
+	BG_TAG("html");
+}
+
+static void BG_END_HTML()
+{
+	BG_END("html");
+}
+
+static void BG_HEAD()
+{
+	BG_TAG("head");
+}
+
+static void BG_END_HEAD()
+{
+	BG_END("head");
+}
+
+static void BG_BODY()
+{
+	BG_TAG("body");
+}
+
+static void BG_END_BODY()
+{
+	BG_END("body");
+}
+
+static void BG_CODE_BLOCK(const char* txt)
+{
+	U_BG_INDENT();
+	BG_RAW("<pre>");
+		BG_RAW("#include &lt;stdio.h&gt;\n"
+			"#include &lt;stdlib.h&gt;\n"
+			"\n"
+			"int main(void)\n"
+			"{\n"
+			"  printf(\"Hello from ANSI C!\\n\");\n"
+			"  return EXIT_SUCCESS;\n"
+			"}"
+		);
+	BG_RAW("</pre>\n");
+}
+
+static void BG_CODE_INLINE(const char* txt)
+{
+	BG_TAG("code");
+	BG_TXT(txt);
+	BG_END("code");
 }
 
 #endif
