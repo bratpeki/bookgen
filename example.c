@@ -26,14 +26,12 @@ int main() {
 				BG_TXT("This book was generated entirely using ANSI C functions.");
 			BG_END("div");
 
-		BG_PAGEBREAK();
-
 		BG_H(1, "The second chapter header");
 
 			BG_H(2, "Why ANSI C?");
 			BG_TAG("p");
 				BG_TXT("Honestly, simplicity!");
-				BG_BR(2);
+				BG_LINEBREAK(2);
 				BG_TXT(
 					"I like knowing my software can be compiled on as many architectures as possible, "
 					"so ANSI C <i>felt</i> like a natural pick."
@@ -70,6 +68,8 @@ int main() {
 						BG_LINK("https://www.google.com", "Here it is in action.");
 
 						BG_QUOTE("I am quoting myself.", "Peki");
+
+		BG_PAGEBREAK();
 
 		BG_H(2, "Code blocks");
 
@@ -112,6 +112,8 @@ int main() {
 				BG_LI("Item 4");
 
 			BG_END("ul");
+
+		BG_PAGEBREAK();
 
 		BG_H(2, "Images!");
 

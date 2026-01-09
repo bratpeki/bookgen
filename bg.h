@@ -560,7 +560,7 @@ static void BG_FIGCAP(const char* txt)
 /*
  * Emits a variable number of line breaks.
  */
-static void BG_BR(size_t howmany)
+static void BG_LINEBREAK(size_t howmany)
 {
 	size_t i;
 	for (i = 0; i < howmany; i++) {
