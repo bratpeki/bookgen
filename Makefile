@@ -9,6 +9,9 @@ compile:
 	@$(CC) $(CFLAGS) example.c -o example.out
 	@./example.out > output.html
 
+clean:
+	@-rm *.out *.html
+
 listfunc:
 	@cat bg.h | grep "static void BG_"
 
