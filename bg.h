@@ -36,6 +36,7 @@
  * - Public API
  *   - PRIMITIVE FUNCTIONS
  *   - PLAIN TEXT
+ *   - DOCUMENT STRUCTURE
  *   - METADATA
  *   - STYLING
  *   - HEADINGS
@@ -44,8 +45,8 @@
  *   - TABLES
  *   - IMAGES
  *   - BREAKING
+ *   - CODE
  *   - MISC
- *   - SHORTHANDS
  * ==================================================
  * Author (feel free to reach out):
  *   Petar Katić
@@ -206,6 +207,69 @@ static void BG_TXT(const char* txt)
 static void BG_RAW(const char* txt)
 {
 	printf("%s", txt);
+}
+
+/* ==================================================
+ * DOCUMENT STRUCTURE
+ * ==================================================
+ * Functions that emit elements that define the document structure.
+ * Those include html, head and body.
+ * ================================================== */
+
+/*
+ * Emit the html (document root) opening tag.
+ * Attributes are optional, to avoid using them, pass NULL or "".
+ */
+static void BG_ROOT( const char* attrs )
+{
+	if ( attrs == NULL || strlen(attrs) == 0 )
+		BG_TAG("html");
+	else
+		BG_TAG_A("html", attrs);
+}
+
+/*
+ * Emit the html (document root) closing tag.
+ */
+static void BG_END_ROOT()
+{
+	BG_END("html");
+}
+
+/*
+ * Emit the head (document metadata) opening tag.
+ */
+static void BG_METADATA()
+{
+	BG_TAG("head");
+}
+
+/*
+ * Emit the head (document metadata) closing tag.
+ */
+static void BG_END_METADATA()
+{
+	BG_END("head");
+}
+
+/*
+ * Emit the body opening tag.
+ * Attributes are optional, to avoid using them, pass NULL or "".
+ */
+static void BG_BODY( const char* attrs )
+{
+	if ( attrs == NULL || strlen(attrs) == 0 )
+		BG_TAG("body");
+	else
+		BG_TAG_A("body", attrs);
+}
+
+/*
+ * Emit the body closing tag.
+ */
+static void BG_END_BODY()
+{
+	BG_END("body");
 }
 
 /* ==================================================
@@ -466,6 +530,44 @@ static void BG_LI(const char* txt)
  * ================================================== */
 
 /*
+ * Emit a table opening tag.
+ */
+static void BG_TABLE( const char* attrs )
+{
+	if ( attrs == NULL || strlen(attrs) == 0 )
+		BG_TAG("table");
+	else
+		BG_TAG_A("table", attrs);
+}
+
+/*
+ * Emit a table closing tag.
+ */
+static void BG_END_TABLE()
+{
+	BG_END("table");
+}
+
+/*
+ * Emit a table row opening tag.
+ */
+static void BG_TABLEROW( const char* attrs )
+{
+	if ( attrs == NULL || strlen(attrs) == 0 )
+		BG_TAG("tr");
+	else
+		BG_TAG_A("tr", attrs);
+}
+
+/*
+ * Emit a table row closing tag.
+ */
+static void BG_END_TABLEROW()
+{
+	BG_END("tr");
+}
+
+/*
  * Emit a table header cell.
  */
 static void BG_TH(const char* txt)
@@ -579,6 +681,35 @@ static void BG_PAGEBREAK()
 }
 
 /* ==================================================
+ * CODE
+ * ==================================================
+ * Function that emit code-realted items.
+ * ================================================== */
+
+/*
+ * Emit a multiline code block.
+ * Remember to use HTML escape codes for symbols like <, >, etc.
+ */
+static void BG_CODE_BLOCK(const char* txt)
+{
+	U_BG_INDENT();
+	BG_RAW("<pre>");
+	BG_RAW(txt);
+	BG_RAW("</pre>\n");
+}
+
+/*
+ * Emit an inline code block.
+ * Remember to use HTML escape codes for symbols like <, >, etc.
+ */
+static void BG_CODE_INLINE(const char* txt)
+{
+	BG_TAG("code");
+	BG_TXT(txt);
+	BG_END("code");
+}
+
+/* ==================================================
  * MISC
  * ==================================================
  * Function that emit various common items.
@@ -613,66 +744,6 @@ static void BG_QUOTE(const char* quote, const char* author)
 		}
 
 	BG_END("blockquote");
-}
-
-/* ==================================================
- * SHORTHANDS
- * ==================================================
- * Functions that emit multiple BG_* function calls
- * or otherwise make the writing process more pleasant.
- * ================================================== */
-
-static void BG_HTML()
-{
-	BG_TAG("html");
-}
-
-static void BG_END_HTML()
-{
-	BG_END("html");
-}
-
-static void BG_HEAD()
-{
-	BG_TAG("head");
-}
-
-static void BG_END_HEAD()
-{
-	BG_END("head");
-}
-
-static void BG_BODY()
-{
-	BG_TAG("body");
-}
-
-static void BG_END_BODY()
-{
-	BG_END("body");
-}
-
-static void BG_CODE_BLOCK(const char* txt)
-{
-	U_BG_INDENT();
-	BG_RAW("<pre>");
-		BG_RAW("#include &lt;stdio.h&gt;\n"
-			"#include &lt;stdlib.h&gt;\n"
-			"\n"
-			"int main(void)\n"
-			"{\n"
-			"  printf(\"Hello from ANSI C!\\n\");\n"
-			"  return EXIT_SUCCESS;\n"
-			"}"
-		);
-	BG_RAW("</pre>\n");
-}
-
-static void BG_CODE_INLINE(const char* txt)
-{
-	BG_TAG("code");
-	BG_TXT(txt);
-	BG_END("code");
 }
 
 #endif

@@ -76,7 +76,7 @@ int main() {
 				);
 			BG_END("p");
 
-			BG_CODEBLOCK(
+			BG_CODE_BLOCK(
 				"#include &lt;stdio.h&gt;\n"
 				"#include &lt;stdlib.h&gt;\n"
 				"\n"
