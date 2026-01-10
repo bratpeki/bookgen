@@ -38,9 +38,9 @@ int main() {
 
 				BG_H(3, "The <code>v_bg_depth</code> variable");
 
-					BG_TXT("By tracking");
+					BG_TXT("By tracking ");
 					BG_CODE_INLINE("v_bg_depth");
-					BG_TXT("we ensure the HTML source is neatly indented.");
+					BG_TXT(" we ensure the HTML source is neatly indented.");
 
 				BG_H(3, "The heading logic");
 
