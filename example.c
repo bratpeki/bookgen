@@ -1,6 +1,7 @@
 
 /* example.c */
 
+#define V_BG_DARK_MODE
 #include "bg.h"
 
 #define IMGLINK "https://raw.githubusercontent.com/bratpeki/bratpeki.github.io/refs/heads/main/img/xrtd.svg"
