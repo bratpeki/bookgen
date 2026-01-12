@@ -1,7 +1,6 @@
 
 /* example.c */
 
-#define V_BG_DARK_MODE
 #include "bg.h"
 
 #define IMGLINK "https://raw.githubusercontent.com/bratpeki/bratpeki.github.io/refs/heads/main/img/xrtd.svg"
@@ -12,8 +11,7 @@ int main() {
 
 	BG_METADATA();
 		BG_DOCTITLE("BookGen Example Document");
-		BG_STYLE("style.css");
-		BG_DEFSTYLE();
+		BG_STYLE("styles/default-light.css");
 	BG_END_METADATA();
 
 	BG_BODY(NULL);
