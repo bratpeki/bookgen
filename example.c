@@ -7,6 +7,16 @@
 
 int main() {
 
+	/*
+	 * We can output to a file with:
+	 *   FILE* out = fopen("doc.html", "w");
+	 *   BG_INIT_FILE(out);
+	 *   ...
+	 *   fclose(out);
+	 */
+
+	BG_INIT();
+
 	BG_ROOT("lang=\"en\"");
 
 	BG_METADATA();

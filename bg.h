@@ -13,9 +13,8 @@
  * BookGen is very simple.
  * When opened and looked at, it's a collection of functions emitting HTML immediately on call.
  * It is designed around printf-style output:
- * the user calls BG_* functions, and the resulting HTML is written directly to stdout.
- * However, the library is intended to be so simple that
- * you can easily send the resulting HTML code to a file or elsewhere.
+ * the user calls BG_* functions, and the resulting HTML is written to an output stream,
+ * by default stdout.
  *
  * BookGen relies on being passed strings that outlive
  * the HTML generation process in memory,
@@ -126,7 +125,7 @@ static void U_BG_INDENT()
 {
 	size_t i;
 	for (i = 0; i < v_bg_depth; i++)
-		printf("  ");
+		fprintf(v_bg_out, "  ");
 }
 
 /* ==================================================
@@ -189,7 +188,7 @@ static void BG_QUOTE(const char* quote, const char* author);
  * Initializes the library and directs the output to stdout.
  *
  * Actually, it sets full buffering and a buffer size of 1MB (1 << 20).
- * This reduces the number of write syscalls caused by many printf calls.
+ * This reduces the number of write syscalls caused by many fprintf calls.
  */
 static void BG_INIT()
 {
@@ -227,7 +226,7 @@ static void BG_INIT_FILE(FILE* where)
 static void BG_TAG(const char* inside)
 {
 	U_BG_INDENT();
-	printf("<%s>\n", inside);
+	fprintf(v_bg_out, "<%s>\n", inside);
 	v_bg_depth++;
 }
 
@@ -237,7 +236,7 @@ static void BG_TAG(const char* inside)
 static void BG_TAG_A(const char* inside, const char* attrs)
 {
 	U_BG_INDENT();
-	printf("<%s %s>\n", inside, attrs);
+	fprintf(v_bg_out, "<%s %s>\n", inside, attrs);
 	v_bg_depth++;
 }
 
@@ -248,7 +247,7 @@ static void BG_END(const char* inside)
 {
 	v_bg_depth--;
 	U_BG_INDENT();
-	printf("</%s>\n", inside);
+	fprintf(v_bg_out, "</%s>\n", inside);
 }
 
 /*
@@ -257,7 +256,7 @@ static void BG_END(const char* inside)
 static void BG_VOID(const char* inside)
 {
 	U_BG_INDENT();
-	printf("<%s>\n", inside);
+	fprintf(v_bg_out, "<%s>\n", inside);
 }
 
 /*
@@ -266,7 +265,7 @@ static void BG_VOID(const char* inside)
 static void BG_VOID_A(const char* inside, const char* attrs)
 {
 	U_BG_INDENT();
-	printf("<%s %s>\n", inside, attrs);
+	fprintf(v_bg_out, "<%s %s>\n", inside, attrs);
 }
 
 /* ==================================================
@@ -361,7 +360,7 @@ static void BG_DOCTITLE(const char* txt)
 static void BG_STYLE(const char* path)
 {
 	U_BG_INDENT();
-	printf("<link rel=\"stylesheet\" href=\"%s\">\n", path);
+	fprintf(v_bg_out, "<link rel=\"stylesheet\" href=\"%s\">\n", path);
 }
 
 /* ==================================================
@@ -414,7 +413,7 @@ static void BG_H(size_t level, const char* title)
 	/* Printing */
 
 	U_BG_INDENT();
-	printf(
+	fprintf(v_bg_out,
 		"<h%lu id=\"%s\">%s %s</h%lu>\n",
 		level, chapterNumBuf,
 		chapterNumBuf, title,
@@ -455,7 +454,7 @@ static void BG_TOC()
 	for (i = 0; i < v_bg_toc_count - 1; i++) {
 		U_BG_INDENT();
 		/* The class name is added for styling (toc-L1, toc-L2, etc) */
-		printf(
+		fprintf(v_bg_out,
 			"<li class=\"toc-L%lu\"><a href=\"#%s\">%s %s</a></li>\n",
 			v_bg_toc_levels[i],
 			v_bg_toc_numbers[i],
@@ -480,7 +479,7 @@ static void BG_TOC()
 static void BG_TXT(const char* txt)
 {
 	U_BG_INDENT();
-	printf("%s\n", txt);
+	fprintf(v_bg_out, "%s\n", txt);
 }
 
 /*
@@ -489,7 +488,7 @@ static void BG_TXT(const char* txt)
  */
 static void BG_RAW(const char* txt)
 {
-	printf("%s", txt);
+	fprintf(v_bg_out, "%s", txt);
 }
 
 /* ==================================================
@@ -688,7 +687,7 @@ static void BG_CAPTION(const char* txt)
 static void BG_IMG(const char* path)
 {
 	U_BG_INDENT();
-	printf("<img src=\"%s\">\n", path);
+	fprintf(v_bg_out, "<img src=\"%s\">\n", path);
 }
 
 /*
@@ -697,7 +696,7 @@ static void BG_IMG(const char* path)
 static void BG_IMG_A(const char* path, const char* attrs)
 {
 	U_BG_INDENT();
-	printf("<img src=\"%s\" %s>\n", path, attrs);
+	fprintf(v_bg_out, "<img src=\"%s\" %s>\n", path, attrs);
 }
 
 /*
@@ -733,7 +732,7 @@ static void BG_LINEBREAK(size_t howmany)
 static void BG_PAGEBREAK()
 {
 	U_BG_INDENT();
-	printf("<div style=\"break-after: page;\"></div>\n");
+	fprintf(v_bg_out, "<div style=\"break-after: page;\"></div>\n");
 }
 
 /* ==================================================
@@ -748,7 +747,7 @@ static void BG_PAGEBREAK()
 static void BG_LINK(const char* url, const char* label)
 {
 	U_BG_INDENT();
-	printf("<a href=\"%s\">%s</a>\n", url, label);
+	fprintf(v_bg_out, "<a href=\"%s\">%s</a>\n", url, label);
 }
 
 /*
@@ -766,7 +765,7 @@ static void BG_QUOTE(const char* quote, const char* author)
 		{
 			BG_TAG("footer");
 				U_BG_INDENT();
-				printf("— %s\n", author);
+				fprintf(v_bg_out, "— %s\n", author);
 			BG_END("footer");
 		}
 
