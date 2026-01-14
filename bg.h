@@ -773,7 +773,7 @@ static void BG_QUOTE(const char* quote, const char* author)
 		{
 			BG_TAG("footer");
 				U_BG_INDENT();
-				fprintf(v_bg_out, "— %s\n", author);
+				fprintf(v_bg_out, "&mdash; %s\n", author);
 			BG_END("footer");
 		}
 
