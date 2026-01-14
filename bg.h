@@ -383,10 +383,16 @@ static void BG_H(size_t level, const char* title)
 
 	/* We allow h1 through h6 */
 
-	assert(level >= 1 && level <= 6);
+	assert(
+		(level >= 1 && level <= 6) &&
+		"The header levels are clamped between 1 and 6!"
+	);
 
-	/* TODO: You can't jump from header 1 to 3 */
-	/* if (level >= 2) assert(v_bg_chapter[level-2] != 0); */
+	if (level >= 2)
+		assert(
+			(v_bg_chapter[level-2] != 0) &&
+			"Cannot jump header levels!"
+		);
 
 	/* Increment current level */
 
@@ -422,8 +428,10 @@ static void BG_H(size_t level, const char* title)
 
 	/* Record for TOC */
 
-	/* If this assert is not satisfied, increase V_BG_MAX_TOC */
-	assert(v_bg_toc_count < V_BG_MAX_TOC);
+	assert(
+		(v_bg_toc_count < V_BG_MAX_TOC) &&
+		"Too many headers defined! Increase V_BG_MAX_TOC."
+	);
 
 	/* Storing the chapter number */
 
