@@ -35,6 +35,7 @@
  *   - INTERNAL HELPER FUNCTIONS
  * - Public API
  *   - FUNCTION DECLARATIONS
+ *   - INITIALIZATION
  *   - PRIMITIVE FUNCTIONS
  *   - DOCUMENT STRUCTURE
  *   - METADATA
@@ -103,6 +104,12 @@ static size_t v_bg_toc_levels[V_BG_MAX_TOC];
 static char v_bg_toc_numbers[V_BG_MAX_TOC][32];
 static size_t v_bg_toc_count = 0;
 
+/*
+ * The output stream.
+ * If not set, initialized in BG_INIT().
+ */
+static FILE* v_bg_out = NULL;
+
 /* ==================================================
  * INTERNAL HELPER FUNCTIONS
  * ==================================================
@@ -129,6 +136,8 @@ static void U_BG_INDENT()
  * generated with the listfunc rule in the Makefile.
  * ================================================== */
 
+static void BG_INIT();
+static void BG_INIT_FILE(FILE* where);
 static void BG_TAG(const char* inside);
 static void BG_TAG_A(const char* inside, const char* attrs);
 static void BG_END(const char* inside);
@@ -169,6 +178,37 @@ static void BG_LINEBREAK(size_t howmany);
 static void BG_PAGEBREAK();
 static void BG_LINK(const char* url, const char* label);
 static void BG_QUOTE(const char* quote, const char* author);
+
+/* ==================================================
+ * INITIALIZATION
+ * ==================================================
+ * Functions that initialize the library.
+ * ================================================== */
+
+/*
+ * Initializes the library and directs the output to stdout.
+ *
+ * Actually, it sets full buffering and a buffer size of 1MB (1 << 20).
+ * This reduces the number of write syscalls caused by many printf calls.
+ */
+static void BG_INIT()
+{
+	if (!v_bg_out) v_bg_out = stdout;
+	setvbuf(v_bg_out, NULL, _IOFBF, 1 << 20);
+}
+
+/*
+ * Initializes the library and directs the output to a custom stream.
+ *
+ * This function runs BG_INIT(), so the logic is the same,
+ * just with a custom output stream rather than the default stdout.
+ */
+static void BG_INIT_FILE(FILE* where)
+{
+	/* This is added specifically to combat someone setting "where" to NULL */
+	v_bg_out = where ? where : stdout;
+	BG_INIT();
+}
 
 /* ==================================================
  * PRIMITIVE FUNCTIONS
@@ -345,6 +385,9 @@ static void BG_H(size_t level, const char* title)
 	/* We allow h1 through h6 */
 
 	assert(level >= 1 && level <= 6);
+
+	/* TODO: You can't jump from header 1 to 3 */
+	/* if (level >= 2) assert(v_bg_chapter[level-2] != 0); */
 
 	/* Increment current level */
 
