@@ -128,6 +128,28 @@ static void U_BG_INDENT()
 		fprintf(v_bg_out, "  ");
 }
 
+/*
+ * Emit the contents of a file straight to the output stream.
+ *
+ * This function does not buffer.
+ * It streams the file directly to the output stream.
+ * If the file cannot be opened, no output is produced.
+ */
+static void U_BG_READFILE(const char* path)
+{
+	FILE *f;
+	int ch;
+
+	f = fopen(path, "r");
+	if (f == NULL) return;
+
+	while ((ch = getc(f)) != EOF) {
+		fputc(ch, v_bg_out);
+	}
+
+	fclose(f);
+}
+
 /* ==================================================
  * FUNCTION DECLARATIONS
  * ==================================================
@@ -142,14 +164,15 @@ static void BG_TAG_A(const char* inside, const char* attrs);
 static void BG_END(const char* inside);
 static void BG_VOID(const char* inside);
 static void BG_VOID_A(const char* inside, const char* attrs);
-static void BG_ROOT(const char* attrs);
-static void BG_END_ROOT();
-static void BG_METADATA();
-static void BG_END_METADATA();
+static void BG_HTML(const char* attrs);
+static void BG_END_HTML();
+static void BG_HEAD();
+static void BG_END_HEAD();
 static void BG_BODY(const char* attrs);
 static void BG_END_BODY();
 static void BG_DOCTITLE(const char* txt);
 static void BG_STYLE(const char* path);
+static void BG_STYLE_INLINE(const char* path);
 static void BG_H(size_t level, const char* title);
 static void BG_TOC();
 static void BG_TXT(const char* txt);
@@ -279,7 +302,7 @@ static void BG_VOID_A(const char* inside, const char* attrs)
  * Emit the html (document root) opening tag.
  * Attributes are optional; pass NULL or "" if none.
  */
-static void BG_ROOT(const char* attrs)
+static void BG_HTML(const char* attrs)
 {
 	if (attrs == NULL || strlen(attrs) == 0)
 		BG_TAG("html");
@@ -290,7 +313,7 @@ static void BG_ROOT(const char* attrs)
 /*
  * Emit the html (document root) closing tag.
  */
-static void BG_END_ROOT()
+static void BG_END_HTML()
 {
 	BG_END("html");
 }
@@ -298,7 +321,7 @@ static void BG_END_ROOT()
 /*
  * Emit the head (document metadata) opening tag.
  */
-static void BG_METADATA()
+static void BG_HEAD()
 {
 	BG_TAG("head");
 }
@@ -306,7 +329,7 @@ static void BG_METADATA()
 /*
  * Emit the head (document metadata) closing tag.
  */
-static void BG_END_METADATA()
+static void BG_END_HEAD()
 {
 	BG_END("head");
 }
@@ -361,6 +384,17 @@ static void BG_STYLE(const char* path)
 {
 	U_BG_INDENT();
 	fprintf(v_bg_out, "<link rel=\"stylesheet\" href=\"%s\">\n", path);
+}
+
+/*
+ * Emit a style element, containing the stylesheet in full.
+ * Use this inside the HEAD tag.
+ */
+static void BG_STYLE_INLINE(const char* path)
+{
+	BG_TAG("style");
+	U_BG_READFILE(path);
+	BG_END("style");
 }
 
 /* ==================================================

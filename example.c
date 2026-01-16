@@ -17,12 +17,13 @@ int main() {
 
 	BG_INIT();
 
-	BG_ROOT("lang=\"en\"");
+	BG_HTML("lang=\"en\"");
 
-	BG_METADATA();
+	BG_HEAD();
 		BG_DOCTITLE("BookGen Example Document");
-		BG_STYLE("styles/default-light.css");
-	BG_END_METADATA();
+		/* BG_STYLE("styles/default-light.css"); */
+		BG_STYLE_INLINE("styles/default-dark.css");
+	BG_END_HEAD();
 
 	BG_BODY(NULL);
 
@@ -47,9 +48,9 @@ int main() {
 
 				BG_H(3, "The <code>v_bg_depth</code> variable");
 
-					BG_TXT("By tracking ");
+					BG_TXT("By tracking");
 					BG_CODE_INLINE("v_bg_depth");
-					BG_TXT(" we ensure the HTML source is neatly indented.");
+					BG_TXT("we ensure the HTML source is neatly indented.");
 
 				BG_H(3, "The heading logic");
 
@@ -156,7 +157,7 @@ int main() {
 
 	BG_END_BODY();
 
-	BG_END_ROOT();
+	BG_END_HTML();
 
 	return EXIT_SUCCESS;
 

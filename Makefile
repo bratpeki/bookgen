@@ -5,7 +5,7 @@
 CC     := gcc
 CFLAGS := -ansi -Wall -Wextra
 
-compile:
+build:
 	@$(CC) $(CFLAGS) example.c -o example.out
 	@./example.out > output.html
 
