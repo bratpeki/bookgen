@@ -26,6 +26,11 @@
  * - Understanding the common attributes like width, margin, padding, etc.
  * - Understanding the role of CSS stylesheets in an HTML document.
  *
+ * My intention with the library is *generating* documents.
+ * While you can totally write your essays and books from scratch in BookGen,
+ * it's best to write them in a separate plain text file
+ * and move to BookGen for a nice looking export.
+ *
  * Enjoy!
  * ==================================================
  * Sections:
@@ -104,6 +109,14 @@ static char v_bg_toc_numbers[V_BG_MAX_TOC][32];
 static size_t v_bg_toc_count = 0;
 
 /*
+ * Base64 table used in U_BG_TOBASE64.
+ */
+static const char U_BG_BASE64_TABLE[] =
+	"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	"abcdefghijklmnopqrstuvwxyz"
+	"0123456789+/";
+
+/*
  * The output stream.
  * If not set, initialized in BG_INIT().
  */
@@ -145,6 +158,66 @@ static void U_BG_READFILE(const char* path)
 
 	while ((ch = getc(f)) != EOF) {
 		fputc(ch, v_bg_out);
+	}
+
+	fclose(f);
+}
+
+/*
+ * Stream a file as Base64 directly to the output stream.
+ *
+ * This function does not buffer.
+ * It streams the file directly to the output stream.
+ * If the file cannot be opened, no output is produced.
+ */
+static void U_BG_TOBASE64(const char* path)
+{
+	FILE* f;
+	size_t n;
+
+	/*
+	 * 64 = 2^6, so one Base64 character represents 6 bits.
+	 * Conversion: 3 input bytes (3*8 = 24 bits) is 4 Base64 characters (4*6 = 24 bits)
+	 */
+	unsigned char in[3], out[4];
+
+	f = fopen(path, "rb");
+	if (f == NULL) return;
+
+	while ((n = fread(in, 1, 3, f)) > 0) {
+
+		/*
+		 * First 6 bits of the first byte.
+		 */
+		out[0] = U_BG_BASE64_TABLE[ in[0] >> 2 ];
+
+		/*
+		 * Last 2 bits of the first byte (in[0] & 0x03), shifted to high bits
+		 * and first 4 bits of the second byte (in[1] >> 4).
+		 * If the second byte doesn't exist (n == 1), we treat it as 0.
+		 */
+		out[1] = U_BG_BASE64_TABLE[ ((in[0] & 0x03) << 4) | ((n > 1 ? in[1] : 0) >> 4) ];
+
+		/*
+		 * Last 4 bits of the second byte (in[1] & 0x0F), shifted to high bits
+		 * and first 2 bits of the third byte (in[2] >> 6).
+		 * If the second byte doesn't exist (n == 1), output '=' as padding.
+		 * If the third byte doesn't exist (n == 2), treat it as 0 for calculation.
+		 */
+		out[2] = (n > 1)
+			? U_BG_BASE64_TABLE[ ((in[1] & 0x0F) << 2) | ((n > 2 ? in[2] : 0) >> 6) ]
+			: '=';
+
+		/*
+		 * Last 6 bits of the third byte.
+		 * If the third byte doesn't exist (n < 3), output '=' as padding.
+		 */
+		out[3] = (n > 2)
+			? U_BG_BASE64_TABLE[ in[2] & 0x3F ]
+			: '=';
+
+		fwrite(out, 1, 4, v_bg_out);
+
 	}
 
 	fclose(f);
@@ -195,6 +268,8 @@ static void BG_TD_A(const char* txt, const char* attrs);
 static void BG_CAPTION(const char* txt);
 static void BG_IMG(const char* path);
 static void BG_IMG_A(const char* path, const char* attrs);
+static void BG_IMG_INLINE(const char* mime, const char* path);
+static void BG_IMG_INLINE_A(const char* mime, const char* path, const char* attrs);
 static void BG_FIGCAP(const char* txt);
 static void BG_LINEBREAK(size_t howmany);
 static void BG_PAGEBREAK();
@@ -724,7 +799,9 @@ static void BG_CAPTION(const char* txt)
  * ================================================== */
 
 /*
- * Emit an HTML image tag.
+ * Emit an HTML image tag with a linked image.
+ *
+ * The path can be a local or web URL.
  */
 static void BG_IMG(const char* path)
 {
@@ -733,12 +810,41 @@ static void BG_IMG(const char* path)
 }
 
 /*
- * Emit an HTML image tag with attributes.
+ * Emit an HTML image tag with a linked image, with attributes.
+ *
+ * The path can be a local or web URL.
  */
 static void BG_IMG_A(const char* path, const char* attrs)
 {
 	U_BG_INDENT();
 	fprintf(v_bg_out, "<img src=\"%s\" %s>\n", path, attrs);
+}
+
+/*
+ * Emit an HTML image tag with the image as Base64 data.
+ *
+ * The path can only be a local URL, not a web one, since it's read with fread.
+ * Inlining images increases HTML size significantly.
+ */
+static void BG_IMG_INLINE(const char* mime, const char* path)
+{
+	fprintf(v_bg_out, "<img src=\"data:%s;base64,", mime);
+	U_BG_TOBASE64(path);
+	fprintf(v_bg_out, "\">\n");
+}
+
+/*
+ * Emit an HTML image tag with the image as Base64 data, with attributes.
+ *
+ * The path can only be a local URL, not a web one, since it's read with fread.
+ * Inlining images increases HTML size significantly.
+ */
+static void BG_IMG_INLINE_A(const char* mime, const char* path, const char* attrs)
+{
+	U_BG_INDENT();
+	fprintf(v_bg_out, "<img %s src=\"data:%s;base64,", attrs, mime);
+	U_BG_TOBASE64(path);
+	fprintf(v_bg_out, "\">\n");
 }
 
 /*
