@@ -237,11 +237,13 @@ static void BG_TAG_A(const char* inside, const char* attrs);
 static void BG_END(const char* inside);
 static void BG_VOID(const char* inside);
 static void BG_VOID_A(const char* inside, const char* attrs);
-static void BG_HTML(const char* attrs);
+static void BG_HTML();
+static void BG_HTML_A(const char* attrs);
 static void BG_END_HTML();
 static void BG_HEAD();
 static void BG_END_HEAD();
-static void BG_BODY(const char* attrs);
+static void BG_BODY();
+static void BG_BODY_A(const char* attrs);
 static void BG_END_BODY();
 static void BG_DOCTITLE(const char* txt);
 static void BG_STYLE(const char* path);
@@ -253,13 +255,17 @@ static void BG_RAW(const char* txt);
 static void BG_CODE_BLOCK(const char* txt);
 static void BG_CODE_INLINE(const char* txt);
 static void BG_LI(const char* txt);
-static void BG_UL(const char* attrs);
+static void BG_UL();
+static void BG_UL_A(const char* attrs);
 static void BG_END_UL();
-static void BG_OL(const char* attrs);
+static void BG_OL();
+static void BG_OL_A(const char* attrs);
 static void BG_END_OL();
-static void BG_TABLE(const char* attrs);
+static void BG_TABLE();
+static void BG_TABLE_A(const char* attrs);
 static void BG_END_TABLE();
-static void BG_TABLEROW(const char* attrs);
+static void BG_TABLEROW();
+static void BG_TABLEROW_A(const char* attrs);
 static void BG_END_TABLEROW();
 static void BG_TH(const char* txt);
 static void BG_TH_A(const char* txt, const char* attrs);
@@ -329,7 +335,7 @@ static void BG_TAG(const char* inside)
 }
 
 /*
- * Emit an opening tag with attributes.
+ * Emit an opening tag, with attributes.
  */
 static void BG_TAG_A(const char* inside, const char* attrs)
 {
@@ -358,7 +364,7 @@ static void BG_VOID(const char* inside)
 }
 
 /*
- * Emit a void tag with attributes.
+ * Emit a void tag, with attributes.
  */
 static void BG_VOID_A(const char* inside, const char* attrs)
 {
@@ -375,14 +381,18 @@ static void BG_VOID_A(const char* inside, const char* attrs)
 
 /*
  * Emit the html (document root) opening tag.
- * Attributes are optional; pass NULL or "" if none.
  */
-static void BG_HTML(const char* attrs)
+static void BG_HTML()
 {
-	if (attrs == NULL || strlen(attrs) == 0)
-		BG_TAG("html");
-	else
-		BG_TAG_A("html", attrs);
+	BG_TAG("html");
+}
+
+/*
+ * Emit the html (document root) opening tag, with attributes.
+ */
+static void BG_HTML_A(const char* attrs)
+{
+	BG_TAG_A("html", attrs);
 }
 
 /*
@@ -411,14 +421,18 @@ static void BG_END_HEAD()
 
 /*
  * Emit the body opening tag.
- * Attributes are optional; pass NULL or "" if none.
  */
-static void BG_BODY(const char* attrs)
+static void BG_BODY()
 {
-	if (attrs == NULL || strlen(attrs) == 0)
-		BG_TAG("body");
-	else
-		BG_TAG_A("body", attrs);
+	BG_TAG("body");
+}
+
+/*
+ * Emit the body opening tag, with attributes.
+ */
+static void BG_BODY_A(const char* attrs)
+{
+	BG_TAG_A("body", attrs);
 }
 
 /*
@@ -655,14 +669,18 @@ static void BG_LI(const char* txt)
 
 /*
  * Emit an opening unordered list tag (<ul>).
- * Attributes are optional; pass NULL or "" if none.
  */
-static void BG_UL(const char* attrs)
+static void BG_UL()
 {
-	if (attrs == NULL || strlen(attrs) == 0)
-		BG_TAG("ul");
-	else
-		BG_TAG_A("ul", attrs);
+	BG_TAG("ul");
+}
+
+/*
+ * Emit an opening unordered list tag (<ul>), with attributes.
+ */
+static void BG_UL_A(const char* attrs)
+{
+	BG_TAG_A("ul", attrs);
 }
 
 /*
@@ -675,14 +693,18 @@ static void BG_END_UL()
 
 /*
  * Emit an opening ordered list tag (<ol>).
- * Attributes are optional; pass NULL or "" if none.
  */
-static void BG_OL(const char* attrs)
+static void BG_OL()
 {
-	if (attrs == NULL || strlen(attrs) == 0)
-		BG_TAG("ol");
-	else
-		BG_TAG_A("ol", attrs);
+	BG_TAG("ol");
+}
+
+/*
+ * Emit an opening ordered list tag (<ol>), with attributes.
+ */
+static void BG_OL_A(const char* attrs)
+{
+	BG_TAG_A("ol", attrs);
 }
 
 /*
@@ -701,14 +723,18 @@ static void BG_END_OL()
 
 /*
  * Emit a table opening tag.
- * Attributes are optional; pass NULL or "" if none.
  */
-static void BG_TABLE(const char* attrs)
+static void BG_TABLE()
 {
-	if (attrs == NULL || strlen(attrs) == 0)
-		BG_TAG("table");
-	else
-		BG_TAG_A("table", attrs);
+	BG_TAG("table");
+}
+
+/*
+ * Emit a table opening tag, with attributes.
+ */
+static void BG_TABLE_A(const char* attrs)
+{
+	BG_TAG_A("table", attrs);
 }
 
 /*
@@ -721,14 +747,18 @@ static void BG_END_TABLE()
 
 /*
  * Emit a table row opening tag.
- * Attributes are optional; pass NULL or "" if none.
  */
-static void BG_TABLEROW(const char* attrs)
+static void BG_TABLEROW()
 {
-	if (attrs == NULL || strlen(attrs) == 0)
-		BG_TAG("tr");
-	else
-		BG_TAG_A("tr", attrs);
+	BG_TAG("tr");
+}
+
+/*
+ * Emit a table row opening tag, with attributes.
+ */
+static void BG_TABLEROW_A(const char* attrs)
+{
+	BG_TAG_A("tr", attrs);
 }
 
 /*
@@ -750,7 +780,7 @@ static void BG_TH(const char* txt)
 }
 
 /*
- * Emit a table header cell with attributes (colspan, align, etc).
+ * Emit a table header cell, with attributes (colspan, align, etc).
  */
 static void BG_TH_A(const char* txt, const char* attrs)
 {
@@ -770,7 +800,7 @@ static void BG_TD(const char* txt)
 }
 
 /*
- * Emit a table data cell with attributes (colspan, align, etc).
+ * Emit a table data cell, with attributes (colspan, align, etc).
  */
 static void BG_TD_A(const char* txt, const char* attrs)
 {

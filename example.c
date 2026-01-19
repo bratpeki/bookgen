@@ -17,15 +17,15 @@ int main() {
 
 	BG_INIT();
 
-	BG_HTML("lang=\"en\"");
+	BG_HTML();
 
 	BG_HEAD();
 		BG_DOCTITLE("BookGen Example Document");
 		/* BG_STYLE("styles/default-light.css"); */
-		BG_STYLE_INLINE("styles/default-dark.css");
+		BG_STYLE_INLINE("styles/default-light.css");
 	BG_END_HEAD();
 
-	BG_BODY(NULL);
+	BG_BODY();
 
 		BG_H(1, "The first chapter header");
 
@@ -92,13 +92,13 @@ int main() {
 
 		BG_H(2, "Working with lists");
 
-			BG_UL(NULL);
+			BG_UL();
 
 				BG_LI("Item 1");
 				BG_LI("Item 2");
 				BG_LI("Item 3");
 
-				BG_OL(NULL);
+				BG_OL();
 
 					BG_LI("Subitem 1");
 					BG_LI("Subitem 2");
@@ -121,29 +121,29 @@ int main() {
 
 		BG_H(2, "A simple table");
 
-			BG_TABLE(NULL);
+			BG_TABLE();
 
 				BG_CAPTION("Supported ANSI C compilers");
 
-				BG_TABLEROW(NULL);
+				BG_TABLEROW();
 					BG_TH("Compiler");
 					BG_TH("Standard");
 					BG_TH("Notes");
 				BG_END_TABLEROW();
 
-				BG_TABLEROW(NULL);
+				BG_TABLEROW();
 					BG_TD("GCC");
 					BG_TD("C89–C23");
 					BG_TD("Most commonly used");
 				BG_END_TABLEROW();
 
-				BG_TABLEROW(NULL);
+				BG_TABLEROW();
 					BG_TD("Clang");
 					BG_TD("C89–C23");
 					BG_TD("Excellent diagnostics");
 				BG_END_TABLEROW();
 
-				BG_TABLEROW(NULL);
+				BG_TABLEROW();
 					BG_TD("MSVC");
 					BG_TD("C89 (partial)");
 					BG_TD("Non-standard extensions");
