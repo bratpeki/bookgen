@@ -52,6 +52,7 @@
  *   - TABLES
  *   - IMAGES
  *   - BREAKING
+ *   - PARAGRAPHS
  *   - MISC
  * ==================================================
  * Author (feel free to reach out):
@@ -279,6 +280,9 @@ static void BG_IMG_INLINE_A(const char* mime, const char* path, const char* attr
 static void BG_FIGCAP(const char* txt);
 static void BG_LINEBREAK(size_t howmany);
 static void BG_PAGEBREAK();
+static void BG_P();
+static void BG_P_A(const char* attrs);
+static void BG_END_P();
 static void BG_LINK(const char* url, const char* label);
 static void BG_QUOTE(const char* quote, const char* author);
 
@@ -911,6 +915,36 @@ static void BG_PAGEBREAK()
 {
 	U_BG_INDENT();
 	fprintf(v_bg_out, "<div style=\"break-after: page;\"></div>\n");
+}
+
+/* ==================================================
+ * PARAGRAPHS
+ * ==================================================
+ * Function that emit paragraph tags.
+ * ================================================== */
+
+/*
+ * Emit a paragraph opening tag.
+ */
+static void BG_P()
+{
+	BG_TAG("p");
+}
+
+/*
+ * Emit a paragraph opening tag, with attributes.
+ */
+static void BG_P_A(const char* attrs)
+{
+	BG_TAG_A("p", attrs);
+}
+
+/*
+ * Emit a paragraph closing tag.
+ */
+static void BG_END_P()
+{
+	BG_END("p");
 }
 
 /* ==================================================
