@@ -2,27 +2,20 @@
 /* example.c */
 
 #include "bg.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 #define IMGLINK "https://raw.githubusercontent.com/bratpeki/bratpeki.github.io/refs/heads/main/img/xrtd.svg"
 
-int main() {
+void printExample(FILE* f, const char* theme) {
 
-	/*
-	 * We can output to a file with:
-	 *   FILE* out = fopen("doc.html", "w");
-	 *   BG_INIT_FILE(out);
-	 *   ...
-	 *   fclose(out);
-	 */
-
-	BG_INIT();
+	BG_INIT_FILE(f);
 
 	BG_HTML();
 
 	BG_HEAD();
 		BG_DOCTITLE("BookGen Example Document");
-		/* BG_STYLE("styles/default-light.css"); */
-		BG_STYLE_INLINE("styles/default-light.css");
+		BG_STYLE_INLINE(theme);
 	BG_END_HEAD();
 
 	BG_BODY();
@@ -158,6 +151,22 @@ int main() {
 	BG_END_BODY();
 
 	BG_END_HTML();
+
+}
+
+int main() {
+
+	FILE *outLight, *outDark;
+
+	outLight = fopen("example-light.html", "w");
+	if (!outLight) return EXIT_FAILURE;
+	printExample(outLight, "./styles/default-light.css");
+	fclose(outLight);
+
+	outDark = fopen("example-dark.html", "w");
+	if (!outDark) return EXIT_FAILURE;
+	printExample(outDark, "./styles/default-dark.css");
+	fclose(outDark);
 
 	return EXIT_SUCCESS;
 

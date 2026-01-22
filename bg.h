@@ -428,25 +428,36 @@ static void BG_END_HEAD()
 
 /*
  * Emit the body opening tag.
+ *
+ * Importantly, this also emits div.print-root,
+ * which is used to specify margins for printing.
  */
 static void BG_BODY()
 {
 	BG_TAG("body");
+	BG_TAG_A("div", "class=\"print-root\"");
 }
 
 /*
  * Emit the body opening tag, with attributes.
+ *
+ * Importantly, this also emits div.print-root,
+ * which is used to specify margins for printing.
  */
 static void BG_BODY_A(const char* attrs)
 {
 	BG_TAG_A("body", attrs);
+	BG_TAG_A("div", "class=\"print-root\"");
 }
 
 /*
  * Emit the body closing tag.
+ *
+ * Importantly, this also emits the print-root's div closing tag.
  */
 static void BG_END_BODY()
 {
+	BG_END("div");
 	BG_END("body");
 }
 

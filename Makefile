@@ -7,10 +7,11 @@ CFLAGS := -ansi -Wall -Wextra
 
 build:
 	@$(CC) $(CFLAGS) example.c -o example.out
-	@./example.out > output.html
+	@./example.out
+	@-rm example.out
 
 clean:
-	@-rm *.out *.html
+	@-rm *.html
 
 listfunc:
 	@cat bg.h | grep "static void BG_"
