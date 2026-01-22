@@ -664,9 +664,10 @@ static void BG_CODE_BLOCK(const char* txt)
  */
 static void BG_CODE_INLINE(const char* txt)
 {
-	BG_TAG("code");
-	BG_TXT(txt);
-	BG_END("code");
+	U_BG_INDENT();
+	BG_RAW("<code>");
+	BG_RAW(txt);
+	BG_RAW("</code>\n");
 }
 
 /* ==================================================
