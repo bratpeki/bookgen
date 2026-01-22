@@ -57,7 +57,7 @@
  * ==================================================
  * Author (feel free to reach out):
  *   Petar Katić
- *   pkatic2003 (at) gmail.com
+ *   pkatic2003 (at) gmail (dot) com
  *   https://bratpeki.github.io
  * ================================================== */
 
