@@ -83,6 +83,14 @@
 #define V_BG_MAX_TOC 100
 
 /*
+ * Base64 table used in U_BG_TOBASE64.
+ */
+static const char V_BG_BASE64_TABLE[] =
+	"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	"abcdefghijklmnopqrstuvwxyz"
+	"0123456789+/";
+
+/*
  * Tracks the current indentation depth for formatted HTML output.
  */
 static size_t v_bg_depth;
@@ -108,14 +116,6 @@ static const char* v_bg_toc_titles[V_BG_MAX_TOC];
 static size_t v_bg_toc_levels[V_BG_MAX_TOC];
 static char v_bg_toc_numbers[V_BG_MAX_TOC][32];
 static size_t v_bg_toc_count = 0;
-
-/*
- * Base64 table used in U_BG_TOBASE64.
- */
-static const char U_BG_BASE64_TABLE[] =
-	"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	"abcdefghijklmnopqrstuvwxyz"
-	"0123456789+/";
 
 /*
  * The output stream.
@@ -190,14 +190,14 @@ static void U_BG_TOBASE64(const char* path)
 		/*
 		 * First 6 bits of the first byte.
 		 */
-		out[0] = U_BG_BASE64_TABLE[ in[0] >> 2 ];
+		out[0] = V_BG_BASE64_TABLE[ in[0] >> 2 ];
 
 		/*
 		 * Last 2 bits of the first byte (in[0] & 0x03), shifted to high bits
 		 * and first 4 bits of the second byte (in[1] >> 4).
 		 * If the second byte doesn't exist (n == 1), we treat it as 0.
 		 */
-		out[1] = U_BG_BASE64_TABLE[ ((in[0] & 0x03) << 4) | ((n > 1 ? in[1] : 0) >> 4) ];
+		out[1] = V_BG_BASE64_TABLE[ ((in[0] & 0x03) << 4) | ((n > 1 ? in[1] : 0) >> 4) ];
 
 		/*
 		 * Last 4 bits of the second byte (in[1] & 0x0F), shifted to high bits
@@ -206,7 +206,7 @@ static void U_BG_TOBASE64(const char* path)
 		 * If the third byte doesn't exist (n == 2), treat it as 0 for calculation.
 		 */
 		out[2] = (n > 1)
-			? U_BG_BASE64_TABLE[ ((in[1] & 0x0F) << 2) | ((n > 2 ? in[2] : 0) >> 6) ]
+			? V_BG_BASE64_TABLE[ ((in[1] & 0x0F) << 2) | ((n > 2 ? in[2] : 0) >> 6) ]
 			: '=';
 
 		/*
@@ -214,7 +214,7 @@ static void U_BG_TOBASE64(const char* path)
 		 * If the third byte doesn't exist (n < 3), output '=' as padding.
 		 */
 		out[3] = (n > 2)
-			? U_BG_BASE64_TABLE[ in[2] & 0x3F ]
+			? V_BG_BASE64_TABLE[ in[2] & 0x3F ]
 			: '=';
 
 		fwrite(out, 1, 4, v_bg_out);
@@ -969,9 +969,9 @@ static void BG_QUOTE(const char* quote, const char* author)
 {
 	BG_TAG("blockquote");
 
-		BG_TAG("p");
+		BG_P();
 			BG_TXT(quote);
-		BG_END("p");
+		BG_END_P();
 
 		if (author && *author)
 		{
