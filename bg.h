@@ -183,7 +183,10 @@ static void U_BG_TOBASE64(const char* path)
 	unsigned char in[3], out[4];
 
 	f = fopen(path, "rb");
-	if (f == NULL) return;
+	assert (
+		(f != NULL) &&
+		"File has to exist on the local file system and be readable!"
+	);
 
 	while ((n = fread(in, 1, 3, f)) > 0) {
 
