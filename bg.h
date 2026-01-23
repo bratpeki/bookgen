@@ -451,20 +451,7 @@ static void BG_BODY()
  * Emit the body opening tag AND div.print-root,
  * which is used to specify margins for printing.
  *
- * Printing HTML to a PDF has two main issues:
- * 1. Browser margins are usually white, which looks awful when printing dark mode pages
- * 2. Only the first page gets the padding defined in the body
- *
- * div.print-root is a document wrapper that solves both of those like so:
- * 1. "@page { margin: 0 }" tells the printer to not apply margins.
- *    Then, div.print-root is padded, keeping the body's background colors in the padding area.
- * 2. "box-decoration-break: clone" fixes this.
- *
- * The div.print-root styling is defined in the
- * "@media print" section in the CSS styles provided in this repo.
- * It's generally good advice to copy it over to your custom styles
- * if you're printing BookGen HTMLs to PDF.
- * To be precise, the entire block is:
+ * To be precise, the entire CSS styling rule for div.print-root is:
  *
  * @media print {
  *   @page { margin: 0; }
@@ -478,6 +465,20 @@ static void BG_BODY()
  *     -webkit-box-decoration-break: clone;
  *   }
  * }
+ *
+ * Printing HTML to a PDF has two main issues:
+ * 1. Browser margins are usually white, which looks awful when printing dark mode pages
+ * 2. Only the first page gets the padding defined in the body
+ *
+ * div.print-root is a document wrapper that solves both of those like so:
+ * 1. "@page { margin: 0 }" tells the printer to not apply margins.
+ *    Then, div.print-root is padded, keeping the body's background colors in the padding area.
+ * 2. "box-decoration-break: clone" fixes the padding only being on the first page.
+ *
+ * The div.print-root styling is defined in this comment and
+ * in the "@media print" section of the CSS styles provided in this repo.
+ * It's generally good advice to copy it over to your custom styles
+ * if you're printing BookGen HTMLs to PDF.
  *
  * If you want to handle printing manually, just use BG_BODY.
  */
