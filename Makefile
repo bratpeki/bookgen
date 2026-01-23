@@ -13,5 +13,5 @@ clean:
 	@-rm *.html
 
 listfunc:
-	@cat bg.h | grep "static void BG_"
+	@cat bg.h | grep "static void BG_PUBAPI_IMPL"
 

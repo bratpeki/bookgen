@@ -14,10 +14,10 @@ and aims to be completely self-sufficient,
 it comes with a few CSS styles that make the resulting HTML
 way more professional looking.
 
-The library aims at being useful to developers
+The library aims at being useful to C developers
 met with HTML's common tags and attributes
 intending to give their documentation, reports, essays, books, etc.
-a professional looks using a minimal and extermely maintainable library.
+a professional look using a minimal and extermely maintainable library.
 
 Enjoy!
 

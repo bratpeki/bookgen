@@ -7,6 +7,11 @@
 
 #define IMGLINK "https://raw.githubusercontent.com/bratpeki/bratpeki.github.io/refs/heads/main/img/xrtd.svg"
 
+/*
+ * We're generating examples in both the provided light and dark themes.
+ * They consist of the exact same content, just different styles.
+ * This function emits that content.
+ */
 void printExample(FILE* f, const char* theme) {
 
 	BG_INIT_FILE(f);

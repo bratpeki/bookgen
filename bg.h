@@ -235,63 +235,69 @@ static void U_BG_TOBASE64(const char* path)
  * generated with the listfunc rule in the Makefile.
  * ================================================== */
 
-static void BG_INIT();
-static void BG_INIT_FILE(FILE* where);
-static void BG_TAG(const char* inside);
-static void BG_TAG_A(const char* inside, const char* attrs);
-static void BG_END(const char* inside);
-static void BG_VOID(const char* inside);
-static void BG_VOID_A(const char* inside, const char* attrs);
-static void BG_HTML();
-static void BG_HTML_A(const char* attrs);
-static void BG_END_HTML();
-static void BG_HEAD();
-static void BG_END_HEAD();
-static void BG_BODY();
-static void BG_BODY_PRINT();
-static void BG_BODY_A(const char* attrs);
-static void BG_BODY_PRINT_A(const char* attrs);
-static void BG_END_BODY();
-static void BG_END_BODY_PRINT();
-static void BG_DOCTITLE(const char* txt);
-static void BG_STYLE(const char* path);
-static void BG_STYLE_INLINE(const char* path);
-static void BG_H(size_t level, const char* title);
-static void BG_TOC();
-static void BG_TXT(const char* txt);
-static void BG_RAW(const char* txt);
-static void BG_CODE_BLOCK(const char* txt);
-static void BG_CODE_INLINE(const char* txt);
-static void BG_LI(const char* txt);
-static void BG_UL();
-static void BG_UL_A(const char* attrs);
-static void BG_END_UL();
-static void BG_OL();
-static void BG_OL_A(const char* attrs);
-static void BG_END_OL();
-static void BG_TABLE();
-static void BG_TABLE_A(const char* attrs);
-static void BG_END_TABLE();
-static void BG_TABLEROW();
-static void BG_TABLEROW_A(const char* attrs);
-static void BG_END_TABLEROW();
-static void BG_TH(const char* txt);
-static void BG_TH_A(const char* txt, const char* attrs);
-static void BG_TD(const char* txt);
-static void BG_TD_A(const char* txt, const char* attrs);
-static void BG_CAPTION(const char* txt);
-static void BG_IMG(const char* path);
-static void BG_IMG_A(const char* path, const char* attrs);
-static void BG_IMG_INLINE(const char* mime, const char* path);
-static void BG_IMG_INLINE_A(const char* mime, const char* path, const char* attrs);
-static void BG_FIGCAP(const char* txt);
-static void BG_LINEBREAK(size_t howmany);
-static void BG_PAGEBREAK();
-static void BG_P();
-static void BG_P_A(const char* attrs);
-static void BG_END_P();
-static void BG_LINK(const char* url, const char* label);
-static void BG_QUOTE(const char* quote, const char* author);
+/*
+ * These two macros are literally only used as indicators.
+ */
+#define BG_PUBAPI_DECL
+#define BG_PUBAPI_IMPL
+
+static void BG_PUBAPI_DECL BG_INIT();
+static void BG_PUBAPI_DECL BG_INIT_FILE(FILE* where);
+static void BG_PUBAPI_DECL BG_TAG(const char* inside);
+static void BG_PUBAPI_DECL BG_TAG_A(const char* inside, const char* attrs);
+static void BG_PUBAPI_DECL BG_END(const char* inside);
+static void BG_PUBAPI_DECL BG_VOID(const char* inside);
+static void BG_PUBAPI_DECL BG_VOID_A(const char* inside, const char* attrs);
+static void BG_PUBAPI_DECL BG_HTML();
+static void BG_PUBAPI_DECL BG_HTML_A(const char* attrs);
+static void BG_PUBAPI_DECL BG_END_HTML();
+static void BG_PUBAPI_DECL BG_HEAD();
+static void BG_PUBAPI_DECL BG_END_HEAD();
+static void BG_PUBAPI_DECL BG_BODY();
+static void BG_PUBAPI_DECL BG_BODY_PRINT();
+static void BG_PUBAPI_DECL BG_BODY_A(const char* attrs);
+static void BG_PUBAPI_DECL BG_BODY_PRINT_A(const char* attrs);
+static void BG_PUBAPI_DECL BG_END_BODY();
+static void BG_PUBAPI_DECL BG_END_BODY_PRINT();
+static void BG_PUBAPI_DECL BG_DOCTITLE(const char* txt);
+static void BG_PUBAPI_DECL BG_STYLE(const char* path);
+static void BG_PUBAPI_DECL BG_STYLE_INLINE(const char* path);
+static void BG_PUBAPI_DECL BG_H(size_t level, const char* title);
+static void BG_PUBAPI_DECL BG_TOC();
+static void BG_PUBAPI_DECL BG_TXT(const char* txt);
+static void BG_PUBAPI_DECL BG_RAW(const char* txt);
+static void BG_PUBAPI_DECL BG_CODE_BLOCK(const char* txt);
+static void BG_PUBAPI_DECL BG_CODE_INLINE(const char* txt);
+static void BG_PUBAPI_DECL BG_LI(const char* txt);
+static void BG_PUBAPI_DECL BG_UL();
+static void BG_PUBAPI_DECL BG_UL_A(const char* attrs);
+static void BG_PUBAPI_DECL BG_END_UL();
+static void BG_PUBAPI_DECL BG_OL();
+static void BG_PUBAPI_DECL BG_OL_A(const char* attrs);
+static void BG_PUBAPI_DECL BG_END_OL();
+static void BG_PUBAPI_DECL BG_TABLE();
+static void BG_PUBAPI_DECL BG_TABLE_A(const char* attrs);
+static void BG_PUBAPI_DECL BG_END_TABLE();
+static void BG_PUBAPI_DECL BG_TABLEROW();
+static void BG_PUBAPI_DECL BG_TABLEROW_A(const char* attrs);
+static void BG_PUBAPI_DECL BG_END_TABLEROW();
+static void BG_PUBAPI_DECL BG_TH(const char* txt);
+static void BG_PUBAPI_DECL BG_TH_A(const char* txt, const char* attrs);
+static void BG_PUBAPI_DECL BG_TD(const char* txt);
+static void BG_PUBAPI_DECL BG_TD_A(const char* txt, const char* attrs);
+static void BG_PUBAPI_DECL BG_CAPTION(const char* txt);
+static void BG_PUBAPI_DECL BG_IMG(const char* path);
+static void BG_PUBAPI_DECL BG_IMG_A(const char* path, const char* attrs);
+static void BG_PUBAPI_DECL BG_IMG_INLINE(const char* mime, const char* path);
+static void BG_PUBAPI_DECL BG_IMG_INLINE_A(const char* mime, const char* path, const char* attrs);
+static void BG_PUBAPI_DECL BG_FIGCAP(const char* txt);
+static void BG_PUBAPI_DECL BG_LINEBREAK(size_t howmany);
+static void BG_PUBAPI_DECL BG_PAGEBREAK();
+static void BG_PUBAPI_DECL BG_P();
+static void BG_PUBAPI_DECL BG_P_A(const char* attrs);
+static void BG_PUBAPI_DECL BG_END_P();
+static void BG_PUBAPI_DECL BG_LINK(const char* url, const char* label);
+static void BG_PUBAPI_DECL BG_QUOTE(const char* quote, const char* author);
 
 /* ==================================================
  * INITIALIZATION
@@ -307,7 +313,7 @@ static void BG_QUOTE(const char* quote, const char* author);
  *
  * It also resets the chapter counter and depth tracker.
  */
-static void BG_INIT()
+static void BG_PUBAPI_IMPL BG_INIT()
 {
 	size_t i;
 	for (i = 0; i < 6; i++)
@@ -326,7 +332,7 @@ static void BG_INIT()
  * This function runs BG_INIT(), so the logic is the same,
  * just with a custom output stream rather than the default stdout.
  */
-static void BG_INIT_FILE(FILE* where)
+static void BG_PUBAPI_IMPL BG_INIT_FILE(FILE* where)
 {
 	/* This is added specifically to combat someone setting "where" to NULL */
 	v_bg_out = where ? where : stdout;
@@ -347,7 +353,7 @@ static void BG_INIT_FILE(FILE* where)
  * This function also allows attributes to be embedded in the tag string
  * (e.g. BG_TAG("h1 color=\"red\"")), but BG_TAG_A is preferred.
  */
-static void BG_TAG(const char* inside)
+static void BG_PUBAPI_IMPL BG_TAG(const char* inside)
 {
 	U_BG_INDENT();
 	fprintf(v_bg_out, "<%s>\n", inside);
@@ -357,7 +363,7 @@ static void BG_TAG(const char* inside)
 /*
  * Emit an opening tag, with attributes.
  */
-static void BG_TAG_A(const char* inside, const char* attrs)
+static void BG_PUBAPI_IMPL BG_TAG_A(const char* inside, const char* attrs)
 {
 	U_BG_INDENT();
 	fprintf(v_bg_out, "<%s %s>\n", inside, attrs);
@@ -367,7 +373,7 @@ static void BG_TAG_A(const char* inside, const char* attrs)
 /*
  * Emit a closing tag.
  */
-static void BG_END(const char* inside)
+static void BG_PUBAPI_IMPL BG_END(const char* inside)
 {
 	v_bg_depth--;
 	U_BG_INDENT();
@@ -377,7 +383,7 @@ static void BG_END(const char* inside)
 /*
  * Emit a void tag (e.g. img, br, hr, etc).
  */
-static void BG_VOID(const char* inside)
+static void BG_PUBAPI_IMPL BG_VOID(const char* inside)
 {
 	U_BG_INDENT();
 	fprintf(v_bg_out, "<%s>\n", inside);
@@ -386,7 +392,7 @@ static void BG_VOID(const char* inside)
 /*
  * Emit a void tag, with attributes.
  */
-static void BG_VOID_A(const char* inside, const char* attrs)
+static void BG_PUBAPI_IMPL BG_VOID_A(const char* inside, const char* attrs)
 {
 	U_BG_INDENT();
 	fprintf(v_bg_out, "<%s %s>\n", inside, attrs);
@@ -402,7 +408,7 @@ static void BG_VOID_A(const char* inside, const char* attrs)
 /*
  * Emit the html (document root) opening tag.
  */
-static void BG_HTML()
+static void BG_PUBAPI_IMPL BG_HTML()
 {
 	BG_TAG("html");
 }
@@ -410,7 +416,7 @@ static void BG_HTML()
 /*
  * Emit the html (document root) opening tag, with attributes.
  */
-static void BG_HTML_A(const char* attrs)
+static void BG_PUBAPI_IMPL BG_HTML_A(const char* attrs)
 {
 	BG_TAG_A("html", attrs);
 }
@@ -418,7 +424,7 @@ static void BG_HTML_A(const char* attrs)
 /*
  * Emit the html (document root) closing tag.
  */
-static void BG_END_HTML()
+static void BG_PUBAPI_IMPL BG_END_HTML()
 {
 	BG_END("html");
 }
@@ -426,7 +432,7 @@ static void BG_END_HTML()
 /*
  * Emit the head (document metadata) opening tag.
  */
-static void BG_HEAD()
+static void BG_PUBAPI_IMPL BG_HEAD()
 {
 	BG_TAG("head");
 }
@@ -434,7 +440,7 @@ static void BG_HEAD()
 /*
  * Emit the head (document metadata) closing tag.
  */
-static void BG_END_HEAD()
+static void BG_PUBAPI_IMPL BG_END_HEAD()
 {
 	BG_END("head");
 }
@@ -442,7 +448,7 @@ static void BG_END_HEAD()
 /*
  * Emit the body opening tag.
  */
-static void BG_BODY()
+static void BG_PUBAPI_IMPL BG_BODY()
 {
 	BG_TAG("body");
 }
@@ -482,7 +488,7 @@ static void BG_BODY()
  *
  * If you want to handle printing manually, just use BG_BODY.
  */
-static void BG_BODY_PRINT()
+static void BG_PUBAPI_IMPL BG_BODY_PRINT()
 {
 	BG_TAG("body");
 	BG_TAG_A("div", "class=\"print-root\"");
@@ -491,7 +497,7 @@ static void BG_BODY_PRINT()
 /*
  * Emit the body opening tag, with attributes.
  */
-static void BG_BODY_A(const char* attrs)
+static void BG_PUBAPI_IMPL BG_BODY_A(const char* attrs)
 {
 	BG_TAG_A("body", attrs);
 }
@@ -506,7 +512,7 @@ static void BG_BODY_A(const char* attrs)
  *
  * The attributes apply to the body tag, not the div one.
  */
-static void BG_BODY_PRINT_A(const char* attrs)
+static void BG_PUBAPI_IMPL BG_BODY_PRINT_A(const char* attrs)
 {
 	BG_TAG_A("body", attrs);
 	BG_TAG_A("div", "class=\"print-root\"");
@@ -515,7 +521,7 @@ static void BG_BODY_PRINT_A(const char* attrs)
 /*
  * Emit the body closing tag.
  */
-static void BG_END_BODY()
+static void BG_PUBAPI_IMPL BG_END_BODY()
 {
 	BG_END("body");
 }
@@ -527,7 +533,7 @@ static void BG_END_BODY()
  * Please read the comment under BG_BODY_PRINT
  * to understand why div.print-root is necessary.
  */
-static void BG_END_BODY_PRINT()
+static void BG_PUBAPI_IMPL BG_END_BODY_PRINT()
 {
 	BG_END("div");
 	BG_END("body");
@@ -542,7 +548,7 @@ static void BG_END_BODY_PRINT()
 /*
  * Emit the HTML document title.
  */
-static void BG_DOCTITLE(const char* txt)
+static void BG_PUBAPI_IMPL BG_DOCTITLE(const char* txt)
 {
 	BG_TAG("title");
 	BG_TXT(txt);
@@ -559,7 +565,7 @@ static void BG_DOCTITLE(const char* txt)
  * Emit a stylesheet link element.
  * Use this inside the HEAD tag.
  */
-static void BG_STYLE(const char* path)
+static void BG_PUBAPI_IMPL BG_STYLE(const char* path)
 {
 	U_BG_INDENT();
 	fprintf(v_bg_out, "<link rel=\"stylesheet\" href=\"%s\">\n", path);
@@ -569,7 +575,7 @@ static void BG_STYLE(const char* path)
  * Emit a style element, containing the stylesheet in full.
  * Use this inside the HEAD tag.
  */
-static void BG_STYLE_INLINE(const char* path)
+static void BG_PUBAPI_IMPL BG_STYLE_INLINE(const char* path)
 {
 	BG_TAG("style");
 	U_BG_READFILE(path);
@@ -588,7 +594,7 @@ static void BG_STYLE_INLINE(const char* path)
  * Invariant:
  * 1 <= level <= 6
  */
-static void BG_H(size_t level, const char* title)
+static void BG_PUBAPI_IMPL BG_H(size_t level, const char* title)
 {
 	size_t i;
 	char chapterNumBuf[32];
@@ -664,7 +670,7 @@ static void BG_H(size_t level, const char* title)
  * Emit the ToC.
  * Use at the end of the document.
  */
-static void BG_TOC()
+static void BG_PUBAPI_IMPL BG_TOC()
 {
 	size_t i;
 	BG_TAG_A("div", "class=\"toc\"");
@@ -697,7 +703,7 @@ static void BG_TOC()
  * Emit formatted plain text.
  * Indents the text and adds a newline.
  */
-static void BG_TXT(const char* txt)
+static void BG_PUBAPI_IMPL BG_TXT(const char* txt)
 {
 	U_BG_INDENT();
 	fprintf(v_bg_out, "%s\n", txt);
@@ -707,7 +713,7 @@ static void BG_TXT(const char* txt)
  * Emit raw plain text.
  * Nothing is added.
  */
-static void BG_RAW(const char* txt)
+static void BG_PUBAPI_IMPL BG_RAW(const char* txt)
 {
 	fprintf(v_bg_out, "%s", txt);
 }
@@ -722,7 +728,7 @@ static void BG_RAW(const char* txt)
  * Emit a multiline code block.
  * Remember to use HTML escape codes for symbols like <, >, etc.
  */
-static void BG_CODE_BLOCK(const char* txt)
+static void BG_PUBAPI_IMPL BG_CODE_BLOCK(const char* txt)
 {
 	U_BG_INDENT();
 	BG_RAW("<pre>");
@@ -734,7 +740,7 @@ static void BG_CODE_BLOCK(const char* txt)
  * Emit an inline code block.
  * Remember to use HTML escape codes for symbols like <, >, etc.
  */
-static void BG_CODE_INLINE(const char* txt)
+static void BG_PUBAPI_IMPL BG_CODE_INLINE(const char* txt)
 {
 	U_BG_INDENT();
 	BG_RAW("<code>");
@@ -751,7 +757,7 @@ static void BG_CODE_INLINE(const char* txt)
 /*
  * Emit a list item.
  */
-static void BG_LI(const char* txt)
+static void BG_PUBAPI_IMPL BG_LI(const char* txt)
 {
 	BG_TAG("li");
 	BG_TXT(txt);
@@ -761,7 +767,7 @@ static void BG_LI(const char* txt)
 /*
  * Emit an opening unordered list tag (<ul>).
  */
-static void BG_UL()
+static void BG_PUBAPI_IMPL BG_UL()
 {
 	BG_TAG("ul");
 }
@@ -769,7 +775,7 @@ static void BG_UL()
 /*
  * Emit an opening unordered list tag (<ul>), with attributes.
  */
-static void BG_UL_A(const char* attrs)
+static void BG_PUBAPI_IMPL BG_UL_A(const char* attrs)
 {
 	BG_TAG_A("ul", attrs);
 }
@@ -777,7 +783,7 @@ static void BG_UL_A(const char* attrs)
 /*
  * Emit a closing unordered list tag (</ul>).
  */
-static void BG_END_UL()
+static void BG_PUBAPI_IMPL BG_END_UL()
 {
 	BG_END("ul");
 }
@@ -785,7 +791,7 @@ static void BG_END_UL()
 /*
  * Emit an opening ordered list tag (<ol>).
  */
-static void BG_OL()
+static void BG_PUBAPI_IMPL BG_OL()
 {
 	BG_TAG("ol");
 }
@@ -793,7 +799,7 @@ static void BG_OL()
 /*
  * Emit an opening ordered list tag (<ol>), with attributes.
  */
-static void BG_OL_A(const char* attrs)
+static void BG_PUBAPI_IMPL BG_OL_A(const char* attrs)
 {
 	BG_TAG_A("ol", attrs);
 }
@@ -801,7 +807,7 @@ static void BG_OL_A(const char* attrs)
 /*
  * Emit a closing ordered list tag (</ol>).
  */
-static void BG_END_OL()
+static void BG_PUBAPI_IMPL BG_END_OL()
 {
 	BG_END("ol");
 }
@@ -815,7 +821,7 @@ static void BG_END_OL()
 /*
  * Emit a table opening tag.
  */
-static void BG_TABLE()
+static void BG_PUBAPI_IMPL BG_TABLE()
 {
 	BG_TAG("table");
 }
@@ -823,7 +829,7 @@ static void BG_TABLE()
 /*
  * Emit a table opening tag, with attributes.
  */
-static void BG_TABLE_A(const char* attrs)
+static void BG_PUBAPI_IMPL BG_TABLE_A(const char* attrs)
 {
 	BG_TAG_A("table", attrs);
 }
@@ -831,7 +837,7 @@ static void BG_TABLE_A(const char* attrs)
 /*
  * Emit a table closing tag.
  */
-static void BG_END_TABLE()
+static void BG_PUBAPI_IMPL BG_END_TABLE()
 {
 	BG_END("table");
 }
@@ -839,7 +845,7 @@ static void BG_END_TABLE()
 /*
  * Emit a table row opening tag.
  */
-static void BG_TABLEROW()
+static void BG_PUBAPI_IMPL BG_TABLEROW()
 {
 	BG_TAG("tr");
 }
@@ -847,7 +853,7 @@ static void BG_TABLEROW()
 /*
  * Emit a table row opening tag, with attributes.
  */
-static void BG_TABLEROW_A(const char* attrs)
+static void BG_PUBAPI_IMPL BG_TABLEROW_A(const char* attrs)
 {
 	BG_TAG_A("tr", attrs);
 }
@@ -855,7 +861,7 @@ static void BG_TABLEROW_A(const char* attrs)
 /*
  * Emit a table row closing tag.
  */
-static void BG_END_TABLEROW()
+static void BG_PUBAPI_IMPL BG_END_TABLEROW()
 {
 	BG_END("tr");
 }
@@ -863,7 +869,7 @@ static void BG_END_TABLEROW()
 /*
  * Emit a table header cell.
  */
-static void BG_TH(const char* txt)
+static void BG_PUBAPI_IMPL BG_TH(const char* txt)
 {
 	BG_TAG("th");
 	BG_TXT(txt);
@@ -873,7 +879,7 @@ static void BG_TH(const char* txt)
 /*
  * Emit a table header cell, with attributes (colspan, align, etc).
  */
-static void BG_TH_A(const char* txt, const char* attrs)
+static void BG_PUBAPI_IMPL BG_TH_A(const char* txt, const char* attrs)
 {
 	BG_TAG_A("th", attrs);
 	BG_TXT(txt);
@@ -883,7 +889,7 @@ static void BG_TH_A(const char* txt, const char* attrs)
 /*
  * Emit a table data cell.
  */
-static void BG_TD(const char* txt)
+static void BG_PUBAPI_IMPL BG_TD(const char* txt)
 {
 	BG_TAG("td");
 	BG_TXT(txt);
@@ -893,7 +899,7 @@ static void BG_TD(const char* txt)
 /*
  * Emit a table data cell, with attributes (colspan, align, etc).
  */
-static void BG_TD_A(const char* txt, const char* attrs)
+static void BG_PUBAPI_IMPL BG_TD_A(const char* txt, const char* attrs)
 {
 	BG_TAG_A("td", attrs);
 	BG_TXT(txt);
@@ -903,7 +909,7 @@ static void BG_TD_A(const char* txt, const char* attrs)
 /*
  * Emit the table caption.
  */
-static void BG_CAPTION(const char* txt)
+static void BG_PUBAPI_IMPL BG_CAPTION(const char* txt)
 {
 	BG_TAG("caption");
 	BG_TXT(txt);
@@ -924,7 +930,7 @@ static void BG_CAPTION(const char* txt)
  *
  * The path can be a local or web URL.
  */
-static void BG_IMG(const char* path)
+static void BG_PUBAPI_IMPL BG_IMG(const char* path)
 {
 	U_BG_INDENT();
 	fprintf(v_bg_out, "<img src=\"%s\">\n", path);
@@ -935,7 +941,7 @@ static void BG_IMG(const char* path)
  *
  * The path can be a local or web URL.
  */
-static void BG_IMG_A(const char* path, const char* attrs)
+static void BG_PUBAPI_IMPL BG_IMG_A(const char* path, const char* attrs)
 {
 	U_BG_INDENT();
 	fprintf(v_bg_out, "<img src=\"%s\" %s>\n", path, attrs);
@@ -947,7 +953,7 @@ static void BG_IMG_A(const char* path, const char* attrs)
  * The path can only be a local URL, not a web one, since it's read with fread.
  * Inlining images increases HTML size significantly.
  */
-static void BG_IMG_INLINE(const char* mime, const char* path)
+static void BG_PUBAPI_IMPL BG_IMG_INLINE(const char* mime, const char* path)
 {
 	fprintf(v_bg_out, "<img src=\"data:%s;base64,", mime);
 	U_BG_TOBASE64(path);
@@ -960,7 +966,7 @@ static void BG_IMG_INLINE(const char* mime, const char* path)
  * The path can only be a local URL, not a web one, since it's read with fread.
  * Inlining images increases HTML size significantly.
  */
-static void BG_IMG_INLINE_A(const char* mime, const char* path, const char* attrs)
+static void BG_PUBAPI_IMPL BG_IMG_INLINE_A(const char* mime, const char* path, const char* attrs)
 {
 	U_BG_INDENT();
 	fprintf(v_bg_out, "<img %s src=\"data:%s;base64,", attrs, mime);
@@ -971,7 +977,7 @@ static void BG_IMG_INLINE_A(const char* mime, const char* path, const char* attr
 /*
  * Emit a figure caption.
  */
-static void BG_FIGCAP(const char* txt)
+static void BG_PUBAPI_IMPL BG_FIGCAP(const char* txt)
 {
 	BG_TAG("figcaption");
 	BG_TXT(txt);
@@ -987,7 +993,7 @@ static void BG_FIGCAP(const char* txt)
 /*
  * Emits a variable number of line breaks.
  */
-static void BG_LINEBREAK(size_t howmany)
+static void BG_PUBAPI_IMPL BG_LINEBREAK(size_t howmany)
 {
 	size_t i;
 	for (i = 0; i < howmany; i++) {
@@ -998,7 +1004,7 @@ static void BG_LINEBREAK(size_t howmany)
 /*
  * Emits a page break.
  */
-static void BG_PAGEBREAK()
+static void BG_PUBAPI_IMPL BG_PAGEBREAK()
 {
 	U_BG_INDENT();
 	fprintf(v_bg_out, "<div style=\"break-after: page;\"></div>\n");
@@ -1013,7 +1019,7 @@ static void BG_PAGEBREAK()
 /*
  * Emit a paragraph opening tag.
  */
-static void BG_P()
+static void BG_PUBAPI_IMPL BG_P()
 {
 	BG_TAG("p");
 }
@@ -1021,7 +1027,7 @@ static void BG_P()
 /*
  * Emit a paragraph opening tag, with attributes.
  */
-static void BG_P_A(const char* attrs)
+static void BG_PUBAPI_IMPL BG_P_A(const char* attrs)
 {
 	BG_TAG_A("p", attrs);
 }
@@ -1029,7 +1035,7 @@ static void BG_P_A(const char* attrs)
 /*
  * Emit a paragraph closing tag.
  */
-static void BG_END_P()
+static void BG_PUBAPI_IMPL BG_END_P()
 {
 	BG_END("p");
 }
@@ -1043,7 +1049,7 @@ static void BG_END_P()
 /*
  * Emit a hyperlink.
  */
-static void BG_LINK(const char* url, const char* label)
+static void BG_PUBAPI_IMPL BG_LINK(const char* url, const char* label)
 {
 	U_BG_INDENT();
 	fprintf(v_bg_out, "<a href=\"%s\">%s</a>\n", url, label);
@@ -1052,7 +1058,7 @@ static void BG_LINK(const char* url, const char* label)
 /*
  * Emit a quote.
  */
-static void BG_QUOTE(const char* quote, const char* author)
+static void BG_PUBAPI_IMPL BG_QUOTE(const char* quote, const char* author)
 {
 	BG_TAG("blockquote");
 
