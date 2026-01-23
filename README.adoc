@@ -75,6 +75,7 @@ int main() {
 ----
 
 Compilation was as simple as `cc example.c -o example.out`.
+
 Then, we run `example.out`, and the resulting HTML is:
 
 [source,html]
