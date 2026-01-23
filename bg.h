@@ -461,11 +461,9 @@ static void BG_PUBAPI_IMPL BG_BODY()
  *
  * @media print {
  *   @page { margin: 0; }
- *   body {
- *     background: #121212;
- *     margin: 0;
- *   }
+ *   body { margin: 0; }
  *   .print-root {
+ *     background: inherit;
  *     padding: 3em;
  *     box-decoration-break: clone;
  *     -webkit-box-decoration-break: clone;
