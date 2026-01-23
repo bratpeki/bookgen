@@ -62,6 +62,7 @@
  * ================================================== */
 
 #include <string.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -303,9 +304,17 @@ static void BG_QUOTE(const char* quote, const char* author);
  *
  * Actually, it sets full buffering and a buffer size of 1MB (1 << 20).
  * This reduces the number of write syscalls caused by many fprintf calls.
+ *
+ * It also resets the chapter counter and depth tracker.
  */
 static void BG_INIT()
 {
+	size_t i;
+	for (i = 0; i < 6; i++)
+		v_bg_chapter[i] = 0;
+
+	v_bg_depth = 0;
+
 	if (!v_bg_out) v_bg_out = stdout;
 	setvbuf(v_bg_out, NULL, _IOFBF, 1 << 20);
 }
@@ -451,9 +460,23 @@ static void BG_BODY()
  * 2. "box-decoration-break: clone" fixes this.
  *
  * The div.print-root styling is defined in the
- * "@media print" section in the provided CSS styles.
+ * "@media print" section in the CSS styles provided in this repo.
  * It's generally good advice to copy it over to your custom styles
  * if you're printing BookGen HTMLs to PDF.
+ * To be precise, the entire block is:
+ *
+ * @media print {
+ *   @page { margin: 0; }
+ *   body {
+ *     background: #121212;
+ *     margin: 0;
+ *   }
+ *   .print-root {
+ *     padding: 3em;
+ *     box-decoration-break: clone;
+ *     -webkit-box-decoration-break: clone;
+ *   }
+ * }
  *
  * If you want to handle printing manually, just use BG_BODY.
  */
