@@ -247,8 +247,11 @@ static void BG_END_HTML();
 static void BG_HEAD();
 static void BG_END_HEAD();
 static void BG_BODY();
+static void BG_BODY_PRINT();
 static void BG_BODY_A(const char* attrs);
+static void BG_BODY_PRINT_A(const char* attrs);
 static void BG_END_BODY();
+static void BG_END_BODY_PRINT();
 static void BG_DOCTITLE(const char* txt);
 static void BG_STYLE(const char* path);
 static void BG_STYLE_INLINE(const char* path);
@@ -428,11 +431,20 @@ static void BG_END_HEAD()
 
 /*
  * Emit the body opening tag.
- *
- * Importantly, this also emits div.print-root,
- * which is used to specify margins for printing.
  */
 static void BG_BODY()
+{
+	BG_TAG("body");
+}
+
+/*
+ * Emit the body opening tag AND div.print-root,
+ * which is used to specify margins for printing.
+ *
+ * The div.print-root styling is defined in the
+ * "@media print" section in the provided CSS styles.
+ */
+static void BG_BODY_PRINT()
 {
 	BG_TAG("body");
 	BG_TAG_A("div", "class=\"print-root\"");
@@ -440,11 +452,23 @@ static void BG_BODY()
 
 /*
  * Emit the body opening tag, with attributes.
- *
- * Importantly, this also emits div.print-root,
- * which is used to specify margins for printing.
  */
 static void BG_BODY_A(const char* attrs)
+{
+	BG_TAG_A("body", attrs);
+}
+
+/*
+ * Emit the body opening tag AND div.print-root,
+ * which is used to specify margins for printing,
+ * with attributes.
+ *
+ * The div.print-root styling is defined in the
+ * "@media print" section in the provided CSS styles.
+ *
+ * The attributes apply to the body tag, not the div one.
+ */
+static void BG_BODY_PRINT_A(const char* attrs)
 {
 	BG_TAG_A("body", attrs);
 	BG_TAG_A("div", "class=\"print-root\"");
@@ -452,10 +476,17 @@ static void BG_BODY_A(const char* attrs)
 
 /*
  * Emit the body closing tag.
- *
- * Importantly, this also emits the print-root's div closing tag.
  */
 static void BG_END_BODY()
+{
+	BG_END("body");
+}
+
+/*
+ * Emit the body closing tag AND
+ * the print-root's div closing tag.
+ */
+static void BG_END_BODY_PRINT()
 {
 	BG_END("div");
 	BG_END("body");

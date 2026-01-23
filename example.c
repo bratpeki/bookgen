@@ -18,7 +18,7 @@ void printExample(FILE* f, const char* theme) {
 		BG_STYLE_INLINE(theme);
 	BG_END_HEAD();
 
-	BG_BODY();
+	BG_BODY_PRINT();
 
 		BG_H(1, "The first chapter header");
 
@@ -148,7 +148,7 @@ void printExample(FILE* f, const char* theme) {
 
 		BG_TOC();
 
-	BG_END_BODY();
+	BG_END_BODY_PRINT();
 
 	BG_END_HTML();
 
