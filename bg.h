@@ -314,6 +314,7 @@ static void BG_INIT()
 		v_bg_chapter[i] = 0;
 
 	v_bg_depth = 0;
+	v_bg_toc_count = 0;
 
 	if (!v_bg_out) v_bg_out = stdout;
 	setvbuf(v_bg_out, NULL, _IOFBF, 1 << 20);
