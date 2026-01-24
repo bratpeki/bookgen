@@ -16,6 +16,9 @@
  * the user calls BG_* functions, and the resulting HTML is written to an output stream,
  * by default stdout.
  *
+ * The source code of the library is written in ASCII,
+ * ensuring maximum portability.
+ *
  * BookGen relies on being passed strings that outlive
  * the HTML generation process in memory,
  * the focus being set on string constants.
@@ -262,6 +265,7 @@ static void BG_PUBAPI_DECL BG_END_BODY_PRINT();
 static void BG_PUBAPI_DECL BG_DOCTITLE(const char* txt);
 static void BG_PUBAPI_DECL BG_STYLE(const char* path);
 static void BG_PUBAPI_DECL BG_STYLE_INLINE(const char* path);
+static void BG_PUBAPI_DECL BG_STYLE_PRINT();
 static void BG_PUBAPI_DECL BG_H(size_t level, const char* title);
 static void BG_PUBAPI_DECL BG_TOC();
 static void BG_PUBAPI_DECL BG_TXT(const char* txt);
@@ -454,35 +458,20 @@ static void BG_PUBAPI_IMPL BG_BODY()
 }
 
 /*
- * Emit the body opening tag AND div.print-root,
- * which is used to specify margins for printing.
+ * Emit the body opening tag AND a wrapping div with the print-root class.
  *
- * To be precise, the entire CSS styling rule for div.print-root is:
- *
- * @media print {
- *   @page { margin: 0; }
- *   body { margin: 0; }
- *   .print-root {
- *     background: inherit;
- *     padding: 3em;
- *     box-decoration-break: clone;
- *     -webkit-box-decoration-break: clone;
- *   }
- * }
+ * This function exists to make HTML-to-PDF printing behave correctly.
  *
  * Printing HTML to a PDF has two main issues:
- * 1. Browser margins are usually white, which looks awful when printing dark mode pages
- * 2. Only the first page gets the padding defined in the body
+ * 1. Browsers usually add white margins, which looks awful when printing dark backgrounds
+ * 2. Only the first page gets the padding the programmer defined in the CSS body ruleset
  *
- * div.print-root is a document wrapper that solves both of those like so:
- * 1. "@page { margin: 0 }" tells the printer to not apply margins.
- *    Then, div.print-root is padded, keeping the body's background colors in the padding area.
- * 2. "box-decoration-break: clone" fixes the padding only being on the first page.
+ * The print-root wrapper solves both problems when paired with BG_STYLE_PRINT:
+ * 1. "@page { margin: 0 }" removes the browser's default page margins.
+ *    Padding is applied to print-root instead of body.
+ * 2. "box-decoration-break: clone" ensures padding is preserved across pages.
  *
- * The div.print-root styling is defined in this comment and
- * in the "@media print" section of the CSS styles provided in this repo.
- * It's generally good advice to copy it over to your custom styles
- * if you're printing BookGen HTMLs to PDF.
+ * Use BG_BODY_PRINT together with BG_STYLE_PRINT.
  *
  * If you want to handle printing manually, just use BG_BODY.
  */
@@ -501,14 +490,14 @@ static void BG_PUBAPI_IMPL BG_BODY_A(const char* attrs)
 }
 
 /*
- * Emit the body opening tag AND div.print-root,
- * which is used to specify margins for printing,
- * with attributes.
+ * Emit the body opening tag, with attributes, AND a wrapping div with the print-root class.
  *
- * Please read the comment under BG_BODY_PRINT
- * to understand why div.print-root is necessary.
+ * This is the attribute variant of BG_BODY_PRINT.
+ * The provided attributes apply to the <body> element only,
+ * not to the print-root wrapper.
  *
- * The attributes apply to the body tag, not the div one.
+ * See the documentation on BG_BODY_PRINT for a full explanation
+ * of why the print-root wrapper is necessary.
  */
 static void BG_PUBAPI_IMPL BG_BODY_PRINT_A(const char* attrs)
 {
@@ -525,11 +514,14 @@ static void BG_PUBAPI_IMPL BG_END_BODY()
 }
 
 /*
- * Emit the body closing tag AND
- * the print-root's div closing tag.
+ * Emit the closing tags for both the print-root wrapper and the body.
  *
- * Please read the comment under BG_BODY_PRINT
- * to understand why div.print-root is necessary.
+ * This must be used to close a body opened with
+ * BG_BODY_PRINT or BG_BODY_PRINT_A only.
+ * Otherwise you get invalid HTML.
+ *
+ * See the documentation on BG_BODY_PRINT for a full explanation
+ * of why the print-root wrapper is necessary.
  */
 static void BG_PUBAPI_IMPL BG_END_BODY_PRINT()
 {
@@ -577,6 +569,38 @@ static void BG_PUBAPI_IMPL BG_STYLE_INLINE(const char* path)
 {
 	BG_TAG("style");
 	U_BG_READFILE(path);
+	BG_END("style");
+}
+
+/*
+ * Emits a style element containing CSS rules for PDF printing.
+ *
+ * Use this in combination with BG_BODY_PRINT or BG_BODY_PRINT_A.
+ * Use this inside the HEAD tag.
+ *
+ * This style block is intentionally minimal and print-only.
+ * The colors, font, etc. are left to themes called inside
+ * BG_STYLE and BG_STYLE_INLINE.
+ *
+ * See the documentation on BG_BODY_PRINT for a full explanation
+ * of why the print-root wrapper is necessary.
+ */
+static void BG_PUBAPI_IMPL BG_STYLE_PRINT() {
+	BG_TAG("style");
+	BG_TXT("@media print {");
+		v_bg_depth++;
+		BG_TXT("@page { margin: 0; }"); /* Disables browser margins. Not all browsers have to honor this. */
+		BG_TXT("body { margin: 0; }"); /* Disables body-level margins. */
+		BG_TXT(".print-root {");
+			v_bg_depth++;
+			BG_TXT("background: inherit;"); /* We inherit the background color from the body. */
+			BG_TXT("padding: 3em;"); /* The padding acts as body-level margins. */
+			BG_TXT("box-decoration-break: clone;"); /* Each page is rendered independently with the specified padding. */
+			BG_TXT("-webkit-box-decoration-break: clone;"); /* Required for Safari/WebKit print engines. */
+			v_bg_depth--;
+		BG_TXT("}");
+		v_bg_depth--;
+	BG_TXT("}");
 	BG_END("style");
 }
 

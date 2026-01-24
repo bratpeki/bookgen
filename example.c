@@ -21,6 +21,7 @@ void printExample(FILE* f, const char* theme) {
 	BG_HEAD();
 		BG_DOCTITLE("BookGen Example Document");
 		BG_STYLE_INLINE(theme);
+		BG_STYLE_PRINT();
 	BG_END_HEAD();
 
 	BG_BODY_PRINT();

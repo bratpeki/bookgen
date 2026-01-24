@@ -43,17 +43,6 @@ th { background: #eeeeee; font-weight: bold; text-align: left; }
 
 caption { caption-side: bottom; font-size: 0.9em; color: #888888; margin-top: 8px; }
 
-@media print {
-	@page { margin: 0; }
-	body { margin: 0; }
-	.print-root {
-		background: inherit;
-		padding: 3em;
-		box-decoration-break: clone;
-		-webkit-box-decoration-break: clone;
-	}
-}
-
 blockquote {
 	margin: 1.5em 0;
 	padding: 0.75em 1.5em;
