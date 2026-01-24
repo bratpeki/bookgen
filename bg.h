@@ -96,8 +96,14 @@ static const char V_BG_BASE64_TABLE[] =
 
 /*
  * Tracks the current indentation depth for formatted HTML output.
+ *
+ * This is an int (signed) and not a size_t (unsigned)
+ * because I wanted to stop underflow of an unsigned type
+ * that could be caused by an unexpected BG_END call.
+ *
+ * The value is checked in U_BG_INDENT.
  */
-static size_t v_bg_depth;
+static int v_bg_depth;
 
 /*
  * Chapter counters for heading levels h1–h6.
@@ -142,6 +148,7 @@ static FILE* v_bg_out = NULL;
 static void U_BG_INDENT()
 {
 	size_t i;
+	if ( v_bg_depth < 0 ) v_bg_depth = 0;
 	for (i = 0; i < v_bg_depth; i++)
 		fprintf(v_bg_out, "  ");
 }
