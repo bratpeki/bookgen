@@ -274,7 +274,7 @@ static void BG_PUBAPI_DECL BG_STYLE(const char* path);
 static void BG_PUBAPI_DECL BG_STYLE_INLINE(const char* path);
 static void BG_PUBAPI_DECL BG_STYLE_PRINT();
 static void BG_PUBAPI_DECL BG_H(size_t level, const char* title);
-static void BG_PUBAPI_DECL BG_TOC();
+static void BG_PUBAPI_DECL BG_TOC(size_t depth);
 static void BG_PUBAPI_DECL BG_TXT(const char* txt);
 static void BG_PUBAPI_DECL BG_RAW(const char* txt);
 static void BG_PUBAPI_DECL BG_CODE_BLOCK(const char* txt);
@@ -393,6 +393,10 @@ static void BG_PUBAPI_IMPL BG_END(const char* inside)
 
 /*
  * Emit a void tag (e.g. img, br, hr, etc).
+ *
+ * Void elements DON'T use self-closing syntax!
+ * "<br />" and friends is NOT according to standard.
+ * That's why we DON'T use it here.
  */
 static void BG_PUBAPI_IMPL BG_VOID(const char* inside)
 {
@@ -697,18 +701,35 @@ static void BG_PUBAPI_IMPL BG_H(size_t level, const char* title)
 
 /*
  * Emit the ToC.
- * Use at the end of the document.
+ *
+ * To cover all headers, you can set depth to 0, for simplicity!
+ *
+ * Use at the end of the document,
+ * since all the headers need to be called via BG_H first
+ * in order for BG_TOC to know they exist.
  */
-static void BG_PUBAPI_IMPL BG_TOC()
+static void BG_PUBAPI_IMPL BG_TOC(size_t depth)
 {
 	size_t i;
+
+	assert(
+		/* a size_t can't be less than 0 anyway, but I'm keeping it there for code readability! */
+		( depth >= 0 && depth <= 6 ) &&
+		"Depth must be 0 (all headers) or between 1 and 6!"
+	);
+
 	BG_TAG_A("div", "class=\"toc\"");
 	BG_H(1, "Table of Contents");
 	BG_TAG("ul");
 
 	/* The "-1" omits the TOC header from the TOC */
-	for (i = 0; i < v_bg_toc_count - 1; i++) {
+	for (i = 0; i + 1 < v_bg_toc_count; i++) {
+
+		/* Depth handling logic */
+		if ( depth != 0 && v_bg_toc_levels[i] > depth ) continue;
+
 		U_BG_INDENT();
+
 		/* The class name is added for styling (toc-L1, toc-L2, etc) */
 		fprintf(v_bg_out,
 			"<li class=\"toc-L%lu\"><a href=\"#%s\">%s %s</a></li>\n",
@@ -716,6 +737,7 @@ static void BG_PUBAPI_IMPL BG_TOC()
 			v_bg_toc_numbers[i],
 			v_bg_toc_numbers[i], v_bg_toc_titles[i]
 		);
+
 	}
 
 	BG_END("ul");

@@ -152,7 +152,7 @@ void printExample(FILE* f, const char* theme) {
 
 		BG_PAGEBREAK();
 
-		BG_TOC();
+		BG_TOC(2);
 
 	BG_END_BODY_PRINT();
 
