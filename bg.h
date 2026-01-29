@@ -106,7 +106,7 @@ static const char V_BG_BASE64_TABLE[] =
 static int v_bg_depth;
 
 /*
- * Chapter counters for heading levels h1–h6.
+ * Chapter counters for heading levels h1-h6.
  */
 static size_t v_bg_chapter[6] = { 0, 0, 0, 0, 0, 0 };
 
@@ -115,7 +115,7 @@ static size_t v_bg_chapter[6] = { 0, 0, 0, 0, 0, 0 };
  *
  * Includes:
  * - v_bg_toc_titles  : pointers to section titles
- * - v_bg_toc_levels  : heading levels (1–6)
+ * - v_bg_toc_levels  : heading levels (1-6)
  * - v_bg_toc_numbers : formatted chapter numbers (e.g. "2.2.10.")
  * - v_bg_toc_count   : number of stored TOC entries
  *
@@ -147,7 +147,7 @@ static FILE* v_bg_out = NULL;
  */
 static void U_BG_INDENT()
 {
-	size_t i;
+	int i;
 	if ( v_bg_depth < 0 ) v_bg_depth = 0;
 	for (i = 0; i < v_bg_depth; i++)
 		fprintf(v_bg_out, "  ");
@@ -280,6 +280,7 @@ static void BG_PUBAPI_DECL BG_RAW(const char* txt);
 static void BG_PUBAPI_DECL BG_CODE_BLOCK(const char* txt);
 static void BG_PUBAPI_DECL BG_CODE_INLINE(const char* txt);
 static void BG_PUBAPI_DECL BG_LI(const char* txt);
+static void BG_PUBAPI_DECL BG_LI_A(const char* txt, const char* attrs);
 static void BG_PUBAPI_DECL BG_UL();
 static void BG_PUBAPI_DECL BG_UL_A(const char* attrs);
 static void BG_PUBAPI_DECL BG_END_UL();
@@ -811,6 +812,16 @@ static void BG_PUBAPI_IMPL BG_CODE_INLINE(const char* txt)
 static void BG_PUBAPI_IMPL BG_LI(const char* txt)
 {
 	BG_TAG("li");
+	BG_TXT(txt);
+	BG_END("li");
+}
+
+/*
+ * Emit a list item, with attributes.
+ */
+static void BG_PUBAPI_IMPL BG_LI_A(const char* txt, const char* attrs)
+{
+	BG_TAG_A("li", attrs);
 	BG_TXT(txt);
 	BG_END("li");
 }

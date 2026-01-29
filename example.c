@@ -132,13 +132,13 @@ void printExample(FILE* f, const char* theme) {
 
 				BG_TABLEROW();
 					BG_TD("GCC");
-					BG_TD("C89–C23");
+					BG_TD("C89-C23");
 					BG_TD("Most commonly used");
 				BG_END_TABLEROW();
 
 				BG_TABLEROW();
 					BG_TD("Clang");
-					BG_TD("C89–C23");
+					BG_TD("C89-C23");
 					BG_TD("Excellent diagnostics");
 				BG_END_TABLEROW();
 
@@ -152,6 +152,7 @@ void printExample(FILE* f, const char* theme) {
 
 		BG_PAGEBREAK();
 
+		/* To include all header levels in the ToC, use either BG_TOC(0) or BG_TOC(6). */
 		BG_TOC(2);
 
 	BG_END_BODY_PRINT();
