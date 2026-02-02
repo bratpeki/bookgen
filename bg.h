@@ -65,11 +65,12 @@
  *   https://bratpeki.github.io
  * ================================================== */
 
-#include <string.h>
+#include <assert.h>
+#include <stdarg.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
+#include <string.h>
 
 /* ==================================================
  * INTERNAL STATE AND CONSTANTS
@@ -281,6 +282,7 @@ static void BG_PUBAPI_DECL BG_STYLE_PRINT();
 static void BG_PUBAPI_DECL BG_H(size_t level, const char* title);
 static void BG_PUBAPI_DECL BG_TOC(size_t depth);
 static void BG_PUBAPI_DECL BG_TXT(const char* txt);
+static void BG_PUBAPI_DECL BG_TXTF(const char* fmt, ...);
 static void BG_PUBAPI_DECL BG_RAW(const char* txt);
 static void BG_PUBAPI_DECL BG_CODE_BLOCK(const char* txt);
 static void BG_PUBAPI_DECL BG_CODE_INLINE(const char* txt);
@@ -764,6 +766,25 @@ static void BG_PUBAPI_IMPL BG_TXT(const char* txt)
 {
 	U_BG_INDENT();
 	fprintf(v_bg_out, "%s\n", txt);
+}
+
+/*
+ * Emit formatted plain text, printf-style.
+ * Indents the text and adds a newline.
+ *
+ * TODO: Actually sensible usage example.
+ */
+static void BG_PUBAPI_DECL BG_TXTF(const char* fmt, ...)
+{
+	va_list args;
+
+	U_BG_INDENT();
+
+	va_start(args, fmt);
+	vfprintf(v_bg_out, fmt, args);
+	va_end(args);
+
+	fputc('\n', v_bg_out);
 }
 
 /*
