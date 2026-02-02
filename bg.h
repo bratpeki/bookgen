@@ -40,6 +40,7 @@
  * - Not public API
  *   - INTERNAL STATE AND CONSTANTS
  *   - INTERNAL HELPER FUNCTIONS
+ *   - DECL AND IMPL
  * - Public API
  *   - FUNCTION DECLARATIONS
  *   - INITIALIZATION
@@ -239,17 +240,21 @@ static void U_BG_TOBASE64(const char* path)
 }
 
 /* ==================================================
+ * DECL AND IMPL
+ * ==================================================
+ * Empty macros used to annotate function
+ * declarations and implementations.
+ * ================================================== */
+
+#define BG_PUBAPI_DECL
+#define BG_PUBAPI_IMPL
+
+/* ==================================================
  * FUNCTION DECLARATIONS
  * ==================================================
  * All public API function declarations,
  * generated with the listfunc rule in the Makefile.
  * ================================================== */
-
-/*
- * These two macros are literally only used as indicators.
- */
-#define BG_PUBAPI_DECL
-#define BG_PUBAPI_IMPL
 
 static void BG_PUBAPI_DECL BG_INIT();
 static void BG_PUBAPI_DECL BG_INIT_FILE(FILE* where);
