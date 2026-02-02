@@ -40,8 +40,8 @@
  * - Not public API
  *   - INTERNAL STATE AND CONSTANTS
  *   - INTERNAL HELPER FUNCTIONS
- *   - DECL AND IMPL
  * - Public API
+ *   - API ANNOTATIONS
  *   - FUNCTION DECLARATIONS
  *   - INITIALIZATION
  *   - PRIMITIVE FUNCTIONS
@@ -240,7 +240,7 @@ static void U_BG_TOBASE64(const char* path)
 }
 
 /* ==================================================
- * DECL AND IMPL
+ * API ANNOTATIONS
  * ==================================================
  * Empty macros used to annotate function
  * declarations and implementations.
