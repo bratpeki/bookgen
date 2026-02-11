@@ -2,7 +2,7 @@
 # TODO: Currently only working with example.c
 
 CC     := gcc
-CFLAGS := -ansi -Wall -Wextra
+CFLAGS := -ansi -Wall -Wextra -Wno-unused-function
 
 build:
 	@$(CC) $(CFLAGS) example.c -o example.out

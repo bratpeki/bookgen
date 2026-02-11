@@ -44,13 +44,13 @@
  *   - API ANNOTATIONS
  *   - FUNCTION DECLARATIONS
  *   - INITIALIZATION
+ *   - PLAIN TEXT
  *   - PRIMITIVE FUNCTIONS
  *   - DOCUMENT STRUCTURE
  *   - METADATA
  *   - STYLING
  *   - HEADINGS
  *   - TABLE OF CONTENTS
- *   - PLAIN TEXT
  *   - CODE
  *   - LISTS
  *   - TABLES
@@ -259,6 +259,9 @@ static void U_BG_TOBASE64(const char* path)
 
 static void BG_PUBAPI_DECL BG_INIT();
 static void BG_PUBAPI_DECL BG_INIT_FILE(FILE* where);
+static void BG_PUBAPI_DECL BG_TXT(const char* txt);
+static void BG_PUBAPI_DECL BG_TXTF(const char* fmt, ...);
+static void BG_PUBAPI_DECL BG_RAW(const char* txt);
 static void BG_PUBAPI_DECL BG_TAG(const char* inside);
 static void BG_PUBAPI_DECL BG_TAG_A(const char* inside, const char* attrs);
 static void BG_PUBAPI_DECL BG_END(const char* inside);
@@ -281,9 +284,6 @@ static void BG_PUBAPI_DECL BG_STYLE_INLINE(const char* path);
 static void BG_PUBAPI_DECL BG_STYLE_PRINT();
 static void BG_PUBAPI_DECL BG_H(size_t level, const char* title);
 static void BG_PUBAPI_DECL BG_TOC(size_t depth);
-static void BG_PUBAPI_DECL BG_TXT(const char* txt);
-static void BG_PUBAPI_DECL BG_TXTF(const char* fmt, ...);
-static void BG_PUBAPI_DECL BG_RAW(const char* txt);
 static void BG_PUBAPI_DECL BG_CODE_BLOCK(const char* txt);
 static void BG_PUBAPI_DECL BG_CODE_INLINE(const char* txt);
 static void BG_PUBAPI_DECL BG_LI(const char* txt);
@@ -359,6 +359,48 @@ static void BG_PUBAPI_IMPL BG_INIT_FILE(FILE* where)
 }
 
 /* ==================================================
+ * PLAIN TEXT
+ * ==================================================
+ * Functions that emit plain text content.
+ * ================================================== */
+
+/*
+ * Emit formatted plain text.
+ * Indents the text and adds a newline.
+ */
+static void BG_PUBAPI_IMPL BG_TXT(const char* txt)
+{
+	U_BG_INDENT();
+	fprintf(v_bg_out, "%s\n", txt);
+}
+
+/*
+ * Emit formatted plain text, printf-style.
+ * Indents the text and adds a newline.
+ */
+static void BG_PUBAPI_IMPL BG_TXTF(const char* fmt, ...)
+{
+	va_list args;
+
+	U_BG_INDENT();
+
+	va_start(args, fmt);
+	vfprintf(v_bg_out, fmt, args);
+	va_end(args);
+
+	fputc('\n', v_bg_out);
+}
+
+/*
+ * Emit raw plain text.
+ * Nothing is added.
+ */
+static void BG_PUBAPI_IMPL BG_RAW(const char* txt)
+{
+	fprintf(v_bg_out, "%s", txt);
+}
+
+/* ==================================================
  * PRIMITIVE FUNCTIONS
  * ==================================================
  * Functions that emit HTML:
@@ -374,8 +416,7 @@ static void BG_PUBAPI_IMPL BG_INIT_FILE(FILE* where)
  */
 static void BG_PUBAPI_IMPL BG_TAG(const char* inside)
 {
-	U_BG_INDENT();
-	fprintf(v_bg_out, "<%s>\n", inside);
+	BG_TXTF("<%s>", inside);
 	v_bg_depth++;
 }
 
@@ -384,8 +425,7 @@ static void BG_PUBAPI_IMPL BG_TAG(const char* inside)
  */
 static void BG_PUBAPI_IMPL BG_TAG_A(const char* inside, const char* attrs)
 {
-	U_BG_INDENT();
-	fprintf(v_bg_out, "<%s %s>\n", inside, attrs);
+	BG_TXTF("<%s %s>", inside, attrs);
 	v_bg_depth++;
 }
 
@@ -395,8 +435,7 @@ static void BG_PUBAPI_IMPL BG_TAG_A(const char* inside, const char* attrs)
 static void BG_PUBAPI_IMPL BG_END(const char* inside)
 {
 	v_bg_depth--;
-	U_BG_INDENT();
-	fprintf(v_bg_out, "</%s>\n", inside);
+	BG_TXTF("</%s>", inside);
 }
 
 /*
@@ -408,8 +447,7 @@ static void BG_PUBAPI_IMPL BG_END(const char* inside)
  */
 static void BG_PUBAPI_IMPL BG_VOID(const char* inside)
 {
-	U_BG_INDENT();
-	fprintf(v_bg_out, "<%s>\n", inside);
+	BG_TXTF("<%s>", inside);
 }
 
 /*
@@ -417,8 +455,7 @@ static void BG_PUBAPI_IMPL BG_VOID(const char* inside)
  */
 static void BG_PUBAPI_IMPL BG_VOID_A(const char* inside, const char* attrs)
 {
-	U_BG_INDENT();
-	fprintf(v_bg_out, "<%s %s>\n", inside, attrs);
+	BG_TXTF("<%s %s>", inside, attrs);
 }
 
 /* ==================================================
@@ -604,7 +641,8 @@ static void BG_PUBAPI_IMPL BG_STYLE_INLINE(const char* path)
  * See the documentation on BG_BODY_PRINT for a full explanation
  * of why the print-root wrapper is necessary.
  */
-static void BG_PUBAPI_IMPL BG_STYLE_PRINT() {
+static void BG_PUBAPI_IMPL BG_STYLE_PRINT()
+{
 	BG_TAG("style");
 	BG_TXT("@media print {");
 		v_bg_depth++;
@@ -721,8 +759,8 @@ static void BG_PUBAPI_IMPL BG_TOC(size_t depth)
 	size_t i;
 
 	assert(
-		/* a size_t can't be less than 0 anyway, but I'm keeping it there for code readability! */
-		( depth >= 0 && depth <= 6 ) &&
+		/* a size_t can't be less than 0 anyway, so we're only checking "<= 6" */
+		( depth <= 6 ) &&
 		"Depth must be 0 (all headers) or between 1 and 6!"
 	);
 
@@ -736,11 +774,9 @@ static void BG_PUBAPI_IMPL BG_TOC(size_t depth)
 		/* Depth handling logic */
 		if ( depth != 0 && v_bg_toc_levels[i] > depth ) continue;
 
-		U_BG_INDENT();
-
 		/* The class name is added for styling (toc-L1, toc-L2, etc) */
-		fprintf(v_bg_out,
-			"<li class=\"toc-L%lu\"><a href=\"#%s\">%s %s</a></li>\n",
+		BG_TXTF(
+			"<li class=\"toc-L%lu\"><a href=\"#%s\">%s %s</a></li>",
 			v_bg_toc_levels[i],
 			v_bg_toc_numbers[i],
 			v_bg_toc_numbers[i], v_bg_toc_titles[i]
@@ -750,50 +786,6 @@ static void BG_PUBAPI_IMPL BG_TOC(size_t depth)
 
 	BG_END("ul");
 	BG_END("div");
-}
-
-/* ==================================================
- * PLAIN TEXT
- * ==================================================
- * Functions that emit plain text content.
- * ================================================== */
-
-/*
- * Emit formatted plain text.
- * Indents the text and adds a newline.
- */
-static void BG_PUBAPI_IMPL BG_TXT(const char* txt)
-{
-	U_BG_INDENT();
-	fprintf(v_bg_out, "%s\n", txt);
-}
-
-/*
- * Emit formatted plain text, printf-style.
- * Indents the text and adds a newline.
- *
- * TODO: Actually sensible usage example.
- */
-static void BG_PUBAPI_DECL BG_TXTF(const char* fmt, ...)
-{
-	va_list args;
-
-	U_BG_INDENT();
-
-	va_start(args, fmt);
-	vfprintf(v_bg_out, fmt, args);
-	va_end(args);
-
-	fputc('\n', v_bg_out);
-}
-
-/*
- * Emit raw plain text.
- * Nothing is added.
- */
-static void BG_PUBAPI_IMPL BG_RAW(const char* txt)
-{
-	fprintf(v_bg_out, "%s", txt);
 }
 
 /* ==================================================
