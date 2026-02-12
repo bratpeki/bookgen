@@ -9,6 +9,13 @@ semantic, well-indented HTML documents programmatically.
 
 It's a simple collection of C functions that emit HTML tags.
 
+The goal is to enable developers to create HTML using the features of a programming language:
+
+* reusable HTML components using functions and macros,
+* variables and constants,
+* loops and conditionals,
+* and so on!
+
 Even though it's a single-header library
 and aims to be completely self-sufficient,
 it comes with a few CSS styles that make the resulting HTML
