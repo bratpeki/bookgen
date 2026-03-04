@@ -6,12 +6,12 @@
 	--text-dim: #b3b3b3; /* Used on lightly dimmed out text */
 	--text-dimmer: #9a9a9a; /* Used on very dimmed out text */
 
-	--text-sep: #3a3a3a; /* Separators and borders */
+	--text-sep: #444; /* Separators and borders */
 
-	--bg-doc: #121212; /* Document background */
-	--bg-block: #1e1e1e; /* Block background (quotes, code, etc) */
-	--bg-block-left: #4a4a4a; /* The little upright line to the left of quote and code blocks */
-	--bg-table-header: #242424; /* Table header background */
+	--bg-doc: #111; /* Document background */
+	--bg-block: #222; /* Block background (quotes, code, etc) */
+	--bg-block-left: #555; /* The little upright line to the left of quote and code blocks */
+	--bg-table-header: #222; /* Table header background */
 }
 
 body {
