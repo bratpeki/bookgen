@@ -1,28 +1,41 @@
 
 /* styles/default-light.css */
 
+:root {
+	--text-default: #333; /* Used on all the text */
+	--text-dim: #666; /* Used on lightly dimmed out text */
+	--text-dimmer: #888; /* Used on very dimmed out text */
+
+	--text-sep: #ccc; /* Separators and borders */
+
+	--bg-doc: #fff; /* Document background */
+	--bg-block: #f5f5f5; /* Block background (quotes, code, etc) */
+	--bg-block-left: #bbb; /* The little upright line to the left of quote and code blocks */
+	--bg-table-header: #eee; /* Table header background */
+}
+
 body {
 	max-width: 800px;
 	margin: 40px auto;
 	padding: 0 20px;
-	color: #333333;
-	background: #ffffff;
+	color: var(--text-default);
+	background: var(--bg-doc);
 	font-family: serif;
 }
 
-h1 { border-bottom: 2px solid #cccccc; padding-bottom: 10px; }
+h1 { border-bottom: 2px solid var(--text-sep); padding-bottom: 10px; }
 
 code {
-	background: #f5f5f5;
+	background: var(--bg-block);
 	padding: 2px;
 	font-family: monospace;
 }
 
 pre {
-	background: #f5f5f5;
+	background: var(--bg-block);
 	padding: 15px;
 	overflow-x: auto;
-	border-left: 4px solid #bbbbbb;
+	border-left: 4px solid var(--bg-block-left);
 }
 
 a { text-decoration: underline; color: inherit; }
@@ -30,25 +43,25 @@ a { text-decoration: underline; color: inherit; }
 .toc ul { list-style: none; padding-left: 0; }
 .toc a { text-decoration: none; }
 
-li.toc-L1 { font-weight: bold; margin-top: 10px; color: #333333; }
-li.toc-L2 { padding-left: 20px; font-size: 0.95em; color: #333333; }
-li.toc-L3 { padding-left: 40px; font-size: 0.9em; color: #666666; }
-li.toc-L4 { padding-left: 40px; font-size: 0.9em; color: #666666; }
-li.toc-L5 { padding-left: 50px; font-size: 0.9em; color: #888888; }
-li.toc-L6 { padding-left: 60px; font-size: 0.9em; color: #888888; }
+li.toc-L1 { font-weight: bold; margin-top: 10px; color: var(--text-default); }
+li.toc-L2 { padding-left: 20px; font-size: 0.95em; color: var(--text-default); }
+li.toc-L3 { padding-left: 40px; font-size: 0.9em; color: var(--text-dim); }
+li.toc-L4 { padding-left: 40px; font-size: 0.9em; color: var(--text-dim); }
+li.toc-L5 { padding-left: 50px; font-size: 0.9em; color: var(--text-dimmer); }
+li.toc-L6 { padding-left: 60px; font-size: 0.9em; color: var(--text-dimmer); }
 
 table { border-collapse: collapse; width: 100%; margin: 20px 0; }
-th, td { border: 1px solid #cccccc; padding: 8px 10px; }
-th { background: #eeeeee; font-weight: bold; text-align: left; }
+th, td { border: 1px solid var(--text-sep); padding: 8px 10px; }
+th { background: var(--bg-table-header); font-weight: bold; text-align: left; }
 
-caption { caption-side: bottom; font-size: 0.9em; color: #888888; margin-top: 8px; }
+caption { caption-side: bottom; font-size: 0.9em; color: var(--text-dimmer); margin-top: 8px; }
 
 blockquote {
 	margin: 1.5em 0;
 	padding: 0.75em 1.5em;
-	border-left: 4px solid #bbbbbb;
-	background: #f5f5f5;
-	color: #666666;
+	border-left: 4px solid var(--bg-block-left);
+	background: var(--bg-block);
+	color: var(--text-dim);
 }
 
 blockquote p {
@@ -59,13 +72,13 @@ blockquote p {
 blockquote footer {
 	margin-top: 0.5em;
 	font-size: 0.9em;
-	color: #888888;
+	color: var(--text-dimmer);
 }
 
 figcaption {
 	margin-top: 0.5em;
 	font-size: 0.9em;
-	color: #888888;
+	color: var(--text-dimmer);
 	text-align: center;
 }
 
@@ -79,3 +92,4 @@ figure img {
 	display: block;
 	margin: 0 auto;
 }
+
