@@ -16,16 +16,16 @@
 
 body {
 	max-width: 600pt;
-	margin: 30pt auto;
-	padding: 0 15pt;
+	margin: 28pt auto;
+	padding: 0 14pt;
 	color: var(--text-default);
 	background: var(--bg-doc);
 	font-family: serif;
 }
 
 h1 {
-	border-bottom: 1.5pt solid var(--text-sep);
-	padding-bottom: 7.5pt;
+	border-bottom: 2pt solid var(--text-sep);
+	padding-bottom: 8pt;
 }
 
 * { font-size: 12pt; }
@@ -33,22 +33,22 @@ h1 {
 h1 { font-size: 24pt; }
 h2 { font-size: 18pt; }
 h3 { font-size: 14pt; }
-h4 { font-size: 12pt; }
-h5 { font-size: 12pt; }
-h6 { font-size: 12pt; }
+h4 { font-size: 14pt; }
+h5 { font-size: 14pt; }
+h6 { font-size: 14pt; }
 
 code {
 	background: var(--bg-block);
-	padding: 1.5pt;
+	padding: 2pt;
 	font-family: monospace;
 	font-size: 10pt;
 }
 
 pre {
 	background: var(--bg-block);
-	padding: 11.25pt;
+	padding: 10pt;
 	overflow-x: auto;
-	border-left: 3pt solid var(--bg-block-left);
+	border-left: 4pt solid var(--bg-block-left);
 	font-size: 10pt;
 }
 
@@ -59,27 +59,27 @@ a { text-decoration: underline; color: inherit; }
 
 li.toc-L1 {
 	font-weight: bold;
-	margin-top: 7.5pt;
+	margin-top: 8pt;
 }
 
-li.toc-L2 { padding-left: 15pt; }
-li.toc-L3 { padding-left: 30pt; }
-li.toc-L4 { padding-left: 30pt; }
-li.toc-L5 { padding-left: 37.5pt; }
-li.toc-L6 { padding-left: 45pt; }
+li.toc-L2 { padding-left: 14pt; }
+li.toc-L3 { padding-left: 28pt; }
+li.toc-L4 { padding-left: 42pt; }
+li.toc-L5 { padding-left: 56pt; }
+li.toc-L6 { padding-left: 70pt; }
 
 li.toc-L1 { font-size: 12pt; color: var(--text-default); }
-li.toc-L2 { font-size: 11.4pt; color: var(--text-default); }
-li.toc-L3 { font-size: 10.8pt; color: var(--text-dim); }
-li.toc-L4 { font-size: 10.8pt; color: var(--text-dim); }
-li.toc-L5 { font-size: 10.8pt; color: var(--text-dimmer); }
-li.toc-L6 { font-size: 10.8pt; color: var(--text-dimmer); }
+li.toc-L2 { font-size: 12pt; color: var(--text-default); }
+li.toc-L3 { font-size: 10pt; color: var(--text-dim); }
+li.toc-L4 { font-size: 10pt; color: var(--text-dim); }
+li.toc-L5 { font-size: 10pt; color: var(--text-dimmer); }
+li.toc-L6 { font-size: 10pt; color: var(--text-dimmer); }
 
 table { border-collapse: collapse; width: 100%; margin: 15pt 0; }
-th, td { border: 0.75pt solid var(--text-sep); padding: 6pt 7.5pt; }
+th, td { border: 1pt solid var(--text-sep); padding: 6pt 8pt; }
 th { background: var(--bg-table-header); font-weight: bold; text-align: left; }
 
-caption { caption-side: bottom; font-size: 10.8pt; color: var(--text-dimmer); margin-top: 6pt; }
+caption { caption-side: bottom; font-size: 10pt; color: var(--text-dimmer); margin-top: 6pt; }
 
 blockquote {
 	margin: 18pt 0;
@@ -96,13 +96,13 @@ blockquote p {
 
 blockquote footer {
 	margin-top: 6pt;
-	font-size: 10.8pt;
+	font-size: 10pt;
 	color: var(--text-dimmer);
 }
 
 figcaption {
 	margin-top: 6pt;
-	font-size: 10.8pt;
+	font-size: 10pt;
 	color: var(--text-dimmer);
 	text-align: center;
 }

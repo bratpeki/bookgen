@@ -651,7 +651,7 @@ static void BG_PUBAPI_IMPL BG_STYLE_PRINT()
 		BG_TXT(".print-root {");
 			v_bg_depth++;
 			BG_TXT("background: inherit;"); /* We inherit the background color from the body. */
-			BG_TXT("padding: 3em;"); /* The padding acts as body-level margins. */
+			BG_TXT("padding: 36pt;"); /* The padding acts as body-level margins. */
 			BG_TXT("box-decoration-break: clone;"); /* Each page is rendered independently with the specified padding. */
 			BG_TXT("-webkit-box-decoration-break: clone;"); /* Required for Safari/WebKit print engines. */
 			v_bg_depth--;
