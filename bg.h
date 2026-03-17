@@ -704,7 +704,7 @@ static void BG_PUBAPI_IMPL BG_H(size_t level, const char* title)
 
 	/*
 	 * Constructing the chapter number, e.g. 1.2.3.4.
-	 * The number is stored in chapterBuf
+	 * The number is stored in chapterNumBuf
 	 */
 
 	chapterNumBuf[0] = '\0';
