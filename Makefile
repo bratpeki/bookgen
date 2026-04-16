@@ -1,6 +1,4 @@
 
-# TODO: Currently only working with example.c
-
 CC     := gcc
 CFLAGS := -ansi -Wall -Wextra -Wno-unused-function
 

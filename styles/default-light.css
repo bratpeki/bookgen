@@ -52,7 +52,7 @@ pre {
 	font-size: 10pt;
 }
 
-a { text-decoration: underline; color: inherit; }
+a { text-decoration: underline; color: inherit; font-size: inherit; }
 
 .toc ul { list-style: none; padding-left: 0; }
 .toc a { text-decoration: none; }
