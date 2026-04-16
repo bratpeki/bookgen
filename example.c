@@ -69,91 +69,91 @@ void printExample(FILE* f, const char* theme) {
 
 						BG_QUOTE("I am quoting myself.", "Peki");
 
-		BG_PAGEBREAK();
+	BG_PAGEBREAK();
 
-		BG_H(2, "Code blocks");
+			BG_H(2, "Code blocks");
 
-			BG_TXT(
-				"For longer examples, use <code>BG_CODE_BLOCK</code>. "
-				"Whitespace and newlines are preserved exactly as written."
-			);
+				BG_TXT(
+					"For longer examples, use <code>BG_CODE_BLOCK</code>. "
+					"Whitespace and newlines are preserved exactly as written."
+				);
 
-			BG_CODE_BLOCK(
-				"#include &lt;stdio.h&gt;\n"
-				"#include &lt;stdlib.h&gt;\n"
-				"\n"
-				"int main(void)\n"
-				"{\n"
-				"  printf(\"Hello from ANSI C!\\n\");\n"
-				"  return EXIT_SUCCESS;\n"
-				"}"
-			);
+				BG_CODE_BLOCK(
+					"#include &lt;stdio.h&gt;\n"
+					"#include &lt;stdlib.h&gt;\n"
+					"\n"
+					"int main(void)\n"
+					"{\n"
+					"  printf(\"Hello from ANSI C!\\n\");\n"
+					"  return EXIT_SUCCESS;\n"
+					"}"
+				);
 
-		BG_H(2, "Working with lists");
+			BG_H(2, "Working with lists");
 
-			BG_UL();
+				BG_UL();
 
-				BG_LI("Item 1");
-				BG_LI("Item 2");
-				BG_LI("Item 3");
+					BG_LI("Item 1");
+					BG_LI("Item 2");
+					BG_LI("Item 3");
 
-				BG_OL();
+					BG_OL();
 
-					BG_LI("Subitem 1");
-					BG_LI("Subitem 2");
-					BG_LI("Subitem 3");
+						BG_LI("Subitem 1");
+						BG_LI("Subitem 2");
+						BG_LI("Subitem 3");
 
-				BG_END_OL();
+					BG_END_OL();
 
-				BG_LI("Item 4");
+					BG_LI("Item 4");
 
-			BG_END_UL();
+				BG_END_UL();
 
-		BG_PAGEBREAK();
+	BG_PAGEBREAK();
 
-		BG_H(2, "Images!");
+			BG_H(2, "Images!");
 
-			BG_TAG("figure");
-				BG_IMG_A(IMGLINK, "width=\"250px\"");
-				BG_FIGCAP("My music logo (read about my music <a href=\"https://bratpeki.github.io/markup/music.html\">here</a>)!");
-			BG_END("figure");
+				BG_TAG("figure");
+					BG_IMG_A(IMGLINK, "width=\"250px\"");
+					BG_FIGCAP("My music logo (read about my music <a href=\"https://bratpeki.github.io/markup/music.html\">here</a>)!");
+				BG_END("figure");
 
-		BG_H(2, "A simple table");
+			BG_H(2, "A simple table");
 
-			BG_TABLE();
+				BG_TABLE();
 
-				BG_CAPTION("Supported ANSI C compilers");
+					BG_CAPTION("Supported ANSI C compilers");
 
-				BG_TABLEROW();
-					BG_TH("Compiler");
-					BG_TH("Standard");
-					BG_TH("Notes");
-				BG_END_TABLEROW();
+					BG_TABLEROW();
+						BG_TH("Compiler");
+						BG_TH("Standard");
+						BG_TH("Notes");
+					BG_END_TABLEROW();
 
-				BG_TABLEROW();
-					BG_TD("GCC");
-					BG_TD("C89-C23");
-					BG_TD("Most commonly used");
-				BG_END_TABLEROW();
+					BG_TABLEROW();
+						BG_TD("GCC");
+						BG_TD("C89-C23");
+						BG_TD("Most commonly used");
+					BG_END_TABLEROW();
 
-				BG_TABLEROW();
-					BG_TD("Clang");
-					BG_TD("C89-C23");
-					BG_TD("Excellent diagnostics");
-				BG_END_TABLEROW();
+					BG_TABLEROW();
+						BG_TD("Clang");
+						BG_TD("C89-C23");
+						BG_TD("Excellent diagnostics");
+					BG_END_TABLEROW();
 
-				BG_TABLEROW();
-					BG_TD("MSVC");
-					BG_TD("C89 (partial)");
-					BG_TD("Non-standard extensions");
-				BG_END_TABLEROW();
+					BG_TABLEROW();
+						BG_TD("MSVC");
+						BG_TD("C89 (partial)");
+						BG_TD("Non-standard extensions");
+					BG_END_TABLEROW();
 
-			BG_END_TABLE();
+				BG_END_TABLE();
 
-		BG_PAGEBREAK();
+	BG_PAGEBREAK();
 
-		/* To include all header levels in the ToC, use either BG_TOC(0) or BG_TOC(6). */
-		BG_TOC(3);
+	/* To include all header levels in the ToC, use either BG_TOC(0) or BG_TOC(6). */
+	BG_TOC(3);
 
 	BG_END_BODY_PRINT();
 
