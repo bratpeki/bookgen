@@ -10,6 +10,7 @@
 
 /*
  * Helper function to read file contents.
+ * Largely copied from U_BG_READFILE.
  * Omits the last newline.
  *
  * Doesn't bother to check if the buffer is big enough!
@@ -49,6 +50,7 @@ void printExample(FILE* f, const char* theme) {
 	BG_HTML();
 
 	BG_HEAD();
+		BG_VOID_A("meta", "charset=\"UTF-8\"");
 		BG_DOCTITLE("BookGen Example Document");
 		BG_STYLE_INLINE(theme);
 		BG_STYLE_PRINT();
