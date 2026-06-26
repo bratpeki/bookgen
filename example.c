@@ -52,7 +52,11 @@ void printExample(FILE* f, const char* theme) {
 	BG_HEAD();
 		BG_VOID_A("meta", "charset=\"UTF-8\"");
 		BG_DOCTITLE("BookGen Example Document");
+
+		/* We use both the base styling and the light theme colors */
+		BG_STYLE("../styles/default-base.css");
 		BG_STYLE_INLINE(theme);
+
 		BG_STYLE_PRINT();
 	BG_END_HEAD();
 
@@ -205,12 +209,12 @@ int main() {
 
 	FILE *outLight, *outDark;
 
-	outLight = fopen("example-light.html", "w");
+	outLight = fopen("./out/example-light.html", "w");
 	if (!outLight) return EXIT_FAILURE;
 	printExample(outLight, "./styles/default-light.css");
 	fclose(outLight);
 
-	outDark = fopen("example-dark.html", "w");
+	outDark = fopen("./out/example-dark.html", "w");
 	if (!outDark) return EXIT_FAILURE;
 	printExample(outDark, "./styles/default-dark.css");
 	fclose(outDark);

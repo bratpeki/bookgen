@@ -30,103 +30,18 @@ Enjoy!
 
 == Usage Example
 
-Here's a simple example of BookGen in action.
-
-The source is:
-
-[source,c]
-----
-#include "bg.h"
-
-int main() {
-
-  BG_INIT();
-
-  BG_HTML_A("lang=\"en\"");
-
-    BG_HEAD();
-      BG_DOCTITLE("README Example Doc");
-      BG_STYLE("./styles/default-light.css");
-    BG_END_HEAD();
-
-    BG_BODY();
-
-      BG_H(1, "Chapter 1");
-
-        BG_TXT("Here's some text!");
-
-        BG_H(2, "Subchapter 1");
-
-          BG_TXT("Here's some text and some");
-          BG_CODE_INLINE("inline code");
-          BG_TXT("to check out how it looks.");
-
-        BG_H(2, "Subchapter 2");
-
-          BG_TXT("Let's make a list.");
-          BG_OL();
-            BG_LI("Item 1");
-            BG_LI("Item 2");
-            BG_LI("Item 3");
-          BG_END_OL();
-
-      BG_TOC();
-
-    BG_END_BODY();
-
-  BG_END_HTML();
-
-  return 0;
-
-}
-----
-
-Compilation was as simple as `cc example.c -o example.out`.
-
-Then, we run `example.out`, and the resulting HTML is:
-
-[source,html]
-----
-<html lang="en">
-  <head>
-    <title>
-      README Example Doc
-    </title>
-    <link rel="stylesheet" href="./styles/default-light.css">
-  </head>
-  <body>
-    <h1 id="1.">1. Chapter 1</h1>
-    Here's some text!
-    <h2 id="1.1.">1.1. Subchapter 1</h2>
-    Here's some text and some
-    <code>inline code</code>
-    to check out how it looks.
-    <h2 id="1.2.">1.2. Subchapter 2</h2>
-    Let's make a list.
-    <ol>
-      <li>
-        Item 1
-      </li>
-      <li>
-        Item 2
-      </li>
-      <li>
-        Item 3
-      </li>
-    </ol>
-    <div class="toc">
-      <h1 id="2.">2. Table of Contents</h1>
-      <ul>
-        <li class="toc-L1"><a href="#1.">1. Chapter 1</a></li>
-        <li class="toc-L2"><a href="#1.1.">1.1. Subchapter 1</a></li>
-        <li class="toc-L2"><a href="#1.2.">1.2. Subchapter 2</a></li>
-      </ul>
-    </div>
-  </body>
-</html>
-----
+The usage example is defined in `example.c` and is compiled using `make`.
 
 The library contains a _lot_ of functions,
 so I invite you to browse through the library and see
 what it has to offer.
+
+== Styles
+
+There are a couple stylesheets in the `styles` folder, namely
+the base file, which contains all the general styling,
+and the light and dark mode file, which define the color variables used in the base file.
+
+The general usage is to include the base file and whatever colorscheme you choose.
+This allows easily creating any colorscheme you'd like!
 
