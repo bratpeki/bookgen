@@ -2,7 +2,7 @@
 /* styles/default-base.css */
 
 /*
- * The following variables must be declared:
+ * The following variables must be defined:
  *
  * --text-default: Used on all the text
  * --text-dim: Used on lightly dimmed out text
@@ -13,8 +13,8 @@
  * --bg-block-left: The little upright line to the left of quote and code blocks
  * --bg-table-header: Table header background
  *
- * It's highly advised you also import the "default-dark" or "default-ligth"
- * stylesheet before this one, since they define these variables.
+ * It's highly advised you also import the "default-dark" or "default-light"
+ * stylesheet from this folder before you import this one, since they define these variables.
  */
 
 body {
