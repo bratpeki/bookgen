@@ -53,7 +53,7 @@ void printExample(FILE* f, const char* theme) {
 		BG_VOID_A("meta", "charset=\"UTF-8\"");
 		BG_DOCTITLE("BookGen Example Document");
 
-		/* We use both the base styling and the light theme colors */
+		/* We use both the base styling and the passed theme color */
 		BG_STYLE("../styles/default-base.css");
 		BG_STYLE_INLINE(theme);
 
@@ -66,7 +66,7 @@ void printExample(FILE* f, const char* theme) {
 
 			BG_H(2, "Author's Note");
 
-				BG_TXT("This book was generated entirely using ANSI C functions.");
+				BG_TXT("This document was generated entirely using ANSI C functions.");
 
 		BG_H(1, "The second chapter header");
 
@@ -158,30 +158,30 @@ void printExample(FILE* f, const char* theme) {
 
 				BG_TABLE();
 
-					BG_CAPTION("Supported ANSI C compilers");
+					BG_CAPTION("Declarations in BookGen");
 
 					BG_TABLEROW();
-						BG_TH("Compiler");
-						BG_TH("Standard");
-						BG_TH("Notes");
+						BG_TH("Prefix");
+						BG_TH("Example");
+						BG_TH("Public?");
 					BG_END_TABLEROW();
 
 					BG_TABLEROW();
-						BG_TD("GCC");
-						BG_TD("C89-C23");
-						BG_TD("Most commonly used");
+						BG_TD("<code>v_bg_*</code> and <code>V_BG_*</code>");
+						BG_TD("<code>v_bg_depth</code>, <code>V_BG_BASE64_TABLE</code>");
+						BG_TD("No. Used internally to track state (depth of HTML indentation, chapter numbers, and so on).");
 					BG_END_TABLEROW();
 
 					BG_TABLEROW();
-						BG_TD("Clang");
-						BG_TD("C89-C23");
-						BG_TD("Excellent diagnostics");
+						BG_TD("<code>U_BG_*</code>");
+						BG_TD("<code>U_BG_READFILE</code>, <code>U_BG_TOBASE64</code>");
+						BG_TD("No. Used internally as helper methods.");
 					BG_END_TABLEROW();
 
 					BG_TABLEROW();
-						BG_TD("MSVC");
-						BG_TD("C89 (partial)");
-						BG_TD("Non-standard extensions");
+						BG_TD("<code>BG_*</code>");
+						BG_TD("<code>BG_TAG</code>, <code>BG_END</code>");
+						BG_TD("Yes. Part of the public API.");
 					BG_END_TABLEROW();
 
 				BG_END_TABLE();
