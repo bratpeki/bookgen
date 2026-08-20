@@ -290,7 +290,7 @@ static void BG_PUBAPI_DECL BG_IMG_INLINE(const char* mime, const char* path);
 static void BG_PUBAPI_DECL BG_IMG_INLINE_A(const char* mime, const char* path, const char* attrs);
 static void BG_PUBAPI_DECL BG_FIGCAP(const char* txt);
 static void BG_PUBAPI_DECL BG_READFILE_S(const char* path);
-static void BG_PUBAPI_DECL BG_READFILE_B(const char* path, char* buf);
+static void BG_PUBAPI_DECL BG_READFILE_B(const char* path, char* buf, size_t bufsz);
 static void BG_PUBAPI_DECL BG_LINEBREAK(size_t howmany);
 static void BG_PUBAPI_DECL BG_PAGEBREAK();
 static void BG_PUBAPI_DECL BG_P();
@@ -1075,18 +1075,26 @@ static void BG_PUBAPI_IMPL BG_READFILE_S(const char* path)
  * Emit the contents of a text file straight to the specified buffer.
  *
  * If the file cannot be opened, no output is produced.
- * Ensure the buffer is big enough!
  */
-static void BG_PUBAPI_IMPL BG_READFILE_B(const char* path, char* buf)
+static void BG_PUBAPI_DECL BG_READFILE_B(const char* path, char* buf, size_t bufsz)
 {
 	FILE *f;
 	int ch;
 	size_t i = 0;
 
+	assert(
+		(bufsz > 0) &&
+		"Buffer size must be greater than 0!"
+	);
+
 	f = fopen(path, "r");
 	if (f == NULL) return;
 
 	while ((ch = getc(f)) != EOF) {
+		assert(
+			(i < bufsz - 1) &&
+			"Buffer is too small for the file contents! Increase the buffer size."
+		);
 		buf[i++] = (char)ch;
 	}
 
