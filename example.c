@@ -9,34 +9,6 @@
 #define IMGLINK "https://raw.githubusercontent.com/bratpeki/bratpeki.github.io/refs/heads/main/img/xrtd.svg"
 
 /*
- * Helper function to read file contents.
- * Largely copied from U_BG_READFILE.
- * Omits the last newline.
- *
- * Doesn't bother to check if the buffer is big enough!
- * Content must be ASCII!
- */
-void readFile(char* path, char* buffer) {
-
-	FILE *f;
-	int ch;
-	size_t i = 0;
-
-	f = fopen(path, "r");
-	if (f == NULL) return;
-
-	while ((ch = getc(f)) != EOF) {
-		buffer[i++] = (char)ch;
-	}
-
-	/* Instead of the last character being a newline, it's a null terminator! */
-	buffer[i-1] = '\0';
-
-	fclose(f);
-
-}
-
-/*
  * We're generating examples in both the provided light and dark themes.
  * They consist of the exact same content, just different styles.
  * This function emits that content.
@@ -191,7 +163,7 @@ void printExample(FILE* f, const char* theme) {
 			BG_H(2, "External file contents");
 
 				BG_TXT("Here's our <code>Makefile</code>, included just because:");
-				readFile("./Makefile", buffer);
+				BG_READFILE_B("./Makefile", buffer);
 				BG_CODE_BLOCK(buffer);
 
 	BG_PAGEBREAK();

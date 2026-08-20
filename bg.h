@@ -55,6 +55,7 @@
  *   - LISTS
  *   - TABLES
  *   - IMAGES
+ *   - TEXT FILES
  *   - BREAKING
  *   - PARAGRAPHS
  *   - MISC
@@ -153,28 +154,6 @@ static void U_BG_INDENT()
 	if ( v_bg_depth < 0 ) v_bg_depth = 0;
 	for (i = 0; i < v_bg_depth; i++)
 		fprintf(v_bg_out, "  ");
-}
-
-/*
- * Emit the contents of a file straight to the output stream.
- *
- * This function does not buffer.
- * It streams the file directly to the output stream.
- * If the file cannot be opened, no output is produced.
- */
-static void U_BG_READFILE(const char* path)
-{
-	FILE *f;
-	int ch;
-
-	f = fopen(path, "r");
-	if (f == NULL) return;
-
-	while ((ch = getc(f)) != EOF) {
-		fputc(ch, v_bg_out);
-	}
-
-	fclose(f);
 }
 
 /*
@@ -310,6 +289,8 @@ static void BG_PUBAPI_DECL BG_IMG_A(const char* path, const char* attrs);
 static void BG_PUBAPI_DECL BG_IMG_INLINE(const char* mime, const char* path);
 static void BG_PUBAPI_DECL BG_IMG_INLINE_A(const char* mime, const char* path, const char* attrs);
 static void BG_PUBAPI_DECL BG_FIGCAP(const char* txt);
+static void BG_PUBAPI_DECL BG_READFILE_S(const char* path);
+static void BG_PUBAPI_DECL BG_READFILE_B(const char* path, char* buf);
 static void BG_PUBAPI_DECL BG_LINEBREAK(size_t howmany);
 static void BG_PUBAPI_DECL BG_PAGEBREAK();
 static void BG_PUBAPI_DECL BG_P();
@@ -624,7 +605,7 @@ static void BG_PUBAPI_IMPL BG_STYLE(const char* path)
 static void BG_PUBAPI_IMPL BG_STYLE_INLINE(const char* path)
 {
 	BG_TAG("style");
-	U_BG_READFILE(path);
+	BG_READFILE_S(path);
 	BG_END("style");
 }
 
@@ -1062,6 +1043,57 @@ static void BG_PUBAPI_IMPL BG_FIGCAP(const char* txt)
 	BG_TAG("figcaption");
 	BG_TXT(txt);
 	BG_END("figcaption");
+}
+
+/* ==================================================
+ * TEXT FILES
+ * ==================================================
+ * Functions for emitting or reading the content of text files.
+ * ================================================== */
+
+/*
+ * Emit the contents of a text file straight to the output stream.
+ *
+ * If the file cannot be opened, no output is produced.
+ */
+static void BG_PUBAPI_IMPL BG_READFILE_S(const char* path)
+{
+	FILE *f;
+	int ch;
+
+	f = fopen(path, "r");
+	if (f == NULL) return;
+
+	while ((ch = getc(f)) != EOF) {
+		fputc(ch, v_bg_out);
+	}
+
+	fclose(f);
+}
+
+/*
+ * Emit the contents of a text file straight to the specified buffer.
+ *
+ * If the file cannot be opened, no output is produced.
+ * Ensure the buffer is big enough!
+ */
+static void BG_PUBAPI_IMPL BG_READFILE_B(const char* path, char* buf)
+{
+	FILE *f;
+	int ch;
+	size_t i = 0;
+
+	f = fopen(path, "r");
+	if (f == NULL) return;
+
+	while ((ch = getc(f)) != EOF) {
+		buf[i++] = (char)ch;
+	}
+
+	/* Instead of the last character being a newline, it's a null terminator! */
+	buf[i-1] = '\0';
+
+	fclose(f);
 }
 
 /* ==================================================
