@@ -26,6 +26,8 @@
  * The use of "static" here means the variables and functions aren't shared between C files.
  * One C file is meant to be used to generate one document.
  *
+ * The library is not thread-safe.
+ *
  * The library relies on the user having a fundamental understanding of HTML.
  * That includes:
  * - Understanding the common tags like html, head, body, img, br, table, etc.
