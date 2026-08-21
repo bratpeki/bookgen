@@ -1092,6 +1092,7 @@ static void BG_PUBAPI_DECL BG_READFILE_B(const char* path, char* buf, size_t buf
 
 	while ((ch = getc(f)) != EOF) {
 		assert(
+			/* crash loudly if the buffer is too small, since you can easily miss this in a big document */
 			(i < bufsz - 1) &&
 			"Buffer is too small for the file contents! Increase the buffer size."
 		);
@@ -1099,7 +1100,7 @@ static void BG_PUBAPI_DECL BG_READFILE_B(const char* path, char* buf, size_t buf
 	}
 
 	/* Instead of the last character being a newline, it's a null terminator! */
-	buf[i-1] = '\0';
+	buf[i] = '\0';
 
 	fclose(f);
 }
