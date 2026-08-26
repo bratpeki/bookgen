@@ -786,10 +786,8 @@ static void BG_PUBAPI_IMPL BG_TOC(size_t depth)
  */
 static void BG_PUBAPI_IMPL BG_CODE_BLOCK(const char* txt)
 {
-	U_BG_INDENT();
 	BG_RAW("<pre><code>");
 	BG_RAW(txt);
-	U_BG_INDENT();
 	BG_RAW("</code></pre>\n");
 }
 
