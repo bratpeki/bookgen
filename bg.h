@@ -787,9 +787,10 @@ static void BG_PUBAPI_IMPL BG_TOC(size_t depth)
 static void BG_PUBAPI_IMPL BG_CODE_BLOCK(const char* txt)
 {
 	U_BG_INDENT();
-	BG_RAW("<pre>");
+	BG_RAW("<pre><code>");
 	BG_RAW(txt);
-	BG_RAW("</pre>\n");
+	U_BG_INDENT();
+	BG_RAW("</code></pre>\n");
 }
 
 /*
@@ -798,10 +799,9 @@ static void BG_PUBAPI_IMPL BG_CODE_BLOCK(const char* txt)
  */
 static void BG_PUBAPI_IMPL BG_CODE_INLINE(const char* txt)
 {
-	U_BG_INDENT();
 	BG_RAW("<code>");
 	BG_RAW(txt);
-	BG_RAW("</code>\n");
+	BG_RAW("</code>");
 }
 
 /* ==================================================

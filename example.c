@@ -7,6 +7,7 @@
 #include <stdlib.h>
 
 #define IMGLINK "https://raw.githubusercontent.com/bratpeki/bratpeki.github.io/refs/heads/main/img/xrtd.svg"
+#define bufferSize 5000
 
 /*
  * We're generating examples in both the provided light and dark themes.
@@ -15,7 +16,7 @@
  */
 void printExample(FILE* f, const char* theme) {
 
-	char buffer[5000];
+	char buffer[bufferSize];
 
 	BG_INIT_FILE(f);
 
@@ -163,7 +164,7 @@ void printExample(FILE* f, const char* theme) {
 			BG_H(2, "External file contents");
 
 				BG_TXT("Here's our <code>Makefile</code>, included just because:");
-				BG_READFILE_B("./Makefile", buffer);
+				BG_READFILE_B("./Makefile", buffer, bufferSize);
 				BG_CODE_BLOCK(buffer);
 
 	BG_PAGEBREAK();
