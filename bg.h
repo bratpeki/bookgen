@@ -786,7 +786,7 @@ static void BG_PUBAPI_IMPL BG_TOC(size_t depth)
  */
 static void BG_PUBAPI_IMPL BG_CODE_BLOCK(const char* txt)
 {
-	BG_RAW("<pre><code>");
+	BG_RAW("<pre style=\"white-space: pre-wrap; word-break: break-all;\"><code>");
 	BG_RAW(txt);
 	BG_RAW("</code></pre>\n");
 }
